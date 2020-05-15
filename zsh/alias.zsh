@@ -5,13 +5,12 @@ alias -g LL='2>&1 | less -iFR'
 
 # accurev
 if [ -x "$(command -v accurev)" ]; then
-  alias adiffd=$'accurev stat -d | awk \'{print $1}\' | xargs -n 1 -p accurev diff -j'
-  alias adiffm=$'accurev stat -m | awk \'{print $1}\' | xargs -n 1 -p accurev diff'
-  alias apurge=$'accurev stat -m | awk \'{print $1}\' | xargs -n 1 -p accurev purge'
+  alias adiffd='accurev stat -d | awk '\''{print $1}'\'' | fzf --bind '\''enter:execute(accurev diff -j {})'\'''
+  alias adiffm='accurev stat -m | awk '\''{print $1}'\'' | fzf --bind '\''enter:execute(accurev diff {})'\'''
 fi
 
 # Edit vim config
 alias nvconfig="$EDITOR $HOME/.vim/vimrc"
 
 # ranger
-alias r='ranger'
+if [ -x "$(command -v accurev)" ]; then alias r='ranger'; fi
