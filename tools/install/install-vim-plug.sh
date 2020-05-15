@@ -9,5 +9,6 @@ if [ ! -f "${NVIM_PLUG}" ]; then
 fi
 
 if [ ! -f "${VIM_PLUG}" ]; then
+  mkdir -p "$(dirname ${VIM_PLUG})"
   cp "${NVIM_PLUG}" "${VIM_PLUG}"
 fi
