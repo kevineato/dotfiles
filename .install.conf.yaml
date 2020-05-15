@@ -1,0 +1,46 @@
+- defaults:
+  link:
+    create: true
+    relink: true
+
+- clean: ['~']
+
+- link:
+  ~/.clang-format: clang/clang-format
+  ~/.cmake-format.py: cmake/cmake-format.py
+  ~/.config/nvim/coc-settings.json: vim/coc-settings.json
+  ~/.config/nvim/init.vim: vim/vimrc
+  ~/.dotfiles: ''
+  ~/.gdbinit: tools/gdb-dashboard/.gdbinit
+  ~/.p10k.zsh: zsh/p10k.zsh
+  ~/.sage:
+  ~/.tmux.conf: tools/.tmux/.tmux.conf
+  ~/.tmux.conf.local: tmux/tmux.conf.local
+  ~/.vim:
+  ~/.zsh:
+  ~/.zshrc: zsh/zshrc
+
+- shell:
+  -
+    command: [git submodule sync --recursive, Syncing submodules]
+    stdout: true
+    stderr: true
+  -
+    command: [git submodule update --init --recursive, Updating submodules]
+    stdout: true
+    stderr: true
+  -
+    command: [tools/install/install-vim-plug.sh, Installing vim-plug]
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: [nvim +PlugInstall +qall now, Installing neovim plugins]
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: [tools/install/install-fira.sh, Installing FiraCode nerd fonts]
+    stdin: true
+    stdout: true
+    stderr: true

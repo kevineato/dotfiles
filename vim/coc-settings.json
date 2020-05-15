@@ -1,0 +1,48 @@
+{
+  // "languageserver": {
+    // "ccls": {
+      // "command": "ccls",
+      // "filetypes": ["c", "cpp", "h", "hpp", "cuda", "objc", "objcpp"],
+      // "rootPatterns": ["build", "compile_commands.json", ".git"],
+      // "initializationOptions": {
+        // "cache": {
+          // "directory": "/tmp/ccls-cache"
+        // },
+        // "compilationDatabaseDirectory": "build",
+        // "completion": {
+          // "caseSensitivity": 1,
+          // "duplicateOptional": false
+        // },
+        // "highlight": {
+          // "lsRanges": true
+        // }
+      // }
+    // }
+  // },
+  "snippets.extends": {
+    "c": ["cpp", "h", "hpp"],
+    "cpp": ["c", "h", "hpp"],
+    "h": ["c", "cpp", "hpp"],
+    "hpp": ["c", "cpp", "h"]
+  },
+  "snippets.ultisnips.directories": [
+    "UltiSnips",
+    "~/.vim/CustomSnips"
+  ],
+  "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
+  "clangd.arguments": [
+    "--all-scopes-completion",
+    "--background-index",
+    "--compile-commands-dir=build",
+    "--completion-style=bundled",
+    "--header-insertion=never",
+    "-j=12",
+    "--suggest-missing-includes"
+  ],
+  "clangd.enabled": true,
+  "clangd.disableDiagnostics": true,
+  "clangd.semanticHighlighting": true,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "coc.preferences.rootPatterns": ["build", ".git"],
+  "npm.binPath": "/usr/bin/npm"
+}

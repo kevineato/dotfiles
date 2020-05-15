@@ -1,0 +1,191 @@
+global !p
+def doxy_parse_func(params, rt=None):
+    snip.cursor.preserve()
+    lst_params = params.split(',')
+    n_params = len(lst_params)
+    anon_snippet_body = ''
+    ind = 1
+    if lst_params[0] != '':
+        anon_snippet_body += '\n*'
+        max_len = 0
+        for param in lst_params:
+            split_param = param.split(' ')
+            if '=' in split_param:
+                temp = split_param[split_param.index('=') - 1]
+            else:
+                temp = split_param[-1]
+            if len(temp) > max_len:
+                max_len = len(temp)
+        for param in lst_params:
+            str_param = '\n* @param '
+            split_param = param.split(' ')
+            if '=' in split_param:
+                temp = split_param[split_param.index('=') - 1]
+            else:
+                temp = split_param[-1]
+            str_param += temp
+            str_param += '  ' + ' ' * (max_len - len(temp)) + '$' + str(ind)
+            anon_snippet_body += str_param
+            ind += 1
+    else:
+        snip.buffer[snip.line + 2] = re.sub('\(  \)', '()', snip.buffer[snip.line + 2])
+    if rt != None and 'void' not in rt:
+        anon_snippet_body += '\n*'
+        anon_snippet_body += '\n* @return $' + str(ind)
+    if anon_snippet_body != '':
+        snip.expand_anon(anon_snippet_body)
+
+def acc_spec(snip, spec, add_types=False):
+    snip.rv = spec + ':'
+    if add_types:
+        snip += '/**'
+        snip += ' * ' + spec.title() + ' classes/structs/types'
+        snip += ' */'
+        snip.rv += '\n' + snip.mkline('', '')
+    snip += '/**'
+    snip += ' * ' + spec.title() + ' member functions'
+    snip += ' */'
+    snip.rv += '\n' + snip.mkline('', '')
+    snip += '/**'
+    snip += ' * ' + spec.title() + ' member variables'
+    snip += ' */'
+endglobal
+
+post_jump "if snip.tabstop == 4: doxy_parse_func(snip.tabstops[2].current_text)"
+snippet cdec "constructor declaration" b
+/**
+ * ${3:description}$4
+ */
+${1:`!v matchstr(getline(search('class \w\+', 'bnW')), '\(class \)\@<=\w\+\([ :]\?\)\@=')`}( ${2:params} )$0
+endsnippet
+
+post_jump "if snip.tabstop == 0 and snip.tabstops[2].current_text == '': snip.cursor.preserve(); snip.buffer[snip.line] = re.sub('\(  \)', '()', snip.buffer[snip.line])"
+snippet cdef "function definition" b
+${1:name}( ${2:params} )$0
+endsnippet
+
+snippet cls "class" b
+/**
+ * @class
+ *   ${2:description}
+ */
+class ${1:`!p snip.rv = snip.basename`}
+{
+};$0
+endsnippet
+
+snippet cout "cout" b
+std::cout << $0 << std::endl;
+endsnippet
+
+snippet dox "/**" b
+/**
+ * $0
+ */
+endsnippet
+
+snippet els "else"
+else
+{
+    ${VISUAL}$0
+}
+endsnippet
+
+snippet elsif "else if()"
+else if( ${1:condition} )
+{
+    ${VISUAL}$0
+}
+endsnippet
+
+post_jump "if snip.tabstop == 5: doxy_parse_func(snip.tabstops[3].current_text, snip.tabstops[1].current_text)"
+snippet fdec "function declaration" b
+/**
+ * ${4:description}$5
+ */
+${1:return} ${2:name}( ${3:params} )$0
+endsnippet
+
+post_jump "if snip.tabstop == 0 and snip.tabstops[3].current_text == '': snip.cursor.preserve(); snip.buffer[snip.line] = re.sub('\(  \)', '()', snip.buffer[snip.line])"
+snippet fdef "function definition" b
+${1:return} ${2:name}( ${3:params} )$0
+endsnippet
+
+snippet fh "file header" b
+/**
+ * @file `!p snip.rv = fn`
+ * @brief ${1:brief description}
+ * @author Kevin Wilson
+ *
+ * $Revision: $
+ * $Date: $
+ * $LastEditedBy: $
+ *
+ * $Copyright: `date '+%Y'`$
+ **************************************************************************/$0
+endsnippet
+
+snippet for "for()" b
+for( ${1:initialize}; ${2:condition}; ${3:increment} )
+{
+    ${VISUAL}$0
+}
+endsnippet
+
+snippet fore "foreach" b
+for( ${1:element} : ${2:list} )
+{
+    ${VISUAL}$0
+}
+endsnippet
+
+snippet hg "header guard" b
+#ifndef ${1:`!p snip.rv = re.sub('(-|(?<!^)(?=[A-Z]))', '_', snip.basename).upper() + '_H_'`}
+#define $1
+
+${VISUAL}$0
+
+#endif  // $1
+endsnippet
+
+snippet if "if()" b
+if( ${1:condition} )
+{
+    ${VISUAL}$0
+}
+endsnippet
+
+snippet logh "log header"
+/**
+ * $Log: $
+ **************************************************************************/$0
+endsnippet
+
+snippet ns "namespace" b
+namespace ${1:name}
+{
+${VISUAL}$0
+}  // namespace $1
+endsnippet
+
+post_expand "snip.cursor.preserve(); snip.buffer[snip.snippet_start[0]] = snip.buffer[snip.snippet_start[0]].strip()"
+snippet "priv(t)?" "private access" br
+`!p acc_spec(snip, 'private', True if match.group(1) else False)`
+endsnippet
+
+post_expand "snip.cursor.preserve(); snip.buffer[snip.snippet_start[0]] = snip.buffer[snip.snippet_start[0]].strip()"
+snippet "prot(t)?" "protected access" br
+`!p acc_spec(snip, 'protected', True if match.group(1) else False)`
+endsnippet
+
+post_expand "snip.cursor.preserve(); snip.buffer[snip.snippet_start[0]] = snip.buffer[snip.snippet_start[0]].strip()"
+snippet "pub(t)?" "public access" br
+`!p acc_spec(snip, 'public', True if match.group(1) else False)`
+endsnippet
+
+snippet stru "struct" b
+/// ${2:description}
+struct ${1:name}
+{
+};$0
+endsnippet
