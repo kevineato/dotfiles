@@ -1,9 +1,10 @@
 export ZSH_HOME=$HOME/.zsh
 
+[ -f $ZSH_HOME/export.zsh ] && source $ZSH_HOME/export.zsh
+
 [ -f $ZSH_HOME/oh-my-zsh.zsh ] && source $ZSH_HOME/oh-my-zsh.zsh
 
 [ -f $ZSH_HOME/alias.zsh ] && source $ZSH_HOME/alias.zsh
-[ -f $ZSH_HOME/export.zsh ] && source $ZSH_HOME/export.zsh
 [ -f $ZSH_HOME/function.zsh ] && source $ZSH_HOME/function.zsh
 
 [ -f $HOME/.dircolors ] && eval "$(dircolors $HOME/.dircolors)"
