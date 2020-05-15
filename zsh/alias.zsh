@@ -5,8 +5,8 @@ alias -g LL='2>&1 | less -iFR'
 
 # accurev
 if [ -x "$(command -v accurev)" ]; then
-  alias adiffd='accurev stat -d | awk '\''{print $1}'\'' | fzf --bind '\''enter:execute(accurev diff -j {})'\'''
-  alias adiffm='accurev stat -m | awk '\''{print $1}'\'' | fzf --bind '\''enter:execute(accurev diff {})'\'''
+  alias adiffd='accurev stat -d | awk '\''{print $1}'\'' | fzf -m --bind '\''alt-enter:execute(accurev diff -j {})'\'''
+  alias adiffm='accurev stat -m | awk '\''{print $1}'\'' | fzf -m --bind '\''alt-enter:execute(accurev diff {})'\'''
 fi
 
 # Edit vim config

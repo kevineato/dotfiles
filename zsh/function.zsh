@@ -16,7 +16,7 @@ function fif() {
     return 1
   fi
 
-  rg --files-with-matches --no-messages "$1" $2 | fzf --bind 'enter:execute($EDITOR -p {})' --bind 'alt-enter:accept' --preview "bat --style=numbers --color=always {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+  rg --files-with-matches --no-messages "$1" $2 | fzf -m --bind 'alt-enter:execute($EDITOR -p {})' --preview "bat --style=numbers --color=always {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
 }
 
 function fkill() {
