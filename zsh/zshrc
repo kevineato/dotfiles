@@ -10,8 +10,10 @@ export ZSH_HOME=$HOME/.zsh
 [ -f $HOME/.dircolors ] && eval "$(dircolors $HOME/.dircolors)"
 eval "$(fasd --init auto)"
 
+# Key bindings
+bindkey "^P" history-substring-search-up
+bindkey "^N" history-substring-search-down
 bindkey "${terminfo[kcbt]}" reverse-menu-complete
-autoload -U compinit && compinit
 
 setopt HIST_IGNORE_SPACE
 setopt HIST_IGNORE_ALL_DUPS

@@ -78,3 +78,6 @@ plugins=(
 )
 
 [ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
+
+# Reload for zsh-completions
+autoload -U compinit && compinit
