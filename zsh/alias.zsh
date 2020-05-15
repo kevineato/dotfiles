@@ -4,7 +4,7 @@ alias -g L='| less -iFR'
 alias -g LL='2>&1 | less -iFR'
 
 # accurev
-if [ -x "$(command -v accurev)" ] && [ -z $TMUX ]; then
+if [ -x "$(command -v accurev)" ]; then
   alias adiffd=$'accurev stat -d | awk \'{print $1}\' | xargs -n 1 -p accurev diff -j'
   alias adiffm=$'accurev stat -m | awk \'{print $1}\' | xargs -n 1 -p accurev diff'
   alias apurge=$'accurev stat -m | awk \'{print $1}\' | xargs -n 1 -p accurev purge'
