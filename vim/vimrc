@@ -383,8 +383,8 @@ call s:tinykeymap_multi_enter('quickfix', {
 " ultisnips
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
+let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsSnippetDirectories=[$HOME . '/.vim/CustomSnips']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -580,8 +580,14 @@ endfunction
 
 command! NvConfig edit $HOME/.vim/vimrc
 
-cnoremap <C-n> <Down>
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-d> <S-Right>
+cnoremap <C-e> <End>
+cnoremap <C-f> <Right>
 cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
+cnoremap <C-s> <S-Left>
 inoremap <silent> <expr> <Tab>
       \ <SID>ulti_expandable() ? "\<C-r>=UltiSnips#ExpandSnippet()\<CR>" :
       \ <SID>check_back_space() ? "\<Tab>" :
