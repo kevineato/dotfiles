@@ -189,12 +189,27 @@ function! RipgrepFzfBLines(query, fullscreen)
   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
+function! s:fzf_buflist()
+  redir => ls
+  silent ls!
+  redir END
+  let filtered = filter(split(ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
+  let filtered = map(filtered, "substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', '')")
+  return filter(filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
+endfunction
+
+command! Mru call fzf#run(fzf#vim#with_preview({
+\   'source': reverse(<SID>fzf_buflist()),
+\   'sink': 'e',
+\   'options': '+m',
+\   'down': '40%'
+\ }))
 command! -bang -nargs=* RG call RipgrepFzf(<q-args>, <bang>0)
 command! -bang -nargs=* RGLines call RipgrepFzfBLines(<q-args>, <bang>0)
-command! -bang -nargs=* RBLines call fzf#vim#buffer_lines(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 nmap <leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>e :FZF -m<CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>l :BLines<CR>
@@ -236,10 +251,14 @@ function! s:align_comment()
     let p_begin = line('.')
     while search('@param', '', c_end)
     endwhile
-    let p_end = line('.')
+    if search('@return', '', c_end)
+      let p_end = line('.') - 1
+    else
+      let p_end = c_end - 1
+    endif
     execute p_begin . ',' . p_end . tab_param
   endif
-  if search('@return', '', c_end)
+  if search('@return', 'c', c_end)
     let r_begin = line('.')
     execute r_begin . ',' . (c_end - 1) . tab_ret
   endif
@@ -257,7 +276,7 @@ augroup end
 
 let g:tagbar_autofocus = 1
 let g:tagbar_compact = 1
-let g:tagbar_ctags_bin = '~/.local/bin/ctags'
+let g:tagbar_ctags_bin = $HOME . '/.local/bin/ctags'
 let g:tagbar_show_linenumbers = 2
 let g:tagbar_sort = 1
 let g:tagbar_type_cpp = {
@@ -413,8 +432,10 @@ nmap <Leader>15 <Plug>BufTabLine.Go(15)
 nmap <Leader>0 <Plug>BufTabLine.Go(-1)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-easymotion
+" vim-dirvish
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:dirvish_mode = 2
 
 highlight link DirvishSuffix LineNr
 
@@ -434,6 +455,7 @@ nmap <Plug>(easymotion-prefix)s <Plug>(easymotion-sn)
 
 let g:startify_change_to_dir = 0
 
+nnoremap <Leader>S :Startify<CR>
 nnoremap <Leader>SC :SClose<CR>
 nnoremap <Leader>SD :SDelete<CR>
 nnoremap <Leader>SL :SLoad<CR>
@@ -578,7 +600,7 @@ function! s:ulti_expandable()
         \ )
 endfunction
 
-command! NvConfig edit $HOME/.vim/vimrc
+command! NvConfig edit $HOME/.dotfiles/vim/vimrc
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -624,7 +646,7 @@ vmap > >gv
 
 augroup myautocmd
   autocmd!
-  autocmd BufWritePost ~/.vim/vimrc ++nested source ~/.vim/vimrc
+  autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
