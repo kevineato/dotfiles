@@ -7,6 +7,7 @@ if !has('nvim')
 else
   call plug#begin(stdpath('data') . '/plugged')
 endif
+Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -111,6 +112,15 @@ set wildmode=longest:full,full
 set wrap
 
 let mapleader = ','
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" auto-pairs
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+augroup myautopairs
+  autocmd!
+  autocmd FileType c,cpp,h,hpp,java,snippets let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
+augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc.nvim
