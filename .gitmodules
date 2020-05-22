@@ -22,3 +22,7 @@
 	path = zsh/oh-my-zsh-custom/plugins/zsh-completions
 	url = https://github.com/zsh-users/zsh-completions
 	ignore = untracked
+[submodule "zsh/oh-my-zsh-custom/plugins/alias-tips"]
+	path = zsh/oh-my-zsh-custom/plugins/alias-tips
+	url = https://github.com/djui/alias-tips
+	ignore = untracked
