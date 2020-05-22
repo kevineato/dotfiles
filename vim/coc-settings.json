@@ -19,6 +19,22 @@
       // }
     // }
   // },
+  "clangd.arguments": [
+    "--all-scopes-completion",
+    "--background-index",
+    "--compile-commands-dir=build",
+    "--completion-style=bundled",
+    "--cross-file-rename",
+    "--header-insertion=never",
+    "-j=12",
+    "--suggest-missing-includes"
+  ],
+  "clangd.enabled": true,
+  "clangd.semanticHighlighting": true,
+  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
+  "coc.preferences.rootPatterns": ["build", ".git"],
+  "diagnostic.enable": false,
+  "npm.binPath": "/usr/bin/npm",
   "snippets.extends": {
     "c": ["cpp", "h", "hpp"],
     "cpp": ["c", "h", "hpp"],
@@ -30,19 +46,6 @@
     "~/.vim/CustomSnips"
   ],
   "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
-  "clangd.arguments": [
-    "--all-scopes-completion",
-    "--background-index",
-    "--compile-commands-dir=build",
-    "--completion-style=bundled",
-    "--header-insertion=never",
-    "-j=12",
-    "--suggest-missing-includes"
-  ],
-  "clangd.enabled": true,
-  "clangd.disableDiagnostics": true,
-  "clangd.semanticHighlighting": true,
-  "coc.preferences.currentFunctionSymbolAutoUpdate": true,
-  "coc.preferences.rootPatterns": ["build", ".git"],
-  "npm.binPath": "/usr/bin/npm"
+  "vimlsp.suggest.fromRuntimepath": true,
+  "xml.java.home": "/usr"
 }

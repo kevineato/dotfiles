@@ -60,8 +60,8 @@ ${1:`!v matchstr(getline(search('class \w\+', 'bnW')), '\(class \)\@<=\w\+\([ :]
 endsnippet
 
 post_jump "if snip.tabstop == 0 and snip.tabstops[2].current_text == '': snip.cursor.preserve(); snip.buffer[snip.line] = re.sub('\(  \)', '()', snip.buffer[snip.line])"
-snippet cdef "function definition" b
-${1:name}( ${2:params} )$0
+snippet cdef "constructor definition" b
+${1:`!p snip.rv = snip.basename`}( ${2:params} )$0
 endsnippet
 
 snippet cls "class" b
