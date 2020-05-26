@@ -70,13 +70,14 @@ plugins=(
   common-aliases
   extract
   fasd
-  fzf
   git
   history-substring-search
   ripgrep
   tmux
   vi-mode
+  zsh-autosuggestions
   zsh-completions
+  zsh-syntax-highlighting
 )
 
 [ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
