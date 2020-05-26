@@ -8,7 +8,7 @@ fi
 
 # Only ammend $PATH if not in tmux
 if [ -z "$TMUX" ]; then
-    export PATH="$HOME/.local/bin:$PATH:$HOME/.emacs.d/bin"
+    export PATH="$HOME/.local/bin:$PATH"
 fi
 
 # bat
