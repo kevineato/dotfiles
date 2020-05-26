@@ -126,7 +126,23 @@ augroup end
 " coc.nvim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:coc_node_path = '/usr/bin/node'
+let g:coc_global_extensions = [
+      \   "coc-clangd",
+      \   "coc-cmake",
+      \   "coc-css",
+      \   "coc-explorer",
+      \   "coc-html",
+      \   "coc-java",
+      \   "coc-json",
+      \   "coc-marketplace",
+      \   "coc-python",
+      \   "coc-sh",
+      \   "coc-tsserver",
+      \   "coc-ultisnips",
+      \   "coc-vimlsp",
+      \   "coc-xml",
+      \   "coc-yaml"
+      \ ]
 let g:coc_snippet_next = "<Tab>"
 let g:coc_snippet_prev = "<S-Tab>"
 let g:markdown_fenced_languages = [

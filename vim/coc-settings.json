@@ -34,7 +34,6 @@
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
   "diagnostic.enable": false,
-  "npm.binPath": "/usr/bin/npm",
   "snippets.extends": {
     "c": ["cpp", "h", "hpp"],
     "cpp": ["c", "h", "hpp"],

@@ -1,7 +1,7 @@
-export ZSH=$ZSH_HOME/.oh-my-zsh
+export ZSH="$ZSH_HOME/.oh-my-zsh"
 
-ZSH_CUSTOM=$ZSH_HOME/oh-my-zsh-custom
-fpath=($ZSH_CUSTOM/completions $fpath)
+ZSH_CUSTOM="$ZSH_HOME/oh-my-zsh-custom"
+fpath=("$ZSH_CUSTOM/completions" "$fpath")
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -57,7 +57,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
@@ -79,7 +79,7 @@ plugins=(
   zsh-completions
 )
 
-[ -f $ZSH/oh-my-zsh.sh ] && source $ZSH/oh-my-zsh.sh
+[ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
 
 # Reload for zsh-completions
 autoload -U compinit && compinit
