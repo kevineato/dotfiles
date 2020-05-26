@@ -13,6 +13,7 @@
     ~/.config/nvim/init.vim: vim/vimrc
     ~/.config/vifm: config/vifm
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
+    ~/.gitconfig: git/gitconfig
     ~/.p10k.zsh: zsh/p10k.zsh
     ~/.sage:
     ~/.tmux.conf: tools/.tmux/.tmux.conf
@@ -42,6 +43,16 @@
     stderr: true
   -
     command: [tools/install/install-fira.sh, Installing FiraCode nerd fonts]
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: [bat cache --build, Adding Gruvbox bat theme]
+    stdin: true
+    stdout: true
+    stderr: true
+  -
+    command: [source ~/.zshrc, Source updated zshrc]
     stdin: true
     stdout: true
     stderr: true

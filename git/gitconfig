@@ -1,0 +1,12 @@
+[credential]
+	helper = cache --timeout=3600
+[github]
+	user = kevineato
+[merge]
+	tool = nvim
+[mergetool]
+  prompt = false
+[mergetool "nvim"]
+  cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+[user]
+	email = kevineato@users.noreply.github.com
