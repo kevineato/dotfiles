@@ -193,22 +193,41 @@ function! RipgrepFzf(query, args, fullscreen)
   let initial_command = printf(command_fmt, a:args, shellescape(a:query))
   let reload_command = printf(command_fmt, a:args, '{q}')
   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+  let has_column = a:args =~# '--column'
+  if !has_column
+    let spec['sink'] = 'e'
+    " Lambda to override default quickfix behavior
+    let spec['sink*'] = {-> ''}
+  endif
+  call fzf#vim#grep(initial_command, has_column, fzf#vim#with_preview(spec), a:fullscreen)
 endfunction
 
-function! s:fzf_buflist()
+function! s:fzf_buflist(do_mru)
+  if a:do_mru
+    redir => ls
+    silent ls!
+    redir END
+    let filtered = filter(split(ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
+    let filtered = map(filtered, "substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', '')")
+    return filter(filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
+  endif
   redir => ls
-  silent ls!
+  silent ls
   redir END
-  let filtered = filter(split(ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
-  let filtered = map(filtered, "substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', '')")
-  return filter(filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
+  let filtered = map(split(ls, '\n'), "substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', '')")
+  return filter(filtered, "filereadable(glob(v:val))")
 endfunction
 
 command! Mru call fzf#run(fzf#vim#with_preview({
-      \   'source': reverse(<SID>fzf_buflist()),
+      \   'source': reverse(<SID>fzf_buflist(1)),
       \   'sink': 'e',
-      \   'options': '+m',
+      \   'options': ['--multi'],
+      \   'down': '40%'
+      \ }))
+command! DBuffers call fzf#run(fzf#vim#with_preview({
+      \   'source': reverse(<SID>fzf_buflist(0)),
+      \   'sink': 'bd',
+      \   'options': ['--multi'],
       \   'down': '40%'
       \ }))
 command! -bang -nargs=* RG call RipgrepFzf(<q-args>, '--column --line-number', <bang>0)
@@ -217,6 +236,7 @@ command! -bang -nargs=* RGFiles call RipgrepFzf(<q-args>, '--files-with-matches'
 nmap <leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
+nnoremap <silent> <Leader>db :DBuffers<CR>
 nnoremap <silent> <Leader>e :FZF -m<CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>F :RGFiles<CR>
@@ -228,11 +248,12 @@ nnoremap <silent> <Leader>o :Files<CR> .cpp$ \| .h$
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:lightline = {
-      \ 'active': {
-      \ 'left': [['mode', 'paste'],
-      \ ['readonly', 'filename', 'modified', 'cocstatus']] },
-      \ 'colorscheme': 'gruvbox',
-      \ 'component': { 'cocstatus': '%{get(b:, "coc_current_function", "")}' }
+      \   'active': {
+      \     'left': [['mode', 'paste'],
+      \       ['readonly', 'filename', 'modified', 'cocstatus']]
+      \   },
+      \   'colorscheme': 'gruvbox',
+      \   'component': { 'cocstatus': '%{get(b:, "coc_current_function", "")}' }
       \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -240,7 +261,7 @@ let g:lightline = {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:NERDCustomDelimiters = {
-      \ 'json': { 'left': '//' }
+      \   'json': { 'left': '//' }
       \ }
 let g:NERDSpaceDelims = 1
 
@@ -288,19 +309,19 @@ let g:tagbar_ctags_bin = $HOME . '/.local/bin/ctags'
 let g:tagbar_show_linenumbers = 2
 let g:tagbar_sort = 1
 let g:tagbar_type_cpp = {
-      \ 'ctagsargs': [
-      \ '-f',
-      \ '-',
-      \ '--format=2',
-      \ '--excmd=pattern',
-      \ '--extras=+Fpr',
-      \ '--fields=nksSaf',
-      \ '--fields-C++=+{properties}{name}{captures}{template}{specialization}',
-      \ '--language-force=C++',
-      \ '--sort=no',
-      \ '--append=no',
-      \ '--kinds-C++=hdpgetncsufmv'
-      \ ]
+      \   'ctagsargs': [
+      \     '-f',
+      \     '-',
+      \     '--format=2',
+      \     '--excmd=pattern',
+      \     '--extras=+Fpr',
+      \     '--fields=nksSaf',
+      \     '--fields-C++=+{properties}{name}{captures}{template}{specialization}',
+      \     '--language-force=C++',
+      \     '--sort=no',
+      \     '--append=no',
+      \     '--kinds-C++=hdpgetncsufmv'
+      \   ]
       \ }
 
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -344,17 +365,17 @@ let g:tinykeymap#timeout = 0
 
 " buffers
 call s:tinykeymap_multi_enter('buffers', {
-      \ 'startmaps': {
-      \ '[b': {'start': 'bprevious'},
-      \ ']b': {'start': 'bnext'}
-      \ },
-      \ 'maps': {
-      \ '[': '<count1>bprevious',
-      \ ']': '<count1>bnext'
-      \ },
-      \ 'options': {
-      \ 'timeout': 1000
-      \ }
+      \   'startmaps': {
+      \     '[b': {'start': 'bprevious'},
+      \     ']b': {'start': 'bnext'}
+      \   },
+      \   'maps': {
+      \     '[': '<count1>bprevious',
+      \     ']': '<count1>bnext'
+      \   },
+      \   'options': {
+      \     'timeout': 1000
+      \   }
       \ })
 
 " curly
@@ -367,19 +388,19 @@ function! SearchCurly(square, curly)
 endfunction
 
 call s:tinykeymap_multi_enter('curly', {
-      \ 'startmaps': {
-      \ '[{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("[", "{") | normal! zz'},
-      \ ']{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("]", "{") | normal! zz'},
-      \ '[}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("[", "}") | normal! zz'},
-      \ ']}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("]", "}") | normal! zz'},
-      \ },
-      \ 'maps': {
-      \ '[': 'call SearchCurly("[", g:vimrc#last_curly)',
-      \ ']': 'call SearchCurly("]", g:vimrc#last_curly)'
-      \ },
-      \ 'options': {
-      \ 'after': 'normal! zz'
-      \ }
+      \   'startmaps': {
+      \     '[{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("[", "{") | normal! zz'},
+      \     ']{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("]", "{") | normal! zz'},
+      \     '[}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("[", "}") | normal! zz'},
+      \     ']}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("]", "}") | normal! zz'},
+      \   },
+      \   'maps': {
+      \     '[': 'call SearchCurly("[", g:vimrc#last_curly)',
+      \     ']': 'call SearchCurly("]", g:vimrc#last_curly)'
+      \   },
+      \   'options': {
+      \     'after': 'normal! zz'
+      \   }
       \ })
 
 " movement
@@ -391,24 +412,25 @@ call tinykeymap#Map('movement', 'u', "normal! \<C-u>")
 
 " quickfix
 call s:tinykeymap_multi_enter('quickfix', {
-      \ 'startmaps': {
-      \ '[q': {'start': 'cprevious | normal! zz'},
-      \ ']q': {'start': 'cnext | normal! zz'}
-      \ },
-      \ 'maps': {
-      \ '[': '<count1>cprevious',
-      \ ']': '<count1>cnext',
-      \ 'c': {'cmd': 'cclose', 'options': {'exit': 1}}
-      \ },
-      \ 'options': {
-      \ 'after': 'normal! zz'
-      \ }
+      \   'startmaps': {
+      \     '[q': {'start': 'cprevious | normal! zz'},
+      \     ']q': {'start': 'cnext | normal! zz'}
+      \   },
+      \   'maps': {
+      \     '[': '<count1>cprevious',
+      \     ']': '<count1>cnext',
+      \     'c': {'cmd': 'cclose', 'options': {'exit': 1}}
+      \   },
+      \   'options': {
+      \     'after': 'normal! zz'
+      \   }
       \ })
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ultisnips
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+let g:UltiSnipsExpandTrigger = ""
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsSnippetDirectories=[$HOME . '/.vim/CustomSnips']
@@ -467,58 +489,6 @@ nnoremap <Leader>SC :SClose<CR>
 nnoremap <Leader>SD :SDelete<CR>
 nnoremap <Leader>SL :SLoad<CR>
 nnoremap <Leader>SS :SSave<CR>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-submode
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" function! s:map_submode_leader(name, lead_prefix, map_prefix, maps)
-" call submode#enter_with(a:name, 'n', '', '<Leader>' . a:lead_prefix, '<Esc>')
-" let split_temp = split(a:maps, '\zs')
-" let split_maps = []
-" let ind = 0
-" while ind < len(split_temp)
-" let temp = split_temp[ind]
-" if temp =~ '<'
-" let ind += 1
-" while split_temp[ind] !~ '>'
-" let temp .= split_temp[ind]
-" let ind += 1
-" endwhile
-" let temp .= split_temp[ind]
-" endif
-" call add(split_maps, temp)
-" let ind += 1
-" endwhile
-" for mapping in split_maps
-" call submode#enter_with(a:name, 'n', '', '<Leader>' . a:lead_prefix . mapping, a:map_prefix . mapping)
-" call submode#map(a:name, 'n', '', mapping, a:map_prefix . mapping)
-" endfor
-" endfunction
-
-" let g:submode_always_show_submode = 1
-" let g:submode_keep_leaving_key = 1
-" let g:submode_keyseqs_to_leave = ['<Esc>', 'q']
-" let g:submode_timeout = 0
-" let g:submode_timeoutlen = 1000
-
-" " movement
-" call submode#enter_with('movement', 'n', '', '<Space>.')
-" call submode#map('movement', 'n', '', 'd', '<C-d>')
-" call submode#map('movement', 'n', '', 'j', '<C-e>')
-" call submode#map('movement', 'n', '', 'k', '<C-y>')
-" call submode#map('movement', 'n', '', 'u', '<C-u>')
-
-" " tabline
-" call submode#enter_with('tabline', 'n', '', ']b', ':bn<CR>', 1)
-" call submode#enter_with('tabline', 'n', '', '[b', ':bp<CR>', 1)
-" call submode#map('tabline', 'n', '', ']', ':bn<CR>')
-" call submode#map('tabline', 'n', '', '[', ':bp<CR>')
-
-" " window
-" call s:map_submode_leader('window', 'w', '<C-w>', '<Bar>=_chjklwW')
-" call submode#map('window', 'n', '', '-', '<C-w>s')
-" call submode#map('window', 'n', '', '/', '<C-w>v')
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General key maps
@@ -622,10 +592,6 @@ inoremap <silent> <expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 inoremap jj <Esc>
-" nnoremap <silent> [l :<C-u>execute v:count1 . "lprevious"<CR>zz
-" nnoremap <silent> ]l :<C-u>execute v:count1 . "lnext"<CR>zz
-" nnoremap <silent> [w <C-w>w
-" nnoremap <silent> ]w <C-w>W
 nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
 nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
 nnoremap <silent> <Leader>- :split<CR>
