@@ -8,6 +8,7 @@ else
   call plug#begin(stdpath('data') . '/plugged')
 endif
 Plug 'jiangmiao/auto-pairs'
+Plug 'tjdevries/coc-zsh'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -352,7 +353,7 @@ let g:tinykeymap#break_key = 113
 let g:tinykeymap#conflict = 3
 let g:tinykeymap#timeout = 0
 
-if exists('*tinykeymap#Map')
+if !empty(glob((has('nvim') ? stdpath('data') : '~/.vim') . '/plugged/tinykeymap_vim/plugin/tinykeymap.vim'))
   function! s:tinykeymap_multi_enter(prefix, mappings)
     let a:mappings['options']['name'] = a:prefix
     let ind = 0

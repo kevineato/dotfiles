@@ -47,6 +47,11 @@
     stdout: true
     stderr: true
   -
+    command: [tools/install/install-fzf.sh, Installing FiraCode nerd fonts]
+    stdin: true
+    stdout: true
+    stderr: true
+  -
     command: [bat cache --build, Adding Gruvbox bat theme]
     stdin: true
     stdout: true

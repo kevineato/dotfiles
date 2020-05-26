@@ -69,16 +69,17 @@ plugins=(
   colored-man-pages
   common-aliases
   extract
-  fasd
-  git
   history-substring-search
-  ripgrep
-  tmux
   vi-mode
   zsh-autosuggestions
   zsh-completions
   zsh-syntax-highlighting
 )
+
+if [ -x "$(command -v fasd)" ]; then plugins+=(fasd); fi
+if [ -x "$(command -v git)" ]; then plugins+=(git); fi
+if [ -x "$(command -v rg)" ]; then plugins+=(ripgrep); fi
+if [ -x "$(command -v tmux)" ]; then plugins+=(tmux); fi
 
 [ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
 
