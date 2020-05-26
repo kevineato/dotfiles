@@ -46,6 +46,11 @@
     stdout: true
     stderr: true
   -
+    command: [bat cache --build, Adding Gruvbox bat theme]
+    stdin: true
+    stdout: true
+    stderr: true
+  -
     command: [source ~/.zshrc, Source updated zshrc]
     stdin: true
     stdout: true
