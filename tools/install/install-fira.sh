@@ -14,7 +14,7 @@ for type in Bold Light Medium Regular Retina; do
   has_new_font=false
   if [ ! -e "${file_path}" ]; then
     echo "wget -O $file_path $file_url"
-    wget -O "${file_path}" "${file_url}"
+    curl -fLo "${file_path}" "${file_url}"
     has_new_font=true
   else
     echo "Found existing file $file_path"

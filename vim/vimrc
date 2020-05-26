@@ -304,19 +304,19 @@ let g:tagbar_ctags_bin = $HOME . '/.local/bin/ctags'
 let g:tagbar_show_linenumbers = 2
 let g:tagbar_sort = 1
 let g:tagbar_type_cpp = {
-      \ 'ctagsargs': [
-      \ '-f',
-      \ '-',
-      \ '--format=2',
-      \ '--excmd=pattern',
-      \ '--extras=+Fpr',
-      \ '--fields=nksSaf',
-      \ '--fields-C++=+{properties}{name}{captures}{template}{specialization}',
-      \ '--language-force=C++',
-      \ '--sort=no',
-      \ '--append=no',
-      \ '--kinds-C++=hdpgetncsufmv'
-      \ ]
+      \   'ctagsargs': [
+      \     '-f',
+      \     '-',
+      \     '--format=2',
+      \     '--excmd=pattern',
+      \     '--extras=+Fpr',
+      \     '--fields=nksSaf',
+      \     '--fields-C++=+{properties}{name}{captures}{template}{specialization}',
+      \     '--language-force=C++',
+      \     '--sort=no',
+      \     '--append=no',
+      \     '--kinds-C++=hdpgetncsufmv'
+      \   ]
       \ }
 
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -325,101 +325,103 @@ nmap <silent> <F4> :TagbarToggle<CR>
 " tinykeymap_vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-function! s:tinykeymap_multi_enter(prefix, mappings)
-  let a:mappings['options']['name'] = a:prefix
-  let ind = 0
-  for [key, val] in items(a:mappings['startmaps'])
-    let temp = deepcopy(a:mappings['options'])
-    if has_key(val, 'start')
-      let temp['start'] = val['start']
-    endif
-    if has_key(val, 'stop')
-      let temp['stop'] = val['stop']
-    else
-      let temp['stop'] = 'mode'
-    endif
-    if has_key(val, 'after')
-      let temp['after'] = val['after']
-    endif
-    call tinykeymap#EnterMap(a:prefix . ind, key, temp)
-    for [m_key, m_val] in items(a:mappings['maps'])
-      if type(m_val) == v:t_string
-        call tinykeymap#Map(a:prefix . ind, m_key, m_val)
-      elseif type(m_val) == v:t_dict
-        call tinykeymap#Map(a:prefix . ind, m_key, m_val['cmd'], m_val['options'])
+if exists('*tinykeymap#Map')
+  function! s:tinykeymap_multi_enter(prefix, mappings)
+    let a:mappings['options']['name'] = a:prefix
+    let ind = 0
+    for [key, val] in items(a:mappings['startmaps'])
+      let temp = deepcopy(a:mappings['options'])
+      if has_key(val, 'start')
+        let temp['start'] = val['start']
       endif
+      if has_key(val, 'stop')
+        let temp['stop'] = val['stop']
+      else
+        let temp['stop'] = 'mode'
+      endif
+      if has_key(val, 'after')
+        let temp['after'] = val['after']
+      endif
+      call tinykeymap#EnterMap(a:prefix . ind, key, temp)
+      for [m_key, m_val] in items(a:mappings['maps'])
+        if type(m_val) == v:t_string
+          call tinykeymap#Map(a:prefix . ind, m_key, m_val)
+        elseif type(m_val) == v:t_dict
+          call tinykeymap#Map(a:prefix . ind, m_key, m_val['cmd'], m_val['options'])
+        endif
+      endfor
+      let ind += 1
     endfor
-    let ind += 1
-  endfor
-endfunction
+  endfunction
 
-let g:tinykeymaps_default = []
-let g:tinykeymap#break_key = 113
-let g:tinykeymap#conflict = 3
-let g:tinykeymap#timeout = 0
+  let g:tinykeymaps_default = []
+  let g:tinykeymap#break_key = 113
+  let g:tinykeymap#conflict = 3
+  let g:tinykeymap#timeout = 0
 
-" buffers
-call s:tinykeymap_multi_enter('buffers', {
-      \ 'startmaps': {
-      \ '[b': {'start': 'bprevious'},
-      \ ']b': {'start': 'bnext'}
-      \ },
-      \ 'maps': {
-      \ '[': '<count1>bprevious',
-      \ ']': '<count1>bnext'
-      \ },
-      \ 'options': {
-      \ 'timeout': 1000
-      \ }
-      \ })
+  " buffers
+  call s:tinykeymap_multi_enter('buffers', {
+        \ 'startmaps': {
+        \ '[b': {'start': 'bprevious'},
+        \ ']b': {'start': 'bnext'}
+        \ },
+        \ 'maps': {
+        \ '[': '<count1>bprevious',
+        \ ']': '<count1>bnext'
+        \ },
+        \ 'options': {
+        \ 'timeout': 1000
+        \ }
+        \ })
 
-" curly
-function! SearchCurly(square, curly)
-  if a:square == ']'
-    silent! call search('^\s*' . a:curly . ';\?$', 'esW')
-  elseif a:square == '['
-    silent! call search('^\s*' . a:curly . ';\?$', 'besW')
-  endif
-endfunction
+  " curly
+  function! SearchCurly(square, curly)
+    if a:square == ']'
+      silent! call search('^\s*' . a:curly . ';\?$', 'esW')
+    elseif a:square == '['
+      silent! call search('^\s*' . a:curly . ';\?$', 'besW')
+    endif
+  endfunction
 
-call s:tinykeymap_multi_enter('curly', {
-      \ 'startmaps': {
-      \ '[{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("[", "{") | normal! zz'},
-      \ ']{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("]", "{") | normal! zz'},
-      \ '[}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("[", "}") | normal! zz'},
-      \ ']}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("]", "}") | normal! zz'},
-      \ },
-      \ 'maps': {
-      \ '[': 'call SearchCurly("[", g:vimrc#last_curly)',
-      \ ']': 'call SearchCurly("]", g:vimrc#last_curly)'
-      \ },
-      \ 'options': {
-      \ 'after': 'normal! zz'
-      \ }
-      \ })
+  call s:tinykeymap_multi_enter('curly', {
+        \ 'startmaps': {
+        \ '[{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("[", "{") | normal! zz'},
+        \ ']{': {'start': 'let g:vimrc#last_curly = "{" | call SearchCurly("]", "{") | normal! zz'},
+        \ '[}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("[", "}") | normal! zz'},
+        \ ']}': {'start': 'let g:vimrc#last_curly = "}" | call SearchCurly("]", "}") | normal! zz'},
+        \ },
+        \ 'maps': {
+        \ '[': 'call SearchCurly("[", g:vimrc#last_curly)',
+        \ ']': 'call SearchCurly("]", g:vimrc#last_curly)'
+        \ },
+        \ 'options': {
+        \ 'after': 'normal! zz'
+        \ }
+        \ })
 
-" movement
-call tinykeymap#EnterMap('movement', '<Space>.', {'stop': 'mode', 'after': 'normal! zz'})
-call tinykeymap#Map('movement', 'd', "normal! \<C-d>")
-call tinykeymap#Map('movement', 'j', 'normal! j')
-call tinykeymap#Map('movement', 'k', 'normal! k')
-call tinykeymap#Map('movement', 'u', "normal! \<C-u>")
+  " movement
+  call tinykeymap#EnterMap('movement', '<Space>.', {'stop': 'mode', 'after': 'normal! zz'})
+  call tinykeymap#Map('movement', 'd', "normal! \<C-d>")
+  call tinykeymap#Map('movement', 'j', 'normal! j')
+  call tinykeymap#Map('movement', 'k', 'normal! k')
+  call tinykeymap#Map('movement', 'u', "normal! \<C-u>")
 
-" quickfix
-call s:tinykeymap_multi_enter('quickfix', {
-      \ 'startmaps': {
-      \ '[q': {'start': 'cprevious | normal! zz'},
-      \ ']q': {'start': 'cnext | normal! zz'}
-      \ },
-      \ 'maps': {
-      \ '[': '<count1>cprevious',
-      \ ']': '<count1>cnext',
-      \ 'c': {'cmd': 'cclose', 'options': {'exit': 1}}
-      \ },
-      \ 'options': {
-      \ 'after': 'normal! zz'
-      \ }
-      \ })
+  " quickfix
+  call s:tinykeymap_multi_enter('quickfix', {
+        \ 'startmaps': {
+        \ '[q': {'start': 'cprevious | normal! zz'},
+        \ ']q': {'start': 'cnext | normal! zz'}
+        \ },
+        \ 'maps': {
+        \ '[': '<count1>cprevious',
+        \ ']': '<count1>cnext',
+        \ 'c': {'cmd': 'cclose', 'options': {'exit': 1}}
+        \ },
+        \ 'options': {
+        \ 'after': 'normal! zz'
+        \ }
+        \ })
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ultisnips
