@@ -1,7 +1,7 @@
 export ZSH="$ZSH_HOME/.oh-my-zsh"
 
 ZSH_CUSTOM="$ZSH_HOME/oh-my-zsh-custom"
-fpath=("$ZSH_CUSTOM/completions" "$fpath")
+fpath=("$ZSH_CUSTOM/completions" $fpath)
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
