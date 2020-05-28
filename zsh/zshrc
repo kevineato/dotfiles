@@ -12,8 +12,12 @@ export ZSH_HOME="$HOME/.zsh"
 [ -x "$(command -v fasd)" ] && eval "$(fasd --init auto)"
 
 # Key bindings
-bindkey "^P" history-substring-search-up
-bindkey "^N" history-substring-search-down
+bindkey '^[h' backward-char
+bindkey '^[l' forward-char
+bindkey '^[H' backward-word
+bindkey '^[L' forward-word
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 bindkey "${terminfo[kcbt]}" reverse-menu-complete
 
 setopt HIST_IGNORE_SPACE
