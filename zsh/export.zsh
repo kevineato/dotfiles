@@ -6,6 +6,13 @@ if [ -x "$HOME/AccuRevClient/bin/accurev" ]; then
   fi
 fi
 
+# Check for skim
+if [ -x "$HOME/.skim/bin/sk" ]; then
+  if [ -z "$TERMUX" ]; then
+    export PATH="$HOME/.skim/bin:$PATH"
+  fi
+fi
+
 # Only ammend $PATH if not in tmux
 if [ -z "$TMUX" ]; then
     export PATH="$HOME/.local/bin:$PATH"
@@ -38,3 +45,7 @@ export GTAGSLABEL=pygments
 
 # ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+
+# skim
+export SKIM_DEFAULT_COMMAND="fd --type f --hidden --follow --ignore-file '~/.fdignore'"
+export SKIM_DEFAULT_OPTIONS="--preview 'bat --style=numbers --color=always {}' --cmd-history=$HOME/.skim_cmd_history --history=$HOME/.skim_history --bind 'alt-a:toggle-all'"
