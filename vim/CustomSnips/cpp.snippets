@@ -54,7 +54,7 @@ endglobal
 post_jump "if snip.tabstop == 4: doxy_parse_func(snip.tabstops[2].current_text)"
 snippet cdec "constructor declaration" b
 /**
- * ${3:description}$4
+ * $1 constructor.$4
  */
 ${1:`!v matchstr(getline(search('class \w\+', 'bnW')), '\(class \)\@<=\w\+\([ :]\?\)\@=')`}( ${2:params} )$0
 endsnippet
@@ -76,6 +76,19 @@ endsnippet
 
 snippet cout "cout" b
 std::cout << $0 << std::endl;
+endsnippet
+
+post_jump "if snip.tabstop == 4: doxy_parse_func(snip.tabstops[2].current_text)"
+snippet ddec "destructor declaration" b
+/**
+ * $1 destructor.$4
+ */
+~${1:`!v matchstr(getline(search('class \w\+', 'bnW')), '\(class \)\@<=\w\+\([ :]\?\)\@=')`}( ${2:params} )$0
+endsnippet
+
+post_jump "if snip.tabstop == 0 and snip.tabstops[2].current_text == '': snip.cursor.preserve(); snip.buffer[snip.line] = re.sub('\(  \)', '()', snip.buffer[snip.line])"
+snippet ddef "destructor definition" b
+~${1:`!p snip.rv = snip.basename`}( ${2:params} )$0
 endsnippet
 
 snippet dox "/**" b

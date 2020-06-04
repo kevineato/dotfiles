@@ -34,6 +34,7 @@
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
   "diagnostic.enable": false,
+  "explorer.icon.enableNerdfont": true,
   "snippets.extends": {
     "c": ["cpp", "h", "hpp"],
     "cpp": ["c", "h", "hpp"],

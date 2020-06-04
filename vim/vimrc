@@ -174,8 +174,11 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
+nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
+nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
 nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
-nnoremap <silent> <Space>e :<C-u>CocList extensions<CR>
+nnoremap <silent> <Space>e :<C-u>CocCommand explorer<CR>
+nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --reveal <C-r>=expand('%')<CR><CR>
 nnoremap <silent> <Space>E :<C-u>CocList marketplace<CR>
 nnoremap <silent> <Space>f :<C-u>Format<CR>
 nnoremap <silent> <Space>j :<C-u>CocNext<CR>
@@ -231,6 +234,13 @@ function! s:my_skim_rg_handler(lines, has_column)
 
   let list = map(filter(a:lines[1:], 'len(v:val)'), 's:my_rg_to_qf(v:val, a:has_column)')
 
+  if len(list) == 1
+    execute 'e' list[0].filename
+    call cursor([list[0].lnum, list[0].col])
+    call feedkeys('zz')
+    return
+  endif
+
   call setqflist(list)
   call s:sortUniqQFList()
   execute 'CocList -A --normal quickfix'
@@ -255,19 +265,31 @@ function! RipgrepSkim(query, args, do_curr_dir)
 
   if !has_column
     let opts['sink'] = 'e'
-    let Sink = remove(opts, 'sink')
-    let wrapped = skim#wrap('rg', fzf#vim#with_preview(opts, 'right:50%', 'alt-h'))
-    let wrapped['sink'] = Sink
+    let wrapped = s:skim_wrap('rg', opts, 'sink')
   else
     function! opts.sink(lines)
       return s:my_skim_rg_handler(a:lines, self.column)
     endfunction
     let opts['sink*'] = remove(opts, 'sink')
-    let Sink = remove(opts, 'sink*')
-    let wrapped = skim#wrap('rg', fzf#vim#with_preview(opts, 'right:50%', 'alt-h'))
-    let wrapped['sink*'] = Sink
+    let wrapped = s:skim_wrap('rg', opts, 'sink*')
   endif
   call skim#run(wrapped)
+endfunction
+
+function! s:skim_wrap(name, opts, ...)
+  if a:0
+    let sinks = {}
+    for key in split(a:1)
+      let sinks[key] = remove(a:opts, key)
+    endfor
+  endif
+  let wrapped = skim#wrap(a:name, fzf#vim#with_preview(a:opts, 'right:50%', 'alt-h'))
+  if a:0
+    for key in keys(sinks)
+      let wrapped[key] = sinks[key]
+    endfor
+  endif
+  return wrapped
 endfunction
 
 function! s:skim_buflist(do_mru)
@@ -276,23 +298,22 @@ function! s:skim_buflist(do_mru)
     silent ls!
     redir END
     let filtered = filter(split(ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
-    let filtered = map(filtered, "substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', '')")
+    let filtered = map(filtered, "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
     return filter(filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
   endif
   redir => ls
   silent ls
   redir END
-  let filtered = map(split(ls, '\n'), "substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', '')")
+  let filtered = map(split(ls, '\n'), "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
   return filter(filtered, "filereadable(glob(v:val))")
 endfunction
 
-command! Mru call skim#run(fzf#vim#with_preview({
+command! Mru call skim#run(<SID>skim_wrap('mru' ,{
       \   'source': reverse(<SID>skim_buflist(1)),
-      \   'sink': 'e',
       \   'options': ['--multi'],
       \   'down': '40%'
       \ }))
-command! DBuffers call skim#run(fzf#vim#with_preview({
+command! DBuffers call skim#run(<SID>skim_wrap('dBuffers', {
       \   'source': reverse(<SID>skim_buflist(0)),
       \   'sink': 'bd',
       \   'options': ['--multi'],
@@ -305,13 +326,13 @@ nmap <leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
-nnoremap <silent> <Leader>e :FZF -m<CR>
+nnoremap <silent> <Leader>e :SK<CR>
+nnoremap <silent> <Leader>ed :SK <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
 nnoremap <silent> <Leader>F :RGFiles<CR>
 nnoremap <silent> <Leader>Fd :RGFiles!<CR>
 nnoremap <silent> <Leader>l :BLines<CR>
-nnoremap <silent> <Leader>o :Files<CR> .cpp$ \| .h$ 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " lightline.vim
@@ -573,6 +594,13 @@ let g:sandwich#recipes += [
   \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1,
   \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
   \
+  \   {'buns': ['{', '}'], 'kind': ['add', 'replace'], 'action': ['add'],
+  \    'motionwise': ['line'], 'command': ["'[+1,']-1normal! >>"]},
+  \
+  \   {'buns': ['^\s*{$', '^\s*}$'], 'nesting': 1, 'regex': 1, 'linewise': 1,
+  \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+  \    'action': ['delete'], 'input': ['{{'], 'command': ["'[,']normal! <<"]},
+  \
   \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1,
   \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
   \
@@ -582,7 +610,7 @@ let g:sandwich#recipes += [
   \   {'buns': ['< ', ' >'], 'nesting': 1, 'match_syntax': 1,
   \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['<']},
   \
-  \   {'buns': ['{\s*', '\s*}'],   'nesting': 1, 'regex': 1,
+  \   {'buns': ['{\s*', '\s*}'], 'nesting': 1, 'regex': 1,
   \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
   \    'action': ['delete'], 'input': ['{']},
   \
@@ -745,6 +773,7 @@ vmap > >gv
 
 augroup myautocmd
   autocmd!
+  autocmd BufNewFile,BufRead .clang-format set filetype=yaml
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
