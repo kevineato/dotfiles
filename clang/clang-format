@@ -138,7 +138,7 @@ RawStringFormats:
 ReflowComments:  true
 SortIncludes:    true
 SortUsingDeclarations: true
-SpaceAfterCStyleCast: false
+SpaceAfterCStyleCast: true
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
 SpaceBeforeAssignmentOperators: true
@@ -153,7 +153,7 @@ SpacesBeforeTrailingComments: 2
 SpacesInAngles:  true
 SpacesInConditionalStatement: true
 SpacesInContainerLiterals: true
-SpacesInCStyleCastParentheses: false
+SpacesInCStyleCastParentheses: true
 SpacesInParentheses: true
 SpacesInSquareBrackets: true
 SpaceBeforeSquareBrackets: false
