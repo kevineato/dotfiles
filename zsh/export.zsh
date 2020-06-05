@@ -31,7 +31,7 @@ export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always' --histor
 
 # General
 export EDITOR='nvim'
-export LESS='iFR'
+export LESS='iR'
 if [ -x "$(command -v bat)" ]; then
   export PAGER='bat'
 else
