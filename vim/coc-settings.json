@@ -36,10 +36,13 @@
   "diagnostic.enable": false,
   "explorer.icon.enableNerdfont": true,
   "snippets.extends": {
+    "bash": ["sh", "zsh"],
     "c": ["cpp", "h", "hpp"],
     "cpp": ["c", "h", "hpp"],
     "h": ["c", "cpp", "hpp"],
-    "hpp": ["c", "cpp", "h"]
+    "hpp": ["c", "cpp", "h"],
+    "sh": ["bash", "zsh"],
+    "zsh": ["bash", "sh"]
   },
   "snippets.ultisnips.directories": [
     "UltiSnips",

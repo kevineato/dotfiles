@@ -1,0 +1,9 @@
+snippet ifc "if command" b
+if [ -x "$(command -v ${1:cmd-name})" ]; then
+  ${VISUAL}$0
+fi
+endsnippet
+
+snippet ifcl "if command (line)" b
+if [ -x "$(command -v ${1:cmd-name})" ]; then ${VISUAL}$0; fi
+endsnippet
