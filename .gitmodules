@@ -34,3 +34,7 @@
 	path = zsh/oh-my-zsh-custom/plugins/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
 	ignore = untracked
+[submodule "tools/bat-extras"]
+	path = tools/bat-extras
+	url = https://github.com/eth-p/bat-extras
+	ignore = untracked

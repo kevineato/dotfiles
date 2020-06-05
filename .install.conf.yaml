@@ -56,3 +56,8 @@
     stdin: true
     stdout: true
     stderr: true
+  -
+    command: [tools/bat-extras/build.sh --minify=all --prefix=~/.local --install, Installing bat-extras]
+    stdin: true
+    stdout: true
+    stderr: true
