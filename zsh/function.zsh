@@ -1,12 +1,12 @@
 # accurev
 if [ -x "$(command -v accurev)" ]; then
   function adiffd() {
-    modified="$(accurev stat -d | awk '{print $1}')"
+    modified="$(accurev stat -d | cut -d ' ' -f 1)"
     echo $modified | sk -m --preview-window='right:50%' --preview='temp=$(AC_DIFF_CLI="/usr/bin/diff --color=always -u %1 %2" accurev diff -j {}); echo $temp' --bind 'alt-enter:execute(accurev diff -j {})'
   }
 
   function adiffm() {
-    modified="$(accurev stat -m | awk '{print $1}')"
+    modified="$(accurev stat -m | cut -d ' ' -f 1)"
     echo $modified | sk -m --preview-window='right:50%' --preview='temp=$(AC_DIFF_CLI="/usr/bin/diff --color=always -u %1 %2" accurev diff {}); echo $temp' --bind 'alt-enter:execute(accurev diff {})'
   }
 

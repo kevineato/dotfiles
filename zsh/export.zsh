@@ -1,22 +1,36 @@
+# PATH functions
+function path_remove() {
+  PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
+}
+
+function path_append() {
+  path_remove "$1"
+  PATH="${PATH:+"$PATH:"}$1"
+}
+
+function path_prepend() {
+  path_remove "$1"
+  PATH="$1${PATH:+":$PATH"}"
+}
+
 # Check for accurev
 if [ -x "$HOME/AccuRevClient/bin/accurev" ]; then
   export AC_DIFF_CLI="nvim -d %1 %2"
-  if [ -z "$TERMUX" ]; then
-    export PATH="$PATH:$HOME/AccuRevClient/bin"
-  fi
+  path_append "$HOME/AccuRevClient/bin"
+fi
+
+# Check for rust
+if [ -d "$HOME/.cargo/bin" ]; then
+    path_append "$HOME/.cargo/bin"
 fi
 
 # Check for skim
-if [ -x "$HOME/.skim/bin/sk" ]; then
-  if [ -z "$TERMUX" ]; then
-    export PATH="$HOME/.skim/bin:$PATH"
-  fi
+if [ -d "$HOME/.skim/bin" ]; then
+    path_append "$HOME/.skim/bin"
 fi
 
-# Only ammend $PATH if not in tmux
-if [ -z "$TMUX" ]; then
-    export PATH="$HOME/.local/bin:$PATH"
-fi
+# Prepend ~/.local/bin
+path_prepend "$HOME/.local/bin"
 
 # bat
 export BAT_THEME='Gruvbox-N'
