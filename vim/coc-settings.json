@@ -33,8 +33,10 @@
   "clangd.semanticHighlighting": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
-  "diagnostic.enable": false,
+  // "diagnostic.enable": false,
   "explorer.icon.enableNerdfont": true,
+  "signature.floatMaxWidth": 100,
+  "signature.preferShownAbove": false,
   "snippets.extends": {
     "bash": ["sh", "zsh"],
     "c": ["cpp", "h", "hpp"],

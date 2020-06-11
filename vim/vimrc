@@ -576,6 +576,8 @@ let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_upper = 1
 
 nmap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
+omap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
+xmap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-sandwhich
@@ -583,7 +585,7 @@ nmap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
 
 let g:sandwich#magicchar#f#patterns = [
   \   {
-  \     'header' : '\<\%(\h\k*\.\)*\h\k*',
+  \     'header' : '\<\%(\h\k*\%(\.\|::\)\)*\h\k*',
   \     'bra'    : '(\s*',
   \     'ket'    : '\s*)',
   \     'footer' : ''
