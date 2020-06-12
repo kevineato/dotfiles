@@ -37,7 +37,7 @@
     stdout: true
     stderr: true
   -
-    command: [nvim +PlugInstall +qall now, Installing neovim plugins]
+    command: [nvim +PlugInstall +qall, Installing neovim plugins]
     stdin: true
     stdout: true
     stderr: true
@@ -47,17 +47,12 @@
     stdout: true
     stderr: true
   -
-    command: [tools/install/install-fzf.sh, Installing FiraCode nerd fonts]
-    stdin: true
-    stdout: true
-    stderr: true
-  -
     command: [bat cache --build, Adding Gruvbox bat theme]
     stdin: true
     stdout: true
     stderr: true
   -
-    command: [tools/bat-extras/build.sh --minify=all --prefix=~/.local --install, Installing bat-extras]
+    command: [tools/bat-extras/build.sh --prefix="$HOME"/.local --install, Installing bat-extras]
     stdin: true
     stdout: true
     stderr: true

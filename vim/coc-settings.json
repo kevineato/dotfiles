@@ -26,6 +26,8 @@
     "--completion-style=bundled",
     "--cross-file-rename",
     "--header-insertion=never",
+    // "--header-insertion=iwyu",
+    // "--header-insertion-decorators",
     "-j=12",
     "--suggest-missing-includes"
   ],
@@ -33,7 +35,9 @@
   "clangd.semanticHighlighting": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
+  "coc.source.ultisnips.priority": 101,
   // "diagnostic.enable": false,
+  "diagnostic.separateRelatedInformationAsDiagnostics": true,
   "explorer.icon.enableNerdfont": true,
   "signature.floatMaxWidth": 100,
   "signature.preferShownAbove": false,
@@ -51,6 +55,7 @@
     "~/.vim/CustomSnips"
   ],
   "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
+  "tabnine.priority": 100,
   "vimlsp.suggest.fromRuntimepath": true,
   "xml.java.home": "/usr"
 }

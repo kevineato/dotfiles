@@ -11,8 +11,6 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tjdevries/coc-zsh'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
 Plug 'morhetz/gruvbox'
 Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
@@ -21,7 +19,7 @@ Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install'  }
 Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
-Plug 'tomtom/tinykeymap_vim'
+Plug 'kevineato/tinykeymap_vim'
 Plug 'SirVer/ultisnips'
 Plug 'ap/vim-buftabline'
 Plug 'ryanoasis/vim-devicons'
@@ -35,8 +33,6 @@ Plug 'reconquest/vim-pythonx'
 Plug 'tpope/vim-repeat'
 Plug 'kevineato/vim-sandwich'
 Plug 'mhinz/vim-startify'
-" Plug 'tpope/vim-surround'
-" Plug 'liuchengxu/vista.vim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -144,6 +140,7 @@ let g:coc_global_extensions = [
       \   "coc-python",
       \   "coc-sh",
       \   "coc-snippets",
+      \   "coc-tabnine",
       \   "coc-tsserver",
       \   "coc-ultisnips",
       \   "coc-vimlsp",
@@ -168,12 +165,12 @@ endfunction
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 command! -nargs=0 Format :call CocAction('format')
 
-nmap <Leader>df <Plug>(coc-format-selected)
-nmap <Leader>rn <Plug>(coc-rename)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> <Space>qf <Plug>(coc-fix-current)
+nmap <Leader>rn <Plug>(coc-rename)
 nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
 nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
 nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
@@ -189,10 +186,13 @@ nnoremap <silent> <Space>r :<C-u>CocListResume<CR>
 nnoremap <silent> <Space>R :<C-u>CocRestart<CR>
 nnoremap <silent> <Space>s :<C-u>CocList -I -A symbols<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
+omap ic <Plug>(coc-classobj-i)
 omap if <Plug>(coc-funcobj-i)
-xmap <Leader>df <Plug>(coc-format-selected)
+xmap ac <Plug>(coc-classobj-a)
 xmap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
 xmap if <Plug>(coc-funcobj-i)
 
 augroup mycocnvim
@@ -638,12 +638,19 @@ xmap s <Nop>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:startify_change_to_dir = 0
+let g:startify_lists = [
+      \ { 'type': 'sessions',  'header': ['   Sessions']       },
+      \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+      \ { 'type': 'files',     'header': ['   MRU']            },
+      \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+      \ { 'type': 'commands',  'header': ['   Commands']       }
+      \ ]
 
-nnoremap <Leader>S :Startify<CR>
-nnoremap <Leader>SC :SClose<CR>
-nnoremap <Leader>SD :SDelete<CR>
-nnoremap <Leader>SL :SLoad<CR>
-nnoremap <Leader>SS :SSave<CR>
+nnoremap <Leader>s :Startify<CR>
+nnoremap <Leader>sc :SClose<CR>
+nnoremap <Leader>sd :SDelete<CR>
+nnoremap <Leader>sl :SLoad<CR>
+nnoremap <Leader>ss :SSave<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General key maps
@@ -739,7 +746,6 @@ cnoremap <C-f> <Right>
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>
 cnoremap <C-s> <S-Left>
-inoremap <silent> <expr> <C-Space> coc#refresh()
 inoremap <silent> <expr> <Tab>
       \ <SID>ulti_expandable() ? "\<C-r>=UltiSnips#ExpandSnippet()\<CR>" :
       \ pumvisible() ? coc#_select_confirm() :
@@ -761,7 +767,7 @@ nnoremap <silent> <Leader>qr :cclose<CR>zz:call setqflist([])<CR>
 nnoremap <silent> <Leader>qs :call <SID>sortUniqQFList()<CR>
 nnoremap <silent> <Leader>qo :copen<CR><C-w>pzz
 nnoremap <silent> <Leader>Q :call <SID>safe_close()<CR>:q<CR>
-nnoremap <silent> <Leader>s :w<CR>
+nnoremap <silent> <Leader>w :w<CR>
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
