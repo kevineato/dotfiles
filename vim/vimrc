@@ -175,7 +175,7 @@ nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
 nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
 nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
 nnoremap <silent> <Space>e :<C-u>CocCommand explorer<CR>
-nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --reveal <C-r>=expand('%')<CR><CR>
+nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
 nnoremap <silent> <Space>E :<C-u>CocList marketplace<CR>
 nnoremap <silent> <Space>f :<C-u>Format<CR>
 nnoremap <silent> <Space>j :<C-u>CocNext<CR>
@@ -502,7 +502,7 @@ if !empty(glob((has('nvim') ? stdpath('data') : '~/.vim') . '/plugged/tinykeymap
         \ })
 
   " movement
-  call tinykeymap#EnterMap('movement', '<Space>.', {'stop': 'mode', 'after': 'normal! zz'})
+  call tinykeymap#EnterMap('movement', '<Space>.', {'start': 'normal! zz', 'stop': 'mode', 'after': 'normal! zz'})
   call tinykeymap#Map('movement', 'd', "normal! \<C-d>")
   call tinykeymap#Map('movement', 'j', 'normal! j')
   call tinykeymap#Map('movement', 'k', 'normal! k')
@@ -585,7 +585,7 @@ xmap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
 
 let g:sandwich#magicchar#f#patterns = [
   \   {
-  \     'header' : '\<\%(\h\k*\%(\.\|::\)\)*\h\k*',
+  \     'header' : '\<\%(\h\k*\%(\.\|::\)\)*\h\k*\%(<\s\?\S*\s\?>\)\?',
   \     'bra'    : '(\s*',
   \     'ket'    : '\s*)',
   \     'footer' : ''
@@ -772,6 +772,8 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
+noremap H 0
+noremap L g_
 vmap < <gv
 vmap > >gv
 

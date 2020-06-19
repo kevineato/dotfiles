@@ -7,8 +7,9 @@ export ZSH_HOME="$HOME/.zsh"
 [ -f "$ZSH_HOME/alias.zsh" ] && source "$ZSH_HOME/alias.zsh"
 [ -f "$ZSH_HOME/function.zsh" ] && source "$ZSH_HOME/function.zsh"
 
+if [ -f "$ZSH_HOME/local.zsh" ]; then source "$ZSH_HOME/local.zsh"; fi
+
 [ -f "$HOME/.dircolors" ] && eval "$(dircolors $HOME/.dircolors)"
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 [ -x "$(command -v fasd)" ] && eval "$(fasd --init auto)"
 
 # Key bindings
