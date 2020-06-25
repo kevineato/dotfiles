@@ -20,7 +20,6 @@ if [ -x "$(command -v accurev)" ]; then alias r='ranger'; fi
 
 # skim
 if [ -x "$(command -v sk)" ]; then
-  alias cdd='cd ${$(fd -H -I -t d | sk):-.}'
   alias nve='$EDITOR $(sk)'
 fi
 

@@ -16,6 +16,10 @@ if [ -x "$(command -v accurev)" ]; then
 fi
 
 # skim
+function cdd() {
+  cd ${$(fd -H -I -t d '' ${1:-.} | sk):-.}
+}
+
 function fh() {
   print -z "$( ([ -n $ZSH_NAME ] && fc -l 1 || history) | sk --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')"
 }

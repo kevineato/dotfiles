@@ -305,6 +305,9 @@ bind -r [ previous-window
 bind -r ] next-window
 bind n copy-mode
 
+bind -T copy-mode-vi d send-keys -X halfpage-down
+bind -T copy-mode-vi u send-keys -X halfpage-up
+
 bind - split-window -v
 bind / split-window -h
 

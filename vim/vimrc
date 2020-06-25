@@ -404,7 +404,7 @@ let g:tagbar_autofocus = 1
 let g:tagbar_compact = 1
 let g:tagbar_ctags_bin = $HOME . '/.local/bin/ctags'
 let g:tagbar_show_linenumbers = 2
-let g:tagbar_sort = 1
+let g:tagbar_sort = 0
 let g:tagbar_type_cpp = {
       \   'ctagsargs': [
       \     '-f',
@@ -434,7 +434,11 @@ let g:tinykeymap#timeout = 0
 
 if !empty(glob((has('nvim') ? stdpath('data') : '~/.vim') . '/plugged/tinykeymap_vim/plugin/tinykeymap.vim'))
   function! s:tinykeymap_multi_enter(prefix, mappings)
-    let a:mappings['options']['name'] = a:prefix
+    if has_key(a:mappings, 'options')
+      let a:mappings['options']['name'] = a:prefix
+    else
+      let a:mappings['options'] = { 'name': a:prefix }
+    endif
     let ind = 0
     for [key, val] in items(a:mappings['startmaps'])
       let temp = deepcopy(a:mappings['options'])
@@ -469,10 +473,8 @@ if !empty(glob((has('nvim') ? stdpath('data') : '~/.vim') . '/plugged/tinykeymap
         \   },
         \   'maps': {
         \     '[': '<count1>bprevious',
-        \     ']': '<count1>bnext'
-        \   },
-        \   'options': {
-        \     'timeout': 1000
+        \     ']': '<count1>bnext',
+        \     'd': 'if buflisted(0) | b # | else | bp | endif | bd #'
         \   }
         \ })
 
@@ -597,11 +599,11 @@ let g:sandwich#recipes += [
   \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
   \
   \   {'buns': ['{', '}'], 'kind': ['add', 'replace'], 'action': ['add'],
-  \    'motionwise': ['line'], 'command': ["'[+1,']-1normal! >>"]},
+  \    'motionwise': ['line'], 'command': ["'[+1,']-1normal! =="]},
   \
   \   {'buns': ['^\s*{$', '^\s*}$'], 'nesting': 1, 'regex': 1, 'linewise': 1,
   \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-  \    'action': ['delete'], 'input': ['{{'], 'command': ["'[,']normal! <<"]},
+  \    'action': ['delete'], 'input': ['{{'], 'command': ["'[,']normal! =="]},
   \
   \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1,
   \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
@@ -655,6 +657,24 @@ nnoremap <Leader>ss :SSave<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General key maps
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! s:better_g_under()
+  let col = col('.') - 1
+  if getline('.')[0:col] =~# '^\s*$'
+    return "^"
+  else
+    return "g_"
+  endif
+endfunction
+
+function! s:better_zero()
+  let col = col('.') - 2
+  if col < 0 || getline('.')[0:col] =~# '^\s*$'
+    return "0"
+  else
+    return "^"
+  endif
+endfunction
 
 function! s:check_back_space() abort
   let col = col('.') - 1
@@ -772,8 +792,17 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-noremap H 0
-noremap L g_
+nnoremap <silent> <expr> 0 <SID>better_zero()
+onoremap <silent> <expr> 0
+      \ col('.') == len(getline('.')) ?
+      \ "v" . <SID>better_zero() :
+      \ <SID>better_zero()
+xnoremap <silent> <expr> 0 <SID>better_zero()
+nnoremap <silent> <expr> g_ <SID>better_g_under()
+onoremap <silent> <expr> g_ <SID>better_g_under()
+xnoremap <silent> <expr> g_ <SID>better_g_under()
+map H 0
+map L g_
 vmap < <gv
 vmap > >gv
 
