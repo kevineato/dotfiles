@@ -46,3 +46,34 @@ function fkill() {
     echo "$pid" | xargs kill -"${1:-9}"
   fi  
 }
+
+_skim_compgen_path() {
+  echo "$1"
+  command fd -H -L \
+    -E '.git/*' -E '.hg/*' -E '.svn/*' -t f -t d -t l \
+    -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
+}
+
+_skim_compgen_dir() {
+  command fd -H -L \
+    -E '.git/*' -E '.hg/*' -E '.svn/*' -t d \
+    -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
+}
+
+# _complete_plus_hist_args() {
+  # local query q_commands q_commands_array q_commands_arr
+  # query=(${(s/ /)BUFFER})
+  # query="$query[1]"
+  # q_commands=$(print -l -- ${${(v)history[(R)*$query*]}//( |)$query( |)/})
+  # q_command_array=$(print -r -- $q_commands | awk '/^--?\S+ \S+/{split($0, t, /(--?\S+ \S+)/, m); for (i=1; i in m; i++) print m[i];}' | sort -u)
+  # q_command_arr=(${(@f)q_command_array})
+  # compadd -a -Q q_command_arr
+  # _complete
+# }
+
+# _force_rehash() {
+  # (( CURRENT == 1  )) && rehash
+  # return 1
+# }
+
+# zstyle ':completion:::::' completer _force_rehash _complete_plus_hist_args _approximate

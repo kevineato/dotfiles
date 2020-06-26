@@ -63,3 +63,6 @@ export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 # skim
 export SKIM_DEFAULT_COMMAND="fd --type f --hidden --follow"
 export SKIM_DEFAULT_OPTIONS="--multi --preview-window=':hidden' --preview='bat --style=numbers --color=always {}' --cmd-history=$HOME/.skim_cmd_history --history=$HOME/.skim_history --bind='alt-a:toggle-all,alt-h:toggle-preview'"
+
+# zsh-autosuggestions
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
