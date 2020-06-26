@@ -1,4 +1,4 @@
-# Global
+# Globals
 if [ -x "$(command -v bat)" ]; then alias -g B='| bat'; fi
 if [ -x "$(command -v fzf)" ]; then alias -g F='| fzf'; fi
 alias -g L='| less -iR'
@@ -14,6 +14,15 @@ if [ -x "$(command -v howdoi)" ]; then
   fi
 fi
 alias nvconfig="$EDITOR $HOME/.vim/vimrc"
+
+# exa
+if [ -x "$(command -v exa)" ]; then
+  alias l='exa -al --color=always --group-directories-first'
+  alias la='exa -a --color=always --group-directories-first'
+  alias ll='exa -l --color=always --group-directories-first'
+  alias ls='exa --color=always --group-directories-first'
+  alias lt='exa -aT --color=always --group-directories-first'
+fi
 
 # ranger
 if [ -x "$(command -v accurev)" ]; then alias r='ranger'; fi

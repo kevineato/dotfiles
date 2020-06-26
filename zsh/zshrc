@@ -16,9 +16,6 @@ if [ -f "$HOME/.skim/shell/key-bindings.zsh" ]; then source "$HOME/.skim/shell/k
 [ -x "$(command -v fasd)" ] && eval "$(fasd --init auto)"
 
 # Widgets
-autoload -Uz history-beginning-search-menu
-zle -N history-beginning-search-menu
-
 autoload -Uz copy-earlier-word
 zle -N copy-earlier-word
 
@@ -35,7 +32,6 @@ bindkey '^[H' backward-word
 bindkey '^[L' forward-word
 bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
-bindkey '^Z' history-beginning-search-menu
 bindkey "${terminfo[kcbt]}" reverse-menu-complete
 
 setopt HIST_IGNORE_SPACE
