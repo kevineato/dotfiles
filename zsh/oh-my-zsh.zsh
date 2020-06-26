@@ -71,6 +71,7 @@ plugins=(
   extract
   history-substring-search
   vi-mode
+  zsh-autopair
   zsh-autosuggestions
   zsh-completions
   zsh-syntax-highlighting

@@ -45,6 +45,7 @@ export BAT_THEME='Gruvbox-N'
 
 # General
 export EDITOR='nvim'
+export KEYTIMEOUT=1
 export LESS='iR'
 if [ -x "$(command -v bat)" ]; then
   export PAGER='bat'
