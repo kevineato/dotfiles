@@ -19,6 +19,11 @@ if [ -x "$HOME/AccuRevClient/bin/accurev" ]; then
   path_append "$HOME/AccuRevClient/bin"
 fi
 
+# Check for ruby
+if [ -d "$HOME/.gem/ruby/2.5.0/bin" ]; then
+  path_append "$HOME/.gem/ruby/2.5.0/bin"
+fi
+
 # Check for rust
 if [ -d "$HOME/.cargo/bin" ]; then
     path_append "$HOME/.cargo/bin"
