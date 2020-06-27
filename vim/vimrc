@@ -15,7 +15,7 @@ Plug 'morhetz/gruvbox'
 Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
-Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install'  }
+Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install' }
 Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
