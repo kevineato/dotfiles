@@ -35,7 +35,7 @@
   "clangd.semanticHighlighting": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
-  "coc.source.ultisnips.priority": 101,
+  "coc.source.ultisnips.priority": 100,
   // "diagnostic.enable": false,
   "diagnostic.separateRelatedInformationAsDiagnostics": true,
   "explorer.icon.enableNerdfont": true,
@@ -55,7 +55,6 @@
     "~/.vim/CustomSnips"
   ],
   "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
-  "tabnine.priority": 100,
   "vimlsp.suggest.fromRuntimepath": true,
   "xml.java.home": "/usr"
 }
