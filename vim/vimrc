@@ -11,11 +11,12 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tjdevries/coc-zsh'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
+Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'morhetz/gruvbox'
 Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
-Plug 'lotabout/skim', { 'dir': '~/.skim', 'do': './install'  }
+Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
 Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
@@ -24,6 +25,7 @@ Plug 'SirVer/ultisnips'
 Plug 'ap/vim-buftabline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'justinmk/vim-dirvish'
+Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'farmergreg/vim-lastplace'
@@ -33,6 +35,7 @@ Plug 'reconquest/vim-pythonx'
 Plug 'tpope/vim-repeat'
 Plug 'kevineato/vim-sandwich'
 Plug 'mhinz/vim-startify'
+Plug 'kana/vim-textobj-user'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -82,6 +85,8 @@ else
 endif
 
 colorscheme gruvbox
+set colorcolumn=80
+highlight! link ColorColumn CursorLine
 set breakindent
 set breakindentopt=sbr
 set clipboard=unnamed,unnamedplus
@@ -107,7 +112,7 @@ set smartcase
 set tabstop=2
 set termguicolors
 set timeoutlen=300
-set updatetime=300
+set updatetime=50
 set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 set wildmode=longest:full,full
 set wrap
@@ -170,6 +175,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> <Space>qf <Plug>(coc-fix-current)
+nmap <silent> <Space>v <Plug>(coc-format-selected)
 nmap <Leader>rn <Plug>(coc-rename)
 nnoremap <expr> <C-f> coc#util#has_float() ? coc#util#float_scroll(1) : "\<C-f>"
 nnoremap <expr> <C-b> coc#util#has_float() ? coc#util#float_scroll(0) : "\<C-b>"
@@ -190,6 +196,7 @@ omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
 omap ic <Plug>(coc-classobj-i)
 omap if <Plug>(coc-funcobj-i)
+vmap <silent> <Space>v <Plug>(coc-format-selected)
 xmap ac <Plug>(coc-classobj-a)
 xmap af <Plug>(coc-funcobj-a)
 xmap ic <Plug>(coc-classobj-i)
@@ -210,6 +217,40 @@ augroup mycosco
   autocmd FileType c,cpp,h,hpp,java imap <silent> <Leader>; <C-o><Plug>(cosco-commaOrSemiColon)
   autocmd FileType c,cpp,h,hpp,java nmap <silent> <Leader>; <Plug>(cosco-commaOrSemiColon)
 augroup end
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" DoxygenToolkit.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:DoxygenToolkit_briefTag_pre = ""
+
+function! s:shortDoxy()
+  let original_startCommentTag = g:DoxygenToolkit_startCommentTag
+  let original_interCommentTag = g:DoxygenToolkit_interCommentTag
+  let original_endCommentTag = g:DoxygenToolkit_endCommentTag
+  let original_startCommentBlock = g:DoxygenToolkit_startCommentBlock
+  let original_interCommentBlock = g:DoxygenToolkit_interCommentBlock
+  let original_endCommentBlock = g:DoxygenToolkit_endCommentBlock
+
+  let g:DoxygenToolkit_startCommentTag = "/// "
+  let g:DoxygenToolkit_interCommentTag = "/// "
+  let g:DoxygenToolkit_endCommentTag = ""
+  let g:DoxygenToolkit_startCommentBlock = "// "
+  let g:DoxygenToolkit_interCommentBlock = "// "
+  let g:DoxygenToolkit_endCommentBlock = ""
+
+  execute "Dox"
+
+  let g:DoxygenToolkit_startCommentTag = original_startCommentTag
+  let g:DoxygenToolkit_interCommentTag = original_interCommentTag
+  let g:DoxygenToolkit_endCommentTag = original_endCommentTag
+  let g:DoxygenToolkit_startCommentBlock = original_startCommentBlock
+  let g:DoxygenToolkit_interCommentBlock = original_interCommentBlock
+  let g:DoxygenToolkit_endCommentBlock = original_endCommentBlock
+endfunction
+
+nnoremap <silent> <Leader>ad :<C-u>Dox<CR>
+nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " skim.vim
@@ -367,12 +408,27 @@ let g:NERDSpaceDelims = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! s:align_comment()
-  let tab_param = "call Tabularize('/.*@param \\zs\\w\\+\\|\\*\\zs /l1l2')"
-  let tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs /l0')"
-  let c_begin = search('\/\*\*', 'bcn')
-  let c_end = search('\*\/', 'cn')
-  let save_pos = getpos('.')
-  call cursor(c_begin, save_pos[2])
+  let save_pos = getpos('.')[1:2]
+  let tab_intro = "call Tabularize('/.*\\*/l1')"
+  let tab_param = "call Tabularize('/.*@param \\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
+  let tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs \\?/l0')"
+
+  if getline('.') =~# '\s*\/\*\*'
+    let c_begin = save_pos[0]
+  else
+    let c_begin = search('\/\*\*', 'bcn')
+  endif
+
+  if getline('.') =~# '\s*\*\+/'
+    let c_end = save_pos[0]
+  else
+    let c_end = search('\*\/', 'cn')
+  endif
+
+  if c_begin + 1 != c_end - 1
+    execute (c_begin + 1) . ',' . (c_end - 1) . tab_intro
+  endif
+  call cursor(c_begin, save_pos[1])
   if search('@param', '', c_end)
     let p_begin = line('.')
     while search('@param', '', c_end)
@@ -382,13 +438,23 @@ function! s:align_comment()
     else
       let p_end = c_end - 1
     endif
-    execute p_begin . ',' . p_end . tab_param
+    execute (p_begin - 1) . ',' . p_end . tab_param
   endif
   if search('@return', 'c', c_end)
     let r_begin = line('.')
-    execute r_begin . ',' . (c_end - 1) . tab_ret
+    if r_begin != c_end - 1
+      execute r_begin . ',' . (c_end - 1) . tab_ret
+    endif
   endif
-  call cursor(save_pos[1], save_pos[2])
+
+  call cursor(save_pos)
+  " let c_begin = search('\/\*\*', 'bc')
+  " normal! m<
+  " let c_end = search('\*\/', 'c')
+  " normal! m>gv
+  " if visualmode() ==# 'v'
+    " normal! V
+  " endif
 endfunction
 
 augroup mytabular
@@ -570,6 +636,13 @@ let g:dirvish_mode = 2
 highlight link DirvishSuffix LineNr
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-easy-align
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-easymotion
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -577,9 +650,9 @@ let g:EasyMotion_keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_upper = 1
 
-nmap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
-omap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
-xmap <Plug>(easymotion-prefix)s <Plug>(is-nohl)<Plug>(easymotion-sn)
+nmap <Leader>s <Plug>(is-nohl)<Plug>(easymotion-sn)
+omap <Leader>s <Plug>(is-nohl)<Plug>(easymotion-sn)
+xmap <Leader>s <Plug>(is-nohl)<Plug>(easymotion-sn)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-sandwhich
@@ -648,11 +721,18 @@ let g:startify_lists = [
       \ { 'type': 'commands',  'header': ['   Commands']       }
       \ ]
 
-nnoremap <Leader>s :Startify<CR>
-nnoremap <Leader>sc :SClose<CR>
-nnoremap <Leader>sd :SDelete<CR>
-nnoremap <Leader>sl :SLoad<CR>
-nnoremap <Leader>ss :SSave<CR>
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-textobj-user
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+call textobj#user#plugin('comment', {
+      \   'multiline': {
+      \     'pattern': ['^\s*/\*\*', '^\s*\*\+/'],
+      \     'region-type': 'V',
+      \     'select-a': 'am',
+      \     'select-i': 'im'
+      \   }
+      \ })
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General key maps
@@ -772,12 +852,14 @@ inoremap <silent> <expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 inoremap jj <Esc>
+nnoremap \ ,
 nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
 nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
 nnoremap <silent> <Leader>- :split<CR>
 nnoremap <silent> <Leader>/ :vsplit<CR>
 nnoremap <silent> <Leader>c :call <SID>safe_close()<CR>
 nnoremap <silent> <Leader>q :q<CR>
+nnoremap <silent> <Leader>qa :qa<CR>
 nnoremap <silent> <Leader>qlc :lclose<CR>zz
 nnoremap <silent> <Leader>qlr :lclose<CR>zz:call setloclist(0, [])<CR>
 nnoremap <silent> <Leader>qlo :lopen<CR><C-w>pzz
@@ -792,6 +874,8 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
+noremap p ]p
+noremap P ]P
 nnoremap <silent> <expr> 0 <SID>better_zero()
 onoremap <silent> <expr> 0
       \ col('.') == len(getline('.')) ?
@@ -810,15 +894,56 @@ vmap > >gv
 " General autocmds
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+function! s:autoSaveWinView()
+  if !exists("w:SavedBufView")
+    let w:SavedBufView = {}
+  endif
+  let w:SavedBufView[bufnr("%")] = winsaveview()
+endfunction
+
+function! s:autoRestoreWinView()
+  let buf = bufnr("%")
+  if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
+    let v = winsaveview()
+    let atStartOfFile = v.lnum == 1 && v.col == 0
+    if atStartOfFile && !&diff
+      call winrestview(w:SavedBufView[buf])
+    endif
+    unlet w:SavedBufView[buf]
+  endif
+endfunction
+
+let g:easymotion#is_active = 0
+function! s:easyMotionCoc() abort
+  if EasyMotion#is_active()
+    let g:easymotion#is_active = 1
+    silent! CocDisable
+  else
+    if g:easymotion#is_active == 1
+      let g:easymotion#is_active = 0
+      silent! CocEnable
+    endif
+  endif
+endfunction
+
+let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\|\s*\*\{2,}/\)\@='
+
 augroup myautocmd
   autocmd!
+  autocmd BufEnter * call s:autoRestoreWinView()
+  autocmd BufLeave * call s:autoSaveWinView()
   autocmd BufNewFile,BufRead .clang-format set filetype=yaml
+  autocmd BufNewFile,BufReadPre *.c,*.cpp,*.h,*.hpp,*.java let b:load_doxygen_syntax=1
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
+  autocmd FileType help,man nnoremap <buffer> d <C-d>
+  autocmd FileType help,man nnoremap <buffer> u <C-u>
+  autocmd FileType man nnoremap <buffer> <silent> q :call <SID>safe_close()<CR>:if winnr('$') > 1 <Bar> q <Bar> endif<CR>
+  autocmd FileType man wincmd _
   autocmd FileType json syntax match Comment +\/\/.\+$+
-  autocmd FileType man nnoremap <buffer> <silent> q :call <SID>safe_close()<CR>:q<CR>
   autocmd InsertEnter,WinLeave * set nocursorline
   autocmd InsertLeave,WinEnter * set cursorline
+  autocmd TextChanged,CursorMoved * call s:easyMotionCoc()
 augroup end
