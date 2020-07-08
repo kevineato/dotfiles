@@ -10,3 +10,4 @@
   cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [user]
 	email = kevineato@users.noreply.github.com
+	name = kevineato
