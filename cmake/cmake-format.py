@@ -7,7 +7,7 @@ with section("format"):
   separate_fn_name_with_space = False
 
   # Format command names consistently as 'lower' or 'upper' case
-  command_case = u'upper'
+  command_case = u'lower'
 
   # If the statement spelling length (including space and parenthesis) is larger
   # than the tab width by more than this amount, then force reject un-nested
@@ -44,7 +44,7 @@ with section("format"):
   line_ending = u'unix'
 
   # How wide to allow formatted cmake files
-  line_width = 79
+  line_width = 80
 
   # If a statement is wrapped to more than one line, than dangle the closing
   # parenthesis on its own line.
@@ -112,7 +112,7 @@ with section("markup"):
   first_comment_is_literal = False
 
   # enable comment markup parsing and reflow
-  enable_markup = True
+  enable_markup = False
 
   # Regular expression to match rulers in comments default=
   # ``r'^\s*[^\w\s]{3}.*[^\w\s]{3}$'``
