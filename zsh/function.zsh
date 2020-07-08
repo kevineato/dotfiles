@@ -1,23 +1,6 @@
-# accurev
-if [ -x "$(command -v accurev)" ]; then
-  function adiffd() {
-    modified="$(accurev stat -d | cut -d ' ' -f 1)"
-    echo $modified | sk -m --preview-window='right:50%' --preview='temp=$(AC_DIFF_CLI="/usr/bin/diff --color=always -u %1 %2" accurev diff -j {}); echo $temp' --bind 'alt-enter:execute(accurev diff -j {})'
-  }
-
-  function adiffm() {
-    modified="$(accurev stat -m | cut -d ' ' -f 1)"
-    echo $modified | sk -m --preview-window='right:50%' --preview='temp=$(AC_DIFF_CLI="/usr/bin/diff --color=always -u %1 %2" accurev diff {}); echo $temp' --bind 'alt-enter:execute(accurev diff {})'
-  }
-
-  function apop() {
-      mkdir -p "$1" && accurev pop -L "$1" -R -v "$2" .
-  }
-fi
-
 # skim
 function cdd() {
-  cd ${$(fd -H -I -t d '' ${1:-.} | sk):-.}
+  cd "${$(fd --type d --hidden --follow --no-ignore '' ${1:-.} | sk):-.}"
 }
 
 function fh() {
@@ -47,14 +30,14 @@ function fkill() {
   fi  
 }
 
-_skim_compgen_path() {
+function _skim_compgen_path() {
   echo "$1"
   command fd -H -L \
     -E '.git/*' -E '.hg/*' -E '.svn/*' -t f -t d -t l \
     -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
 }
 
-_skim_compgen_dir() {
+function _skim_compgen_dir() {
   command fd -H -L \
     -E '.git/*' -E '.hg/*' -E '.svn/*' -t d \
     -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'

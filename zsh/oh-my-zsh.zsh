@@ -77,12 +77,12 @@ plugins=(
   zsh-syntax-highlighting
 )
 
-if [ -x "$(command -v fasd)" ]; then plugins+=(fasd); fi
-if [ -x "$(command -v git)" ]; then plugins+=(git); fi
-if [ -x "$(command -v rg)" ]; then plugins+=(ripgrep); fi
-if [ -x "$(command -v tmux)" ]; then plugins+=(tmux); fi
+if [[ -x "$(command -v fasd)" ]]; then plugins+=(fasd); fi
+if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
+if [[ -x "$(command -v rg)" ]]; then plugins+=(ripgrep); fi
+if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
 
-[ -f "$ZSH/oh-my-zsh.sh" ] && source "$ZSH/oh-my-zsh.sh"
+[[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 # Reload for zsh-completions
 autoload -U compinit && compinit

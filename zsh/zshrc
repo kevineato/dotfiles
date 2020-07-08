@@ -1,19 +1,19 @@
 export ZSH_HOME="$HOME/.zsh"
 
-[ -f "$ZSH_HOME/export.zsh" ] && source "$ZSH_HOME/export.zsh"
+[[ -f "$ZSH_HOME/export.zsh" ]] && source "$ZSH_HOME/export.zsh"
 
-[ -f "$ZSH_HOME/oh-my-zsh.zsh" ] && source "$ZSH_HOME/oh-my-zsh.zsh"
+[[ -f "$ZSH_HOME/oh-my-zsh.zsh" ]] && source "$ZSH_HOME/oh-my-zsh.zsh"
 
-[ -f "$ZSH_HOME/alias.zsh" ] && source "$ZSH_HOME/alias.zsh"
-[ -f "$ZSH_HOME/function.zsh" ] && source "$ZSH_HOME/function.zsh"
+[[ -f "$ZSH_HOME/alias.zsh" ]] && source "$ZSH_HOME/alias.zsh"
+[[ -f "$ZSH_HOME/function.zsh" ]] && source "$ZSH_HOME/function.zsh"
 
-if [ -f "$ZSH_HOME/local.zsh" ]; then source "$ZSH_HOME/local.zsh"; fi
+if [[ -f "$ZSH_HOME/local.zsh" ]]; then source "$ZSH_HOME/local.zsh"; fi
 
-if [ -f "$HOME/.skim/shell/completion.zsh" ]; then source "$HOME/.skim/shell/completion.zsh"; fi
-if [ -f "$HOME/.skim/shell/key-bindings.zsh" ]; then source "$HOME/.skim/shell/key-bindings.zsh"; fi
+if [[ -f "$HOME/.skim/shell/completion.zsh" ]]; then source "$HOME/.skim/shell/completion.zsh"; fi
+if [[ -f "$HOME/.skim/shell/key-bindings.zsh" ]]; then source "$HOME/.skim/shell/key-bindings.zsh"; fi
 
-[ -f "$HOME/.dircolors" ] && eval "$(dircolors $HOME/.dircolors)"
-[ -x "$(command -v fasd)" ] && eval "$(fasd --init auto)"
+if [[ -f "$HOME/.dircolors" ]]; then eval "$(dircolors $HOME/.dircolors)"; fi
+if [[ -x "$(command -v fasd)" ]]; then eval "$(fasd --init auto)"; fi
 
 # Widgets
 autoload -Uz copy-earlier-word
@@ -34,8 +34,10 @@ bindkey '^P' history-substring-search-up
 bindkey '^N' history-substring-search-down
 bindkey "${terminfo[kcbt]}" reverse-menu-complete
 
-setopt HIST_IGNORE_SPACE
-setopt HIST_IGNORE_ALL_DUPS
+setopt extendedglob
+setopt histignorealldups
+setopt histignorespace
+setopt rematchpcre
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[ -f "$HOME/.p10k.zsh" ] && source "$HOME/.p10k.zsh"
+[[ -f "$HOME/.p10k.zsh" ]] && source "$HOME/.p10k.zsh"

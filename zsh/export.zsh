@@ -13,28 +13,31 @@ function path_prepend() {
   PATH="$1${PATH:+":$PATH"}"
 }
 
-# Check for accurev
-if [ -x "$HOME/AccuRevClient/bin/accurev" ]; then
+# check for accurev
+if [[ -x "$HOME/AccuRevClient/bin/accurev" ]]; then
   export AC_DIFF_CLI="nvim -d %1 %2"
   path_append "$HOME/AccuRevClient/bin"
 fi
 
-# Check for ruby
-if [ -d "$HOME/.gem/ruby/2.5.0/bin" ]; then
+# check for ruby
+if [[ -d "$HOME/.gem/ruby/2.5.0/bin" ]]; then
   path_append "$HOME/.gem/ruby/2.5.0/bin"
 fi
 
-# Check for rust
-if [ -d "$HOME/.cargo/bin" ]; then
+# check for rust
+if [[ -d "$HOME/.cargo/bin" ]]; then
     path_append "$HOME/.cargo/bin"
 fi
 
-# Check for skim
-if [ -d "$HOME/.skim/bin" ]; then
+# check for skim
+if [[ -d "$HOME/.skim/bin" ]]; then
     path_append "$HOME/.skim/bin"
 fi
 
-# Prepend ~/.local/bin
+# prepend
+if [[ -d '/snap/bin' ]]; then
+  path_prepend '/snap/bin'
+fi
 path_prepend "$HOME/.local/bin"
 
 # bat
@@ -48,11 +51,11 @@ export BAT_THEME='Gruvbox-N'
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always' --history=$HOME/.fzf_history --bind 'alt-a:toggle-all'"
 
-# General
+# general
 export EDITOR='nvim'
 export KEYTIMEOUT=1
 export LESS='iR'
-if [ -x "$(command -v bat)" ]; then
+if [[ -x "$(command -v bat)" ]]; then
   export PAGER='bat'
 else
   export PAGER='less'
@@ -67,7 +70,7 @@ export GTAGSLABEL=pygments
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # skim
-export SKIM_DEFAULT_COMMAND="fd --type f --hidden --follow"
+export SKIM_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export SKIM_DEFAULT_OPTIONS="--multi --preview-window=':hidden' --preview='bat --style=numbers --color=always {}' --cmd-history=$HOME/.skim_cmd_history --history=$HOME/.skim_history --bind='alt-a:toggle-all,alt-h:toggle-preview'"
 
 # zsh-autosuggestions
