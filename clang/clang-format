@@ -51,7 +51,7 @@ BreakConstructorInitializers: BeforeColon
 BreakAfterJavaFieldAnnotations: false
 BreakStringLiterals: false
 ColumnLimit:     80
-CommentPragmas:  '^ IWYU pragma:'
+CommentPragmas:  'Copyright'
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 4
@@ -72,6 +72,9 @@ IncludeCategories:
     Priority:        1
     SortPriority:    2
   - Regex:           '^<.*'
+    Priority:        1
+    SortPriority:    1
+  - Regex:           '".*catch.hpp"'
     Priority:        1
     SortPriority:    1
   - Regex:           '".*"'
