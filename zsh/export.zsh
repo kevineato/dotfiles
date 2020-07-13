@@ -13,12 +13,6 @@ function path_prepend() {
   PATH="$1${PATH:+":$PATH"}"
 }
 
-# check for accurev
-if [[ -x "$HOME/AccuRevClient/bin/accurev" ]]; then
-  export AC_DIFF_CLI="nvim -d %1 %2"
-  path_append "$HOME/AccuRevClient/bin"
-fi
-
 # check for ruby
 if [[ -d "$HOME/.gem/ruby/2.5.0/bin" ]]; then
   path_append "$HOME/.gem/ruby/2.5.0/bin"
