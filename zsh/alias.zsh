@@ -49,5 +49,10 @@ if [[ -x "$(command -v sk)" ]]; then
   alias nve='$EDITOR $(sk)'
 fi
 
+# watson
+if [[ -x "$(command -v watson)" ]]; then
+  alias watson='watson --color'
+fi
+
 # unalias
 if [[ "$(command -pv fd)" && -n "$(alias -m 'fd')" ]]; then unalias fd; fi
