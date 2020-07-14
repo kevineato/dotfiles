@@ -13,6 +13,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'morhetz/gruvbox'
+Plug 'sainnhe/gruvbox-material'
 Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
@@ -22,6 +23,7 @@ Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
 Plug 'kevineato/tinykeymap_vim'
 Plug 'SirVer/ultisnips'
+Plug 'mbbill/undotree'
 Plug 'ap/vim-buftabline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'justinmk/vim-dirvish'
@@ -32,6 +34,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'farmergreg/vim-lastplace'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'junegunn/vim-peekaboo'
 Plug 'reconquest/vim-pythonx'
 Plug 'tpope/vim-repeat'
 Plug 'kevineato/vim-sandwich'
@@ -85,9 +88,18 @@ else
   set nosmarttab
 endif
 
-colorscheme gruvbox
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" gruvbox-material
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:gruvbox_material_background = 'hard'
+let g:gruvbox_material_current_word = 'underline'
+let g:gruvbox_material_diagnostic_line_highlight = 1
+colorscheme gruvbox-material
+
 set colorcolumn=80
 highlight! link ColorColumn CursorLine
+
 set breakindent
 set breakindentopt=sbr
 set clipboard=unnamed,unnamedplus
@@ -151,7 +163,8 @@ let g:coc_global_extensions = [
       \   "coc-ultisnips",
       \   "coc-vimlsp",
       \   "coc-xml",
-      \   "coc-yaml"
+      \   "coc-yaml",
+      \   "coc-yank"
       \ ]
 let g:coc_snippet_next = "<C-j>"
 let g:coc_snippet_prev = "<C-k>"
@@ -192,6 +205,7 @@ nnoremap <silent> <Space>o :<C-u>CocList -A outline<CR>
 nnoremap <silent> <Space>r :<C-u>CocListResume<CR>
 nnoremap <silent> <Space>R :<C-u>CocRestart<CR>
 nnoremap <silent> <Space>s :<C-u>CocList -I -A symbols<CR>
+nnoremap <silent> <Space>y :<C-u>CocList -A --normal yank<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
@@ -316,6 +330,10 @@ function! RipgrepSkim(query, args, do_curr_dir)
     let wrapped = s:skim_wrap('rg', opts, 'sink*')
   endif
   call skim#run(wrapped)
+  if !empty(a:query)
+    sleep 100m
+    call feedkeys(a:query, 't')
+  endif
 endfunction
 
 function! s:skim_wrap(name, opts, ...)
@@ -364,7 +382,7 @@ command! DBuffers call skim#run(<SID>skim_wrap('dBuffers', {
 command! -bang -nargs=* RG call RipgrepSkim(<q-args>, '--column --line-number', <bang>0)
 command! -bang -nargs=* RGFiles call RipgrepSkim(<q-args>, '--files-with-matches', <bang>0)
 
-nmap <leader>y :History:<CR>
+nmap <Leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
@@ -372,8 +390,12 @@ nnoremap <silent> <Leader>e :SK<CR>
 nnoremap <silent> <Leader>ed :SK <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
+nnoremap <silent> <Leader>fw :RG <C-r>=expand('<cword>')<CR><CR>
+nnoremap <silent> <Leader>fdw :RG! <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>F :RGFiles<CR>
 nnoremap <silent> <Leader>Fd :RGFiles!<CR>
+nnoremap <silent> <Leader>Fw :RGFiles <C-r>=expand('<cword>')<CR><CR>
+nnoremap <silent> <Leader>Fdw :RGFiles! <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>l :BLines<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -391,7 +413,7 @@ let g:lightline = {
       \     'left': [['mode', 'paste'],
       \       ['readonly', 'filename', 'modified', 'cocstatus']]
       \   },
-      \   'colorscheme': 'gruvbox',
+      \   'colorscheme': 'gruvbox_material',
       \   'component': { 'cocstatus': '%{get(b:, "coc_current_function", "")}' }
       \ }
 
@@ -602,6 +624,16 @@ let g:UltiSnipsExpandTrigger = "<C-j>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 let g:UltiSnipsSnippetDirectories=[$HOME . '/.vim/CustomSnips']
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" undotree
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:undotree_HelpLine = 0
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_WindowLayout = 2
+
+nmap <silent> <F5> :UndotreeToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-buftabline
@@ -853,7 +885,7 @@ inoremap <silent> <expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 inoremap jj <Esc>
-nnoremap \ ,
+noremap \ ,
 nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
 nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
 nnoremap <silent> <Leader>- :split<CR>

@@ -85,4 +85,4 @@ if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
 
 # Reload for zsh-completions
-autoload -U compinit && compinit
+autoload -Uz compinit && compinit
