@@ -12,6 +12,7 @@
     ~/.config/nvim/coc-settings.json: vim/coc-settings.json
     ~/.config/nvim/init.vim: vim/vimrc
     ~/.config/vifm: config/vifm
+    ~/.config/watson/config: config/watson/config
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
     ~/.gitconfig: git/gitconfig
     ~/.p10k.zsh: zsh/p10k.zsh
