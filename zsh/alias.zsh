@@ -16,13 +16,13 @@ fi
 alias nvconfig="$EDITOR $HOME/.vim/vimrc"
 
 # ls replacements
-if [[ -x "$(command -v lsd)" ]]; then
+if [[ -x "$(command -v lsd)" ]] && lsd >/dev/null 2>&1; then
   alias l='lsd -AFl --group-dirs first --color always'
   alias la='lsd -AF --group-dirs first --color always'
   alias ll='lsd -Fl --group-dirs first --color always'
   alias ls='lsd -F --group-dirs first --color always'
   alias lt='lsd -AF --tree --group-dirs first --color always'
-elif [[ -x "$(command -v colorls)" ]]; then
+elif [[ -x "$(command -v colorls)" ]] && colorls >/dev/null 2>&1; then
   alias l='colorls -Al --sd --gs --dark'
   alias la='colorls -A --sd --gs --dark'
   alias ld='colorls -Ald --sd --gs --dark'
@@ -30,7 +30,7 @@ elif [[ -x "$(command -v colorls)" ]]; then
   alias ll='colorls -l --sd --gs --dark'
   alias ls='colorls --sd --gs --dark'
   alias lt='colorls -A --tree --sd --gs --dark'
-elif [[ -x "$(command -v exa)" ]]; then
+elif [[ -x "$(command -v exa)" ]] && exa >/dev/null 2>&1; then
   alias l='exa -al --color=always --group-directories-first'
   alias la='exa -a --color=always --group-directories-first'
   alias ll='exa -l --color=always --group-directories-first'
@@ -55,4 +55,4 @@ if [[ -x "$(command -v watson)" ]]; then
 fi
 
 # unalias
-if [[ "$(command -pv fd)" && -n "$(alias -m 'fd')" ]]; then unalias fd; fi
+if [[ -x "$(command -pv fd)" && -n "$(alias -m 'fd')" ]]; then unalias fd; fi
