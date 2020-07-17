@@ -55,6 +55,7 @@
     "~/.vim/CustomSnips"
   ],
   "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
+  "tabnine.priority": 98,
   "vimlsp.suggest.fromRuntimepath": true,
   "xml.java.home": "/usr"
 }
