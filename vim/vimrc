@@ -12,15 +12,16 @@ Plug 'tjdevries/coc-zsh'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
 Plug 'vim-scripts/DoxygenToolkit.vim'
-Plug 'morhetz/gruvbox'
+Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
-Plug 'haya14busa/is.vim'
+" Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
 Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
 Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
+" Plug 'tbabej/taskwiki'
 Plug 'kevineato/tinykeymap_vim'
 Plug 'SirVer/ultisnips'
 Plug 'mbbill/undotree'
@@ -40,6 +41,7 @@ Plug 'tpope/vim-repeat'
 Plug 'kevineato/vim-sandwich'
 Plug 'mhinz/vim-startify'
 Plug 'kana/vim-textobj-user'
+" Plug 'vimwiki/vimwiki'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -62,7 +64,6 @@ if !has('nvim')
   set fileencodings=utf-8
   set formatoptions+=j
   set history=10000
-  set hlsearch
   set incsearch
   set langnoremap
   set laststatus=2
@@ -89,13 +90,15 @@ else
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" gruvbox-material
+" gruvbox/gruvbox-material
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_current_word = 'underline'
 let g:gruvbox_material_diagnostic_line_highlight = 1
-colorscheme gruvbox-material
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_invert_selection = 0
+colorscheme gruvbox
 
 set colorcolumn=80
 highlight! link ColorColumn CursorLine
@@ -105,6 +108,7 @@ set breakindentopt=sbr
 set clipboard=unnamed,unnamedplus
 set cmdheight=2
 set completeopt=menuone,preview,noinsert,noselect
+set cursorline
 set expandtab
 set grepprg=rg\ --vimgrep
 set helpheight=9999
@@ -113,6 +117,7 @@ set ignorecase
 set mouse=a
 set mousemodel=popup
 set nobackup
+set nohlsearch
 set noshowcmd
 set noshowmode
 set nowritebackup
@@ -437,40 +442,66 @@ function! s:align_comment()
   let tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs \\?/l0')"
 
   if getline('.') =~# '\s*\/\*\*'
-    let c_begin = save_pos[0]
+    let c_begin = getpos('.')[1]
   else
     let c_begin = search('\/\*\*', 'bcn')
   endif
 
   if getline('.') =~# '\s*\*\+/'
-    let c_end = save_pos[0]
+    let c_end = getpos('.')[1]
   else
     let c_end = search('\*\/', 'cn')
   endif
 
-  if c_begin + 1 != c_end - 1
-    execute (c_begin + 1) . ',' . (c_end - 1) . tab_intro
-  endif
-  call cursor(c_begin, save_pos[1])
-  if search('@param', '', c_end)
-    let p_begin = line('.')
-    while search('@param', '', c_end)
-    endwhile
-    if search('@return', '', c_end)
-      let p_end = line('.') - 1
-    else
-      let p_end = c_end - 1
-    endif
-    execute (p_begin - 1) . ',' . p_end . tab_param
-  endif
-  if search('@return', 'c', c_end)
-    let r_begin = line('.')
-    if r_begin != c_end - 1
-      execute r_begin . ',' . (c_end - 1) . tab_ret
-    endif
-  endif
+  let prev_text = getline(c_begin, c_end)
+  let curr_text = ['']
 
-  call cursor(save_pos)
+  while curr_text != prev_text
+
+    let prev_text = getline(c_begin, c_end)
+
+    if c_begin + 1 != c_end - 1
+      execute (c_begin + 1) . ',' . (c_end - 1) . tab_intro
+    endif
+    call cursor(c_begin, save_pos[1])
+    if search('@param', '', c_end)
+      let p_begin = line('.')
+      while search('@param', '', c_end)
+      endwhile
+      if search('@return', '', c_end)
+        let p_end = line('.') - 1
+      else
+        let p_end = c_end - 1
+      endif
+      execute (p_begin - 1) . ',' . p_end . tab_param
+    endif
+    if search('@return', 'c', c_end)
+      let r_begin = line('.')
+      if r_begin != c_end - 1
+        execute r_begin . ',' . (c_end - 1) . tab_ret
+      endif
+    endif
+
+    silent execute "normal v\<Plug>(textobj-comment-multiline-a)"
+    silent execute "normal \<Plug>(coc-format-selected)"
+    sleep 100m
+
+    call cursor(save_pos)
+
+    if getline('.') =~# '\s*\/\*\*'
+      let c_begin = getpos('.')[1]
+    else
+      let c_begin = search('\/\*\*', 'bcn')
+    endif
+
+    if getline('.') =~# '\s*\*\+/'
+      let c_end = getpos('.')[1]
+    else
+      let c_end = search('\*\/', 'cn')
+    endif
+
+    let curr_text = getline(c_begin, c_end)
+  endwhile
   " let c_begin = search('\/\*\*', 'bc')
   " normal! m<
   " let c_end = search('\*\/', 'c')
@@ -683,9 +714,9 @@ let g:EasyMotion_keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;'
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_upper = 1
 
-nmap <Leader>s <Plug>(is-nohl)<Plug>(easymotion-sn)
-omap <Leader>s <Plug>(is-nohl)<Plug>(easymotion-sn)
-xmap <Leader>s <Plug>(is-nohl)<Plug>(easymotion-sn)
+nmap <Leader>s <Plug>(easymotion-sn)
+omap <Leader>s <Plug>(easymotion-sn)
+xmap <Leader>s <Plug>(easymotion-sn)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-sandwhich
@@ -903,10 +934,12 @@ nnoremap <silent> <Leader>qs :call <SID>sortUniqQFList()<CR>
 nnoremap <silent> <Leader>qo :copen<CR><C-w>pzz
 nnoremap <silent> <Leader>Q :call <SID>safe_close()<CR>:q<CR>
 nnoremap <silent> <Leader>w :w<CR>
+nnoremap <Space>gd gd
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
+noremap ; :
 noremap p ]p
 noremap P ]P
 nnoremap <silent> <expr> 0 <SID>better_zero()
