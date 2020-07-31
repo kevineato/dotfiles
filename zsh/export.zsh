@@ -1,3 +1,18 @@
+# LD_LIBRARY_PATH functions
+function lib_remove() {
+  LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
+}
+
+function lib_append() {
+  lib_remove "$1"
+  LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+"$LD_LIBRARY_PATH:"}$1"
+}
+
+function lib_prepend() {
+  lib_remove "$1"
+  LD_LIBRARY_PATH="$1${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}"
+}
+
 # PATH functions
 function path_remove() {
   PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
