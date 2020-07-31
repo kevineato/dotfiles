@@ -21,7 +21,7 @@ Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
 Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
-" Plug 'wellle/targets.vim'
+Plug 'wellle/targets.vim'
 " Plug 'tbabej/taskwiki'
 Plug 'kevineato/tinykeymap_vim'
 Plug 'SirVer/ultisnips'
@@ -36,6 +36,7 @@ Plug 'farmergreg/vim-lastplace'
 Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-peekaboo'
+Plug 'kevineato/vim-protodef'
 Plug 'reconquest/vim-pythonx'
 Plug 'tpope/vim-repeat'
 Plug 'kevineato/vim-sandwich'
@@ -181,7 +182,15 @@ let g:markdown_fenced_languages = [
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
+    let word = expand('<cword>')
+    if match(getline('.'), word . '(') != -1
+      execute 'h ' . word . '()'
+    elseif match(getline('.'), 'set ' . word) != -1 ||
+          \ match(getline('.'), "'" . word . "'") != -1
+      execute 'h ' . "'" . word . "'"
+    else
+      execute 'h ' . word
+    endif
   else
     call CocActionAsync('doHover')
   endif
@@ -393,7 +402,7 @@ nmap <Leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
-nnoremap <silent> <Leader>e :SK<CR>
+nnoremap <silent> <Leader>e :SK -q !.clangd\ !.dep\ !.git\ <CR>
 nnoremap <silent> <Leader>ed :SK <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
@@ -596,10 +605,10 @@ if !empty(glob((has('nvim') ? stdpath('data') : '~/.vim') . '/plugged/tinykeymap
         \   'maps': {
         \     '[': '<count1>bprevious',
         \     ']': '<count1>bnext',
-        \     'd': "normal! \<C-d>",
-        \     'j': 'normal! j',
-        \     'k': 'normal! k',
-        \     'u': "normal! \<C-u>",
+        \     'd': "normal! \<C-d>zz",
+        \     'j': 'normal! jzz',
+        \     'k': 'normal! kzz',
+        \     'u': "normal! \<C-u>zz",
         \     'D': 'if buflisted(0) | b # | else | bp | endif | bd #'
         \   }
         \ })
@@ -781,6 +790,25 @@ nmap s <Nop>
 xmap s <Nop>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-signify
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:signify_vcs_cmds = {
+  \ 'git':      'git diff --no-color --no-ext-diff -U0 -- %f',
+  \ 'yadm':     'yadm diff --no-color --no-ext-diff -U0 -- %f',
+  \ 'hg':       'hg diff --color=never --config aliases.diff= --nodates -U0 -- %f',
+  \ 'svn':      'svn diff --diff-cmd %d -x -U0 -- %f',
+  \ 'bzr':      'bzr diff --using %d --diff-options=-U0 -- %f',
+  \ 'darcs':    'darcs diff --no-pause-for-gui --no-unified --diff-opts=-U0 -- %f',
+  \ 'fossil':   'fossil diff --unified -c 0 -- %f',
+  \ 'cvs':      'cvs diff -U0 -- %f',
+  \ 'rcs':      'rcsdiff -U0 %f 2>%n',
+  \ 'accurev':  'accurev diff %f -- -U0',
+  \ 'perforce': 'p4 info '. sy#util#shell_redirect('%n') . (has('win32') ? ' &&' : ' && env P4DIFF= P4COLORS=') .' p4 diff -du0 %f',
+  \ 'tfs':      'tf diff -version:W -noprompt -format:Unified %f'
+  \ }
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-startify
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -913,6 +941,17 @@ function! s:ulti_expandable()
         \ )
 endfunction
 
+function! s:create_impl(header_name, impl_name)
+  edit `=a:impl_name`
+  put! ='#include \"' . a:header_name . '\"'
+  put =''
+  execute "normal Gi\<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})\<CR>"
+  sleep 100m
+  execute 'Format'
+  normal! gg
+endfunction
+
+command! CreateImpl call s:create_impl(expand('%:t'), expand('%:r') . '.cpp')
 command! NvConfig edit $HOME/.dotfiles/vim/vimrc
 
 cnoremap <C-a> <Home>
@@ -952,7 +991,7 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
-noremap ; :
+" noremap ; :
 noremap p ]p
 noremap P ]P
 nnoremap <silent> <expr> 0 <SID>better_zero()
@@ -1010,12 +1049,15 @@ let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\|\s*\*\{2,}/\)\@='
 augroup myautocmd
   autocmd!
   autocmd BufEnter * call s:autoRestoreWinView()
+  autocmd BufEnter *.h,*.hpp nnoremap <buffer> <silent> <Leader>PP :CreateImpl<CR>
+  autocmd BufEnter *.c,*.cpp nnoremap <buffer> <Leader>PP i<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})<CR><Esc>='[
   autocmd BufLeave * call s:autoSaveWinView()
   autocmd BufNewFile,BufRead .clang-format set filetype=yaml
   autocmd BufNewFile,BufReadPre *.c,*.cpp,*.h,*.hpp,*.java let b:load_doxygen_syntax=1
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
+  autocmd FileType gitcommit setlocal formatoptions-=t
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
   autocmd FileType help,man nnoremap <buffer> d <C-d>
   autocmd FileType help,man nnoremap <buffer> u <C-u>
