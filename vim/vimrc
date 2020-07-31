@@ -137,6 +137,11 @@ set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
 set wildmode=longest:full,full
 set wrap
 
+if has("persistent_undo")
+    set undodir=$HOME/.vim/.undodir
+    set undofile
+endif
+
 let mapleader = ','
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
