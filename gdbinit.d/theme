@@ -1,0 +1,3 @@
+dashboard -style style_selected_1 '34'
+
+dashboard -layout assembly registers breakpoints threads stack source

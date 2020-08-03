@@ -14,6 +14,7 @@
     ~/.config/vifm: config/vifm
     ~/.config/watson/config: config/watson/config
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
+    ~/.gdbinit.d:
     ~/.gitconfig: git/gitconfig
     ~/.p10k.zsh: zsh/p10k.zsh
     ~/.sage:
