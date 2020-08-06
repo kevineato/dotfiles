@@ -279,6 +279,7 @@ tmux_conf_copy_to_os_clipboard=false
 set -g history-limit 10000
 
 # turn off auto window renaming
+setw -g allow-rename off
 setw -g automatic-rename off
 
 # force Vi mode
