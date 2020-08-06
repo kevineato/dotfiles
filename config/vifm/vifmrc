@@ -1,12 +1,4 @@
-" | | | || |    http://www.youtube.com/c/DistroTube
-" | |_| || |    http://www.gitlab.com/dwt1/ 
-" |____/ |_|  	
-
-" vim: filetype=vifm :
-" My config file for the vifm terminal file manager.
-" ------------------------------------------------------------------------------
-
-" This is the actual command used to start vi.  The default is vim.
+" This is the actual command used to start vi. The default is vim.
 " If you would like to use emacs or emacsclient, you can use them.
 " Since emacs is a GUI app and not a terminal app like vim, append the command
 " with an ampersand (&).
@@ -14,7 +6,7 @@
 set vicmd=nvim
 
 " This makes vifm perform file operations on its own instead of relying on
-" standard utilities like `cp`.  While using `cp` and alike is a more universal
+" standard utilities like `cp`. While using `cp` and alike is a more universal
 " solution, it's also much slower when processing large amounts of files and
 " doesn't support progress measuring.
 
@@ -22,7 +14,7 @@ set syscalls
 
 " Trash Directory
 " The default is to move files that are deleted with dd or :d to
-" the trash directory.  If you change this you will not be able to move
+" the trash directory. If you change this you will not be able to move
 " files by deleting them and then using p to put the file in the new location.
 " I recommend not changing this until you are familiar with vifm.
 " This probably shouldn't be an option.
@@ -53,7 +45,7 @@ set undolevels=100
 " If you installed the vim.txt help file set vimhelp.
 " If would rather use a plain text help file set novimhelp.
 
-set novimhelp
+set vimhelp
 
 " If you would like to run an executable file when you
 " press return on the file name set this.
@@ -68,7 +60,7 @@ colorscheme Default
 " TIME_STAMP_FORMAT=%m/%d-%H:%M
 " See man date or man strftime for details.
 
-set timefmt=%m/%d\ %H:%M
+set timefmt=%Y-%m-%d\ %H:%M
 
 " Show list of matches on tab completion in command-line mode
 
@@ -79,7 +71,7 @@ set wildmenu
 set wildstyle=popup
 
 " Display suggestions in normal, visual and view modes for keys, marks and
-" registers (at most 5 files).  In other view, when available.
+" registers (at most 5 files). In other view, when available.
 
 set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
 
@@ -111,6 +103,7 @@ endif
 set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
 " Set line numbers to show
+set relativenumber
 
 " ------------------------------------------------------------------------------
 
@@ -149,7 +142,7 @@ command! reload :write | restart
 " :fileviewer pattern1,pattern2 consoleviewer
 " The other programs for the file type can be accessed with the :file command
 " The command macros %f, %F, %d, %F may be used in the commands.
-" The %a macro is ignored.  To use a % you must put %%.
+" The %a macro is ignored. To use a % you must put %%.
 
 " For automated FUSE mounts, you must register an extension with :file[x]type
 " in one of following formats:
@@ -382,7 +375,7 @@ filextype */
 
 " Open all other files with default system programs (you can also remove all
 " :file[x]type commands above to ensure they don't interfere with system-wide
-" settings).  By default all unknown files are opened with 'vi[x]cmd'
+" settings). By default all unknown files are opened with 'vi[x]cmd'
 " uncommenting one of lines below will result in ignoring 'vi[x]cmd' option
 " for unknown file types.
 " For *nix:
@@ -470,8 +463,6 @@ nnoremap ,t :!xterm &<cr>
 
 " Open editor to edit vifmrc and apply settings after returning to vifm
 nnoremap ,c :write | edit $MYVIFMRC | restart<cr>
-" Open gvim to edit vifmrc
-nnoremap ,C :!gvim --remote-tab-silent $MYVIFMRC &<cr>
 
 " Toggle wrap setting on ,w key
 nnoremap ,w :set wrap!<cr>
