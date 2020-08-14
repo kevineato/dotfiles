@@ -30,6 +30,11 @@ function fkill() {
   fi  
 }
 
+function j() {
+  local destination="$(fasd -s -d | sk --tac -n 2 ${1:+-q $1} | awk '{print $2}')"
+  cd "${destination:+$(pwd)}"
+}
+
 function _skim_compgen_path() {
   echo "$1"
   command fd -H -L \

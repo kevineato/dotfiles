@@ -43,9 +43,6 @@ if [[ -x "$(command -v accurev)" ]]; then alias r='ranger'; fi
 
 # skim
 if [[ -x "$(command -v sk)" ]]; then
-  if [[ -x "$(command -v fasd)" ]]; then
-    alias j='cd $(fasd -s -d | sk --tac -n 2 | awk '\''{print $2}'\'')'
-  fi
   alias nve='$EDITOR $(sk)'
 fi
 
