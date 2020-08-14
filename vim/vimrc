@@ -97,10 +97,9 @@ endif
 
 let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_current_word = 'underline'
+let g:gruvbox_material_visual = 'grey background'
 let g:gruvbox_material_diagnostic_line_highlight = 1
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_invert_selection = 0
-colorscheme gruvbox
+colorscheme gruvbox-material
 
 set colorcolumn=80
 highlight! link ColorColumn CursorLine
@@ -407,7 +406,7 @@ nmap <Leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
-nnoremap <silent> <Leader>e :SK -q !.clangd\ !.dep\ !.git\ <CR>
+nnoremap <silent> <Leader>e :SK -q !.clangd\ !.dep\ !.git\ !build\ <CR>
 nnoremap <silent> <Leader>ed :SK <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
@@ -843,7 +842,7 @@ call textobj#user#plugin('comment', {
       \ })
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" General key maps
+" Functions and commands
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! s:better_g_under()
@@ -875,12 +874,30 @@ function! s:cmake_format()
   call cursor(save_pos)
 endfunction
 
+function! s:edit_impl(header_name, impl_name)
+  edit `=a:impl_name`
+  if !filereadable(a:impl_name)
+    put! ='#include \"' . a:header_name . '\"'
+    put =''
+  endif
+  execute "normal Gi\<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})\<CR>"
+  sleep 100m
+  execute 'Format'
+  normal! gg
+endfunction
+
 function! s:last_buf() abort
   if buflisted(0)
     b #
   else
     bp
   endif
+endfunction
+
+function! s:make_backup(file_name) abort
+  let full_name = fnamemodify(a:file_name, ':p')
+  let backup_name = full_name . '.bak'
+  silent! execute '!cp ' . full_name . ' ' . backup_name
 endfunction
 
 function! s:safe_close() abort
@@ -949,18 +966,12 @@ function! s:ulti_expandable()
         \ )
 endfunction
 
-function! s:create_impl(header_name, impl_name)
-  edit `=a:impl_name`
-  put! ='#include \"' . a:header_name . '\"'
-  put =''
-  execute "normal Gi\<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})\<CR>"
-  sleep 100m
-  execute 'Format'
-  normal! gg
-endfunction
-
-command! CreateImpl call s:create_impl(expand('%:t'), expand('%:r') . '.cpp')
+command! EditImpl call s:edit_impl(expand('%:t'), expand('%:r') . '.cpp')
 command! NvConfig edit $HOME/.dotfiles/vim/vimrc
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General key maps
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 cnoremap <C-a> <Home>
 cnoremap <C-b> <Left>
@@ -1060,7 +1071,7 @@ let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\|\s*\*\{2,}/\)\@='
 augroup myautocmd
   autocmd!
   autocmd BufEnter * call s:autoRestoreWinView()
-  autocmd BufEnter *.h,*.hpp nnoremap <buffer> <silent> <Leader>PP :CreateImpl<CR>
+  autocmd BufEnter *.h,*.hpp nnoremap <buffer> <silent> <Leader>PP :EditImpl<CR>
   autocmd BufEnter *.c,*.cpp nnoremap <buffer> <silent> <Leader>PP o<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})<CR><Esc>v`[:<C-u>call CocActionAsync('formatSelected', visualmode())<CR>
   autocmd BufLeave * call s:autoSaveWinView()
   autocmd BufNewFile,BufRead .clang-format set filetype=yaml
@@ -1068,6 +1079,7 @@ augroup myautocmd
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
+  autocmd FileType dirvish nnoremap <buffer> <silent> <Leader>bu :call <SID>make_backup('<C-r><C-f>')<CR>
   autocmd FileType gitcommit setlocal formatoptions-=t
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
   autocmd FileType help,man nnoremap <buffer> d <C-d>
