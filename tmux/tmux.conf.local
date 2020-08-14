@@ -317,6 +317,7 @@ bind -r ] next-window
 bind n copy-mode
 bind -T copy-mode-vi d send-keys -X halfpage-down
 bind -T copy-mode-vi u send-keys -X halfpage-up
+bind -T copy-mode-vi q send-keys -X cancel \; set key-table root
 
 # split windows
 bind - split-window -v
