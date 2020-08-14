@@ -30,6 +30,7 @@ function fkill() {
   fi  
 }
 
+if [[ -n "$(alias -m 'j')" ]]; then unalias j; fi
 function j() {
   local destination="$(fasd -s -d | sk --tac -n 2 ${1:+-q $1} | awk '{print $2}')"
   cd "${destination-$(pwd)}"
