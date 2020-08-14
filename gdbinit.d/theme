@@ -1,3 +1,6 @@
 dashboard -style style_selected_1 '34'
 
-dashboard -layout assembly registers breakpoints threads stack source
+dashboard -layout assembly registers breakpoints variables threads stack source
+
+dashboard variables -style align True
+dashboard variables -style compact False
