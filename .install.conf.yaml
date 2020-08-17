@@ -34,6 +34,11 @@
     stdout: true
     stderr: true
   -
+    command: cd tools/LS_COLORS && ./install.sh
+    description: Installing LS_COLORS script
+    stdout: true
+    stderr: true
+  -
     command: [tools/install/install-vim-plug.sh, Installing vim-plug]
     stdin: true
     stdout: true

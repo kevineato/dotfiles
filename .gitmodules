@@ -42,3 +42,7 @@
 	path = zsh/oh-my-zsh-custom/plugins/zsh-autopair
 	url = https://github.com/hlissner/zsh-autopair
 	ignore = untracked
+[submodule "tools/LS_COLORS"]
+	path = tools/LS_COLORS
+	url = https://github.com/trapd00r/LS_COLORS
+  ignore = untracked
