@@ -420,10 +420,10 @@ nnoremap <silent> <Leader>Fdw :RGFiles! <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>l :BLines<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" lightline.vim
+" is.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:is#do_default_mappings = 1
+" let g:is#do_default_mappings = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " lightline.vim
