@@ -37,18 +37,19 @@ def doxy_parse_func(params, rt=None):
 
 def acc_spec(snip, spec, add_types=False):
     snip.rv = spec + ':'
+    spec_stars = '*' * len(spec)
     if add_types:
-        snip += '/**'
-        snip += ' * ' + spec.title() + ' classes/structs/types'
-        snip += ' */'
+        snip += '/**' + spec_stars + '************************'
+        snip += ' * ' + spec.title() + ' classes/structs/types *'
+        snip += ' **' + spec_stars + '***********************/'
         snip.rv += '\n' + snip.mkline('', '')
-    snip += '/**'
-    snip += ' * ' + spec.title() + ' member functions'
-    snip += ' */'
+    snip += '/**' + spec_stars + '*******************'
+    snip += ' * ' + spec.title() + ' member functions *'
+    snip += ' **' + spec_stars + '******************/'
     snip.rv += '\n' + snip.mkline('', '')
-    snip += '/**'
-    snip += ' * ' + spec.title() + ' member variables'
-    snip += ' */'
+    snip += '/**' + spec_stars + '*******************'
+    snip += ' * ' + spec.title() + ' member variables *'
+    snip += ' **' + spec_stars + '******************/'
 endglobal
 
 post_jump "if snip.tabstop == 4: doxy_parse_func(snip.tabstops[2].current_text)"
