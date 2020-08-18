@@ -35,21 +35,38 @@ def doxy_parse_func(params, rt=None):
     if anon_snippet_body != '':
         snip.expand_anon(anon_snippet_body)
 
-def acc_spec(snip, spec, add_types=False):
-    snip.rv = spec + ':'
+def acc_spec_comm(snip, spec, comm_type):
     spec_stars = '*' * len(spec)
-    if add_types:
-        snip += '/**' + spec_stars + '************************'
-        snip += ' * ' + spec.title() + ' classes/structs/types *'
+    types = comm_type[0]
+    if types[0] == 'c':
+        snip.rv = '/**' + spec_stars + '************************'
+        snip += ' * ' + spec + ' classes/structs/types *'
         snip += ' **' + spec_stars + '***********************/'
+    elif types[0] == 'f':
+        snip.rv = '/**' + spec_stars + '*******************'
+        snip += ' * ' + spec + ' member functions *'
+        snip += ' **' + spec_stars + '******************/'
+    elif types[0] == 'v':
+        snip.rv = '/**' + spec_stars + '*******************'
+        snip += ' * ' + spec + ' member variables *'
+        snip += ' **' + spec_stars + '******************/'
+    if len(types) != 1:
         snip.rv += '\n' + snip.mkline('', '')
-    snip += '/**' + spec_stars + '*******************'
-    snip += ' * ' + spec.title() + ' member functions *'
-    snip += ' **' + spec_stars + '******************/'
-    snip.rv += '\n' + snip.mkline('', '')
-    snip += '/**' + spec_stars + '*******************'
-    snip += ' * ' + spec.title() + ' member variables *'
-    snip += ' **' + spec_stars + '******************/'
+    for i in range(1, len(types)):
+        if types[i] == 'c':
+            snip += '/**' + spec_stars + '************************'
+            snip += ' * ' + spec + ' classes/structs/types *'
+            snip += ' **' + spec_stars + '***********************/'
+        elif types[i] == 'f':
+            snip += '/**' + spec_stars + '*******************'
+            snip += ' * ' + spec + ' member functions *'
+            snip += ' **' + spec_stars + '******************/'
+        elif types[i] == 'v':
+            snip += '/**' + spec_stars + '*******************'
+            snip += ' * ' + spec + ' member variables *'
+            snip += ' **' + spec_stars + '******************/'
+        if i != len(types) - 1:
+            snip.rv += '\n' + snip.mkline('', '')
 endglobal
 
 post_jump "if snip.tabstop == 4: doxy_parse_func(snip.tabstops[2].current_text)"
@@ -72,6 +89,12 @@ snippet cls "class" b
  */
 class ${1:`!p snip.rv = snip.basename`}
 {
+public:
+
+protected:
+
+private:
+
 };$0
 endsnippet
 
@@ -186,19 +209,16 @@ ${VISUAL}$0
 }  // namespace $1
 endsnippet
 
-post_expand "snip.cursor.preserve(); snip.buffer[snip.snippet_start[0]] = snip.buffer[snip.snippet_start[0]].strip()"
-snippet "priv(t)?" "private access" br
-`!p acc_spec(snip, 'private', True if match.group(1) else False)`
+snippet "priv([cvf]+)?" "private access" br
+`!p acc_spec_comm(snip, 'Private', match.groups('cvf'))`
 endsnippet
 
-post_expand "snip.cursor.preserve(); snip.buffer[snip.snippet_start[0]] = snip.buffer[snip.snippet_start[0]].strip()"
-snippet "prot(t)?" "protected access" br
-`!p acc_spec(snip, 'protected', True if match.group(1) else False)`
+snippet "prot([cvf]+)?" "protected access" br
+`!p acc_spec_comm(snip, 'Protected', match.groups('cvf'))`
 endsnippet
 
-post_expand "snip.cursor.preserve(); snip.buffer[snip.snippet_start[0]] = snip.buffer[snip.snippet_start[0]].strip()"
-snippet "pub(t)?" "public access" br
-`!p acc_spec(snip, 'public', True if match.group(1) else False)`
+snippet "pub([cvf]+)?" "public access" br
+`!p acc_spec_comm(snip, 'Public', match.groups('cvf'))`
 endsnippet
 
 snippet stru "struct" b
