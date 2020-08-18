@@ -306,6 +306,8 @@ bind C-Space set key-table root
 bind C-j select-pane -m \; last-window \; join-pane -h \; select-pane -L
 bind C-k break-pane \; last-window
 
+bind w set key-table root \; choose-tree -w
+
 # mark current pane
 bind -r m select-pane -m
 
