@@ -36,35 +36,45 @@ def doxy_parse_func(params, rt=None):
         snip.expand_anon(anon_snippet_body)
 
 def acc_spec_comm(snip, spec, comm_type):
+    curr_class = vim.eval("get(b:, 'coc_current_function', '')")
+    curr_class_stars = '*' * (len(curr_class) + 1)
     spec_stars = '*' * len(spec)
     types = comm_type[0]
     if types[0] == 'c':
-        snip.rv = '/**' + spec_stars + '************************'
-        snip += ' * ' + spec + ' classes/structs/types *'
-        snip += ' **' + spec_stars + '***********************/'
+        snip.rv = '/**' + spec_stars + curr_class_stars + '************************'
+        snip += ' * ' + curr_class + ' ' + spec + ' classes/structs/types *'
+        snip += ' **' + spec_stars + curr_class_stars + '***********************/'
     elif types[0] == 'f':
-        snip.rv = '/**' + spec_stars + '*******************'
-        snip += ' * ' + spec + ' member functions *'
-        snip += ' **' + spec_stars + '******************/'
+        snip.rv = '/**' + spec_stars + curr_class_stars + '*******************'
+        snip += ' * ' + curr_class + ' ' + spec + ' member functions *'
+        snip += ' **' + spec_stars + curr_class_stars + '******************/'
     elif types[0] == 'v':
-        snip.rv = '/**' + spec_stars + '*******************'
-        snip += ' * ' + spec + ' member variables *'
-        snip += ' **' + spec_stars + '******************/'
+        snip.rv = '/**' + spec_stars + curr_class_stars + '*******************'
+        snip += ' * ' + curr_class + ' ' + spec + ' member variables *'
+        snip += ' **' + spec_stars + curr_class_stars + '******************/'
+    elif types[0] == 'p':
+        snip.rv = '/**' + spec_stars + curr_class_stars + '********************'
+        snip += ' * ' + curr_class + ' ' + spec + ' virtual functions *'
+        snip += ' **' + spec_stars + curr_class_stars + '*******************/'
     if len(types) != 1:
         snip.rv += '\n' + snip.mkline('', '')
     for i in range(1, len(types)):
         if types[i] == 'c':
-            snip += '/**' + spec_stars + '************************'
-            snip += ' * ' + spec + ' classes/structs/types *'
-            snip += ' **' + spec_stars + '***********************/'
+            snip += '/**' + spec_stars + curr_class_stars + '************************'
+            snip += ' * ' + curr_class + ' ' + spec + ' classes/structs/types *'
+            snip += ' **' + spec_stars + curr_class_stars + '***********************/'
         elif types[i] == 'f':
-            snip += '/**' + spec_stars + '*******************'
-            snip += ' * ' + spec + ' member functions *'
-            snip += ' **' + spec_stars + '******************/'
+            snip += '/**' + spec_stars + curr_class_stars + '*******************'
+            snip += ' * ' + curr_class + ' ' + spec + ' member functions *'
+            snip += ' **' + spec_stars + curr_class_stars + '******************/'
         elif types[i] == 'v':
-            snip += '/**' + spec_stars + '*******************'
-            snip += ' * ' + spec + ' member variables *'
-            snip += ' **' + spec_stars + '******************/'
+            snip += '/**' + spec_stars + curr_class_stars + '*******************'
+            snip += ' * ' + curr_class + ' ' + spec + ' member variables *'
+            snip += ' **' + spec_stars + curr_class_stars + '******************/'
+        elif types[0] == 'p':
+            snip += '/**' + spec_stars + curr_class_stars + '********************'
+            snip += ' * ' + curr_class + ' ' + spec + ' virtual functions *'
+            snip += ' **' + spec_stars + curr_class_stars + '*******************/'
         if i != len(types) - 1:
             snip.rv += '\n' + snip.mkline('', '')
 endglobal
@@ -144,12 +154,14 @@ snippet fdec "function declaration" b
 /**
  * ${4:description}$5
  */
-${1:return} ${2:name}( ${3:params} )$0
+${1:return} ${2:name}( ${3:params} )$0;
 endsnippet
 
-post_jump "if snip.tabstop == 0 and snip.tabstops[3].current_text == '': snip.cursor.preserve(); snip.buffer[snip.line] = re.sub('\(  \)', '()', snip.buffer[snip.line])"
+post_jump "if snip.tabstop == 0 and snip.tabstops[3].current_text == '': snip.cursor.preserve(); snip.buffer[snip.line - 1] = re.sub('\(  \)', '()', snip.buffer[snip.line - 1])"
 snippet fdef "function definition" b
-${1:return} ${2:name}( ${3:params} )$0
+${1:return} ${2:name}( ${3:params} )$4
+{$0
+}
 endsnippet
 
 snippet fh "file header" b
@@ -196,6 +208,117 @@ if( ${1:condition} )
 }
 endsnippet
 
+snippet itdef "iterator class" b
+class iterator
+{
+public:
+    /*****************************************
+     * iterator public classes/structs/types *
+     ****************************************/
+
+    using iterator_category = std::random_access_iterator_tag;
+    using value_type = DataType;
+    using difference_type = std::ptrdiff_t;
+    using pointer_const = const DataType*;
+    using pointer = pointer_const;
+    using const_reference = const DataType&;
+    using reference = const_reference;
+
+    /************************************
+     * iterator public member functions *
+     ***********************************/
+
+    reference operator*() const
+    {
+        return *m_pValue;
+    }
+
+    iterator& operator++()
+    {
+    }
+
+    iterator& operator--()
+    {
+    }
+
+    iterator operator++( int )
+    {
+    }
+
+    iterator operator--( int )
+    {
+    }
+
+    iterator& operator=( const iterator& other )
+    {
+    }
+
+    bool operator==( const iterator& other ) const
+    {
+    }
+
+    bool operator!=( const iterator& other ) const
+    {
+    }
+
+    bool operator<( const iterator& other ) const
+    {
+    }
+
+    bool operator>( const iterator& other ) const
+    {
+    }
+
+    bool operator<=( const iterator& other ) const
+    {
+    }
+
+    bool operator>=( const iterator& other ) const
+    {
+    }
+
+    iterator& operator+=( const difference_type& n )
+    {
+    }
+
+    iterator operator+( const difference_type& n ) const
+    {
+    }
+
+    iterator& operator-=( const difference_type& n )
+    {
+    }
+
+    iterator operator-( const difference_type& n ) const
+    {
+    }
+
+    difference_type operator-( const iterator& other ) const
+    {
+    }
+
+    reference operator[]( const difference_type& n ) const
+    {
+    }
+
+protected:
+    /***************************************
+     * iterator protected member functions *
+     **************************************/
+
+    iterator( pointer pValue = nullptr ) : m_pValue( pValue )
+    {
+    }
+
+private:
+    /*************************************
+     * iterator private member variables *
+     ************************************/
+
+    pointer m_pValue;
+};
+endsnippet
+
 snippet logh "log header"
 /**
  * $Log: $
@@ -209,16 +332,16 @@ ${VISUAL}$0
 }  // namespace $1
 endsnippet
 
-snippet "priv([cvf]+)?" "private access" br
-`!p acc_spec_comm(snip, 'Private', match.groups('cvf'))`
+snippet "priv([cvfp]+)?" "private access" br
+`!p acc_spec_comm(snip, 'private', match.groups('cvfp'))`
 endsnippet
 
-snippet "prot([cvf]+)?" "protected access" br
-`!p acc_spec_comm(snip, 'Protected', match.groups('cvf'))`
+snippet "prot([cvfp]+)?" "protected access" br
+`!p acc_spec_comm(snip, 'protected', match.groups('cvfp'))`
 endsnippet
 
-snippet "pub([cvf]+)?" "public access" br
-`!p acc_spec_comm(snip, 'Public', match.groups('cvf'))`
+snippet "pub([cvfp]+)?" "public access" br
+`!p acc_spec_comm(snip, 'public', match.groups('cvfp'))`
 endsnippet
 
 snippet stru "struct" b
