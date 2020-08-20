@@ -39,6 +39,10 @@
   // "diagnostic.enable": false,
   "diagnostic.separateRelatedInformationAsDiagnostics": true,
   "explorer.icon.enableNerdfont": true,
+  // "list.insertMappings": {
+    // "<C-n>": "normal:j",
+    // "<C-p>": "normal:k"
+  // },
   "signature.floatMaxWidth": 100,
   "signature.preferShownAbove": false,
   "snippets.extends": {
