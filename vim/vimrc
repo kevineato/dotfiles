@@ -227,6 +227,7 @@ nnoremap <silent> <Space>s :<C-u>CocSearch <C-r>=expand('<cword>')<CR><CR>
 vnoremap <silent> <Space>s :<C-u>CocSearch <C-r>=GetVisual()<CR><CR>
 nnoremap <silent> <Space>S :<C-u>CocList -I -A --input=<C-r>=expand('<cword>')<CR> symbols<CR>
 nnoremap <silent> <Space>y :<C-u>CocList -A --normal yank<CR>
+xnoremap <silent> <Space>y dh:<C-u>CocList -A --normal yank<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
@@ -1034,8 +1035,8 @@ noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 " noremap ; :
-noremap p ]p
-noremap P ]P
+" noremap p ]p
+" noremap P ]P
 nnoremap <silent> <expr> 0 <SID>better_zero()
 onoremap <silent> <expr> 0
       \ col('.') == len(getline('.')) ?
