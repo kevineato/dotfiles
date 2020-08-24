@@ -1,13 +1,13 @@
 # globals
-if [[ -x "$(command -v bat)" ]]; then alias -g B='| bat'; fi
-if [[ -x "$(command -v fzf)" ]]; then alias -g F='| fzf'; fi
+if [[ -x "$(whence -p bat)" ]]; then alias -g B='| bat'; fi
+if [[ -x "$(whence -p fzf)" ]]; then alias -g F='| fzf'; fi
 alias -g L='| less -iR'
 alias -g LL='2>&1 | less -iR'
-if [[ -x "$(command -v sk)" ]]; then alias -g S='| sk'; fi
+if [[ -x "$(whence -p sk)" ]]; then alias -g S='| sk'; fi
 
 # general
-if [[ -x "$(command -v howdoi)" ]]; then
-  if [[ -x "$(command -v bat)" ]]; then
+if [[ -x "$(whence -p howdoi)" ]]; then
+  if [[ -x "$(whence -p bat)" ]]; then
     alias h='function hdi(){ howdoi $* -c -n 5 | bat; }; hdi'
   else
     alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
@@ -16,13 +16,13 @@ fi
 alias nvconfig="$EDITOR $HOME/.vim/vimrc"
 
 # ls replacements
-if [[ -x "$(command -v lsd)" ]] && lsd >/dev/null 2>&1; then
+if [[ -x "$(whence -p lsd)" ]] && lsd >/dev/null 2>&1; then
   alias l='lsd -AFl --group-dirs first --color always'
   alias la='lsd -AF --group-dirs first --color always'
   alias ll='lsd -Fl --group-dirs first --color always'
   alias ls='lsd -F --group-dirs first --color always'
   alias lt='lsd -AF --tree --group-dirs first --color always'
-elif [[ -x "$(command -v colorls)" ]] && colorls >/dev/null 2>&1; then
+elif [[ -x "$(whence -p colorls)" ]] && colorls >/dev/null 2>&1; then
   alias l='colorls -Al --sd --gs --dark'
   alias la='colorls -A --sd --gs --dark'
   alias ld='colorls -Ald --sd --gs --dark'
@@ -30,7 +30,7 @@ elif [[ -x "$(command -v colorls)" ]] && colorls >/dev/null 2>&1; then
   alias ll='colorls -l --sd --gs --dark'
   alias ls='colorls --sd --gs --dark'
   alias lt='colorls -A --tree --sd --gs --dark'
-elif [[ -x "$(command -v exa)" ]] && exa >/dev/null 2>&1; then
+elif [[ -x "$(whence -p exa)" ]] && exa >/dev/null 2>&1; then
   alias l='exa -al --color=always --group-directories-first'
   alias la='exa -a --color=always --group-directories-first'
   alias ll='exa -l --color=always --group-directories-first'
@@ -39,17 +39,23 @@ elif [[ -x "$(command -v exa)" ]] && exa >/dev/null 2>&1; then
 fi
 
 # ranger
-if [[ -x "$(command -v accurev)" ]]; then alias r='ranger'; fi
+if [[ -x "$(whence -p accurev)" ]]; then alias r='ranger'; fi
 
 # skim
-if [[ -x "$(command -v sk)" ]]; then
+if [[ -x "$(whence -p sk)" ]]; then
   alias nve='$EDITOR $(sk)'
 fi
 
 # watson
-if [[ -x "$(command -v watson)" ]]; then
+if [[ -x "$(whence -p watson)" ]]; then
   alias watson='watson --color'
+  alias wl='watson log'
+  alias wld='watson log --day'
+  alias wlw='watson log --week'
+  alias wr='watson report'
+  alias wrd='watson report --day'
+  alias wrw='watson report --week'
 fi
 
 # unalias
-if [[ -x "$(command -pv fd)" && -n "$(alias -m 'fd')" ]]; then unalias fd; fi
+if [[ -x "$(whence -p fd)" && -n "$(alias -m 'fd')" ]]; then unalias fd; fi
