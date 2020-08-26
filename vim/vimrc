@@ -207,6 +207,8 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> ]e <Plug>(coc-diagnostic-next-error)
+nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
 nmap <silent> <Space>qf <Plug>(coc-fix-current)
 nmap <silent> <Space>v <Plug>(coc-format-selected)
 nmap <Leader>rn <Plug>(coc-rename)
@@ -409,7 +411,7 @@ nmap <Leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
-nnoremap <silent> <Leader>e :SK -q !.clangd\ !.dep\ !.git\ !build\ <CR>
+nnoremap <silent> <Leader>e :SK -q !.clangd\ !.dep\ !.obj\ !.git\ !build\ <CR>
 nnoremap <silent> <Leader>ed :SK <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
