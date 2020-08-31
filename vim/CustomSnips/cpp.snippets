@@ -40,41 +40,51 @@ def acc_spec_comm(snip, spec, comm_type):
     curr_class_stars = '*' * (len(curr_class) + 1)
     spec_stars = '*' * len(spec)
     types = comm_type[0]
-    if types[0] == 'c':
-        snip.rv = '/**' + spec_stars + curr_class_stars + '************************'
-        snip += ' * ' + curr_class + ' ' + spec + ' classes/structs/types *'
-        snip += ' **' + spec_stars + curr_class_stars + '***********************/'
-    elif types[0] == 'f':
-        snip.rv = '/**' + spec_stars + curr_class_stars + '*******************'
-        snip += ' * ' + curr_class + ' ' + spec + ' member functions *'
-        snip += ' **' + spec_stars + curr_class_stars + '******************/'
+    prolog_stars  = spec_stars + curr_class_stars
+    class_spec = curr_class + ' ' + spec
+    if types[0] == 't':
+        snip.rv  = '/**' + prolog_stars + '********'
+        snip    += ' * ' + class_spec   + ' types *'
+        snip    += ' **' + prolog_stars + '*******/'
+    elif types[0] == 'c':
+        snip.rv  = '/**' + prolog_stars + '******************'
+        snip    += ' * ' + class_spec   + ' classes/structs *'
+        snip    += ' **' + prolog_stars + '*****************/'
     elif types[0] == 'v':
-        snip.rv = '/**' + spec_stars + curr_class_stars + '*******************'
-        snip += ' * ' + curr_class + ' ' + spec + ' member variables *'
-        snip += ' **' + spec_stars + curr_class_stars + '******************/'
+        snip.rv  = '/**' + prolog_stars + '*******************'
+        snip    += ' * ' + class_spec   + ' member variables *'
+        snip    += ' **' + prolog_stars + '******************/'
+    elif types[0] == 'f':
+        snip.rv  = '/**' + prolog_stars + '*******************'
+        snip    += ' * ' + class_spec   + ' member functions *'
+        snip    += ' **' + prolog_stars + '******************/'
     elif types[0] == 'p':
-        snip.rv = '/**' + spec_stars + curr_class_stars + '********************'
-        snip += ' * ' + curr_class + ' ' + spec + ' virtual functions *'
-        snip += ' **' + spec_stars + curr_class_stars + '*******************/'
+        snip.rv  = '/**' + prolog_stars + '********************'
+        snip    += ' * ' + class_spec   + ' virtual functions *'
+        snip    += ' **' + prolog_stars + '*******************/'
     if len(types) != 1:
         snip.rv += '\n' + snip.mkline('', '')
     for i in range(1, len(types)):
-        if types[i] == 'c':
-            snip += '/**' + spec_stars + curr_class_stars + '************************'
-            snip += ' * ' + curr_class + ' ' + spec + ' classes/structs/types *'
-            snip += ' **' + spec_stars + curr_class_stars + '***********************/'
-        elif types[i] == 'f':
-            snip += '/**' + spec_stars + curr_class_stars + '*******************'
-            snip += ' * ' + curr_class + ' ' + spec + ' member functions *'
-            snip += ' **' + spec_stars + curr_class_stars + '******************/'
+        if types[i] == 't':
+            snip += '/**' + prolog_stars + '********'
+            snip += ' * ' + class_spec   + ' types *'
+            snip += ' **' + prolog_stars + '*******/'
+        elif types[i] == 'c':
+            snip += '/**' + prolog_stars + '************************'
+            snip += ' * ' + class_spec   + ' classes/structs/types *'
+            snip += ' **' + prolog_stars + '***********************/'
         elif types[i] == 'v':
-            snip += '/**' + spec_stars + curr_class_stars + '*******************'
-            snip += ' * ' + curr_class + ' ' + spec + ' member variables *'
-            snip += ' **' + spec_stars + curr_class_stars + '******************/'
+            snip += '/**' + prolog_stars + '*******************'
+            snip += ' * ' + class_spec   + ' member variables *'
+            snip += ' **' + prolog_stars + '******************/'
+        elif types[i] == 'f':
+            snip += '/**' + prolog_stars + '*******************'
+            snip += ' * ' + class_spec   + ' member functions *'
+            snip += ' **' + prolog_stars + '******************/'
         elif types[0] == 'p':
-            snip += '/**' + spec_stars + curr_class_stars + '********************'
-            snip += ' * ' + curr_class + ' ' + spec + ' virtual functions *'
-            snip += ' **' + spec_stars + curr_class_stars + '*******************/'
+            snip += '/**' + prolog_stars + '********************'
+            snip += ' * ' + class_spec   + ' virtual functions *'
+            snip += ' **' + prolog_stars + '*******************/'
         if i != len(types) - 1:
             snip.rv += '\n' + snip.mkline('', '')
 endglobal
@@ -220,15 +230,21 @@ using size_type = size_type;
 /// Implementation of a random access iterator.
 struct iterator
 {
-    /*****************************************
-     * iterator public classes/structs/types *
-     ****************************************/
+    /*************************
+     * iterator public types *
+     ************************/
 
     using iterator_category = std::random_access_iterator_tag;
     using value_type = value_type;
     using difference_type = difference_type;
     using pointer = pointer;
     using reference = reference;
+
+    /************************************
+     * iterator public member variables *
+     ***********************************/
+
+    pointer m_pValue;
 
     /************************************
      * iterator public member functions *
@@ -372,12 +388,6 @@ struct iterator
     {
         return *( *this + n );
     }
-
-    /************************************
-     * iterator public member variables *
-     ***********************************/
-
-    pointer m_pValue;
 };
 using const_iterator = const iterator;
 using reverse_iterator = std::reverse_iterator< iterator >;
@@ -397,16 +407,16 @@ ${VISUAL}$0
 }  // namespace $1
 endsnippet
 
-snippet "priv([cvfp]+)?" "private access" br
-`!p acc_spec_comm(snip, 'private', match.groups('cvfp'))`
+snippet "priv([tcvfp]+)?" "private access" br
+`!p acc_spec_comm(snip, 'private', match.groups('tcvfp'))`
 endsnippet
 
-snippet "prot([cvfp]+)?" "protected access" br
-`!p acc_spec_comm(snip, 'protected', match.groups('cvfp'))`
+snippet "prot([tcvfp]+)?" "protected access" br
+`!p acc_spec_comm(snip, 'protected', match.groups('tcvfp'))`
 endsnippet
 
-snippet "pub([cvfp]+)?" "public access" br
-`!p acc_spec_comm(snip, 'public', match.groups('cvfp'))`
+snippet "pub([tcvfp]+)?" "public access" br
+`!p acc_spec_comm(snip, 'public', match.groups('tcvfp'))`
 endsnippet
 
 snippet stru "struct" b
