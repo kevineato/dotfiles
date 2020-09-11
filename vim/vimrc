@@ -1028,6 +1028,8 @@ inoremap <silent> <expr> <Tab>
       \ pumvisible() ? coc#_select_confirm() :
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
+inoremap <C-\><C-o> <C-o>
+inoremap <C-o> <C-\><C-o>
 inoremap jj <Esc>
 noremap \ ,
 nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
