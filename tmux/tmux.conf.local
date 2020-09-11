@@ -302,28 +302,34 @@ set -g prefix None
 bind -n C-Space set key-table prefix
 bind q set key-table root
 bind C-Space set key-table root
+bind : set key-table root \; command-prompt
 
-bind C-j select-pane -m \; last-window \; join-pane -h \; select-pane -L
-bind C-k break-pane \; last-window
+bind , set key-table root \; command-prompt -I "#W" "rename-window -- '%%'"
+bind C-h swap-window -t ':-'
+bind C-j set key-table root \; choose-tree -w "join-pane -hd -s '%%'"
+bind C-k set key-table root \; display-panes -d 0 "select-pane -t '%%' \; break-pane -a \; rename-window '#{pane_title}' \; last-window"
+bind C-l swap-window -t ':+'
+bind c set key-table root \; new-window -c "#{pane_current_path}"
+bind s set key-table root \; choose-tree -w "swap-window -s ':' -t '%%'"
 
 bind w set key-table root \; choose-tree -w
 
 # mark current pane
-bind -r m select-pane -m
+bind m select-pane -m
 
 # cycle through windows
-bind -r [ previous-window
-bind -r ] next-window
+bind [ previous-window
+bind ] next-window
 
 # visual mode
-bind n copy-mode
+bind n set key-table root \; copy-mode
 bind -T copy-mode-vi d send-keys -X halfpage-down
 bind -T copy-mode-vi u send-keys -X halfpage-up
-bind -T copy-mode-vi q send-keys -X cancel \; set key-table root
-bind -T copy-mode-vi y send-keys -X copy-selection-and-cancel \; set key-table root
-bind -T prefix p paste-buffer \; set key-table root
-bind -T prefix P choose-buffer \; set key-table root
+bind p set key-table root \; paste-buffer
+bind P set key-table root \; choose-buffer
 
 # split windows
-bind - split-window -v
-bind / split-window -h
+bind - set key-table root \; split-window -v
+bind / set key-table root \; split-window -h
+
+set-hook -g window-renamed "select-pane -T '#{window_name}'"
