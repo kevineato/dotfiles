@@ -26,6 +26,7 @@
     "--completion-style=bundled",
     "--cross-file-rename",
     "--header-insertion=never",
+    "--hidden-features",
     // "--header-insertion=iwyu",
     // "--header-insertion-decorators",
     "-j=12",
