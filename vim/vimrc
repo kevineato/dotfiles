@@ -12,6 +12,7 @@ Plug 'tjdevries/coc-zsh'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
 Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'mattn/emmet-vim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
 " Plug 'haya14busa/is.vim'
@@ -412,7 +413,7 @@ nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
 nnoremap <silent> <Leader>e :SK -q !.clangd\ !.dep\ !.obj\ !.git\ !build\ !.o\ !.lo\ !.la\ <CR>
-nnoremap <silent> <Leader>ed :SK <C-r>=expand('%:h')<CR><CR>
+nnoremap <silent> <Leader>ed :SK -q !.clangd\ !.dep\ !.obj\ !.git\ !build\ !.o\ !.lo\ !.la\  <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
 nnoremap <silent> <Leader>fw :RG <C-r>=expand('<cword>')<CR><CR>
@@ -725,7 +726,7 @@ nmap <Leader>0 <Plug>BufTabLine.Go(-1)
 " vim-dirvish
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:dirvish_mode = 2
+let g:dirvish_mode = ':sort ,^.*[\/],'
 
 highlight link DirvishSuffix LineNr
 
@@ -1031,6 +1032,8 @@ inoremap <silent> <expr> <Tab>
 inoremap <C-\><C-o> <C-o>
 inoremap <C-o> <C-\><C-o>
 inoremap jj <Esc>
+noremap ` '
+noremap ' `
 noremap \ ,
 nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
 nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
