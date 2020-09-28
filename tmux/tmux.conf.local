@@ -304,11 +304,23 @@ bind q set key-table root
 bind C-Space set key-table root
 bind : set key-table root \; command-prompt
 
+bind 0 set key-table root \; select-window -t :=0
+bind 1 set key-table root \; select-window -t :=1
+bind 2 set key-table root \; select-window -t :=2
+bind 3 set key-table root \; select-window -t :=3
+bind 4 set key-table root \; select-window -t :=4
+bind 5 set key-table root \; select-window -t :=5
+bind 6 set key-table root \; select-window -t :=6
+bind 7 set key-table root \; select-window -t :=7
+bind 8 set key-table root \; select-window -t :=8
+bind 9 set key-table root \; select-window -t :=9
+
 bind , set key-table root \; command-prompt -I "#W" "rename-window -- '%%'"
-bind C-h swap-window -t ':-'
+bind C-h swap-window -d -t ':-'
 bind C-j set key-table root \; choose-tree -w "join-pane -hd -s '%%'"
 bind C-k set key-table root \; display-panes -d 0 "select-pane -t '%%' \; break-pane -a \; rename-window '#{pane_title}' \; last-window"
-bind C-l swap-window -t ':+'
+bind C-l swap-window -d -t ':+'
+bind Tab set key-table root \; last-window
 bind c set key-table root \; new-window -c "#{pane_current_path}"
 bind s set key-table root \; choose-tree -w "swap-window -s ':' -t '%%'"
 
