@@ -38,7 +38,7 @@
     stdout: true
     stderr: true
   -
-    command: [tools/bat-extras/build.sh --prefix="$HOME"/.local --install, Installing bat-extras]
+    command: [mkdir -p "$HOME"/.local/bin && tools/bat-extras/build.sh --prefix="$HOME"/.local --install, Installing bat-extras]
     stdin: true
     stdout: true
     stderr: true
