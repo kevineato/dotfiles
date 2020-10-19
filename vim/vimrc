@@ -437,10 +437,13 @@ nnoremap <silent> <Leader>l :BLines<CR>
 let g:lightline = {
       \   'active': {
       \     'left': [['mode', 'paste'],
-      \       ['readonly', 'filename', 'modified', 'cocstatus']]
+      \       ['readonly', 'filename', 'modified', 'cocstatus', 'currfunc']]
       \   },
       \   'colorscheme': 'gruvbox_material',
-      \   'component': { 'cocstatus': '%{get(b:, "coc_current_function", "")}' }
+      \   'component': {
+      \     'cocstatus': '%{coc#status()}',
+      \     'currfunc': '%{get(b:, "coc_current_function", "")}'
+      \   }
       \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -729,6 +732,13 @@ nmap <Leader>0 <Plug>BufTabLine.Go(-1)
 let g:dirvish_mode = ':sort ,^.*[\/],'
 
 highlight link DirvishSuffix LineNr
+
+augroup mydirvish
+  autocmd!
+  " autocmd FileType dirvish nmap <buffer> <silent> x <Plug>(dirvish_arg):<C-u>bd <C-r>=bufnr(argv(argc() - 1))<CR><CR>
+  " autocmd FileType dirvish xmap <buffer> <silent> x <Plug>(dirvish_arg):<C-u>bd <C-r>=bufnr(argv(argc() - 1))<CR><CR>
+  autocmd FileType dirvish nnoremap <buffer> <silent> <Leader>bu :call <SID>make_backup('<C-r><C-f>')<CR>
+augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-easy-align
@@ -1126,7 +1136,6 @@ augroup myautocmd
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
-  autocmd FileType dirvish nnoremap <buffer> <silent> <Leader>bu :call <SID>make_backup('<C-r><C-f>')<CR>
   autocmd FileType gitcommit setlocal formatoptions-=t
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
   autocmd FileType help,man nnoremap <buffer> d <C-d>
