@@ -46,6 +46,10 @@ def acc_spec_comm(snip, spec, comm_type):
         snip.rv  = '/**' + prolog_stars + '********'
         snip    += ' * ' + class_spec   + ' types *'
         snip    += ' **' + prolog_stars + '*******/'
+    elif types[0] == 'x':
+        snip.rv  = '/**' + prolog_stars + '************'
+        snip    += ' * ' + class_spec   + ' constants *'
+        snip    += ' **' + prolog_stars + '***********/'
     elif types[0] == 'c':
         snip.rv  = '/**' + prolog_stars + '******************'
         snip    += ' * ' + class_spec   + ' classes/structs *'
@@ -69,6 +73,10 @@ def acc_spec_comm(snip, spec, comm_type):
             snip += '/**' + prolog_stars + '********'
             snip += ' * ' + class_spec   + ' types *'
             snip += ' **' + prolog_stars + '*******/'
+        elif types[0] == 'x':
+            snip += '/**' + prolog_stars + '************'
+            snip += ' * ' + class_spec   + ' constants *'
+            snip += ' **' + prolog_stars + '***********/'
         elif types[i] == 'c':
             snip += '/**' + prolog_stars + '************************'
             snip += ' * ' + class_spec   + ' classes/structs/types *'
@@ -110,6 +118,13 @@ snippet cls "class" b
 class ${1:`!p snip.rv = snip.basename`}
 {
 };$0
+endsnippet
+
+snippet clsh "class header" b
+/**
+ * @class
+ *   ${1:description}
+ */$0
 endsnippet
 
 snippet cerr "cerr" b
@@ -197,7 +212,7 @@ for( ${1:element} : ${2:list} )
 endsnippet
 
 snippet hg "header guard" b
-#ifndef ${1:`!p snip.rv = re.sub('(-|(?<!^)(?=[A-Z]))', '_', snip.basename).upper() + '_H_'`}
+#ifndef ${1:`!p snip.rv = re.sub('(-|(?<!^)(?=[A-Z][a-z]))', '_', snip.basename).upper() + '_H_'`}
 #define $1
 
 ${VISUAL}$0
@@ -402,15 +417,15 @@ ${VISUAL}$0
 endsnippet
 
 snippet "priv([tcvfp]+)?" "private access" br
-`!p acc_spec_comm(snip, 'private', match.groups('tcvfp'))`
+`!p acc_spec_comm(snip, 'private', match.groups('txcvfp'))`
 endsnippet
 
-snippet "prot([tcvfp]+)?" "protected access" br
-`!p acc_spec_comm(snip, 'protected', match.groups('tcvfp'))`
+snippet "prot([txcvfp]+)?" "protected access" br
+`!p acc_spec_comm(snip, 'protected', match.groups('txcvfp'))`
 endsnippet
 
-snippet "pub([tcvfp]+)?" "public access" br
-`!p acc_spec_comm(snip, 'public', match.groups('tcvfp'))`
+snippet "pub([txcvfp]+)?" "public access" br
+`!p acc_spec_comm(snip, 'public', match.groups('txcvfp'))`
 endsnippet
 
 snippet stru "struct" b
