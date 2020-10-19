@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 NVIM_PLUG="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/site/autoload/plug.vim"
-VIM_PLUG="${HOME}/.vim/autoload/plug.vim"
+VIM_PLUG="${HOME}/.dotfiles/vim/autoload/plug.vim"
 
 if [ ! -f "${NVIM_PLUG}" ]; then
   curl -fLo "${NVIM_PLUG}" --create-dirs \
