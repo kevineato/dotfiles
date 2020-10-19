@@ -3,27 +3,6 @@
       create: true
       relink: true
 
-- clean: ['~']
-
-- link:
-    ~/.clang-format: clang/clang-format
-    ~/.cmake-format.py: cmake/cmake-format.py
-    ~/.config/bat: config/bat
-    ~/.config/nvim/coc-settings.json: vim/coc-settings.json
-    ~/.config/nvim/init.vim: vim/vimrc
-    ~/.config/vifm: config/vifm
-    ~/.config/watson/config: config/watson/config
-    ~/.gdbinit: tools/gdb-dashboard/.gdbinit
-    ~/.gdbinit.d:
-    ~/.gitconfig: git/gitconfig
-    ~/.p10k.zsh: zsh/p10k.zsh
-    ~/.sage:
-    ~/.tmux.conf: tools/.tmux/.tmux.conf
-    ~/.tmux.conf.local: tmux/tmux.conf.local
-    ~/.vim:
-    ~/.zsh:
-    ~/.zshrc: zsh/zshrc
-
 - shell:
   -
     command: [git submodule sync --recursive, Syncing submodules]
@@ -63,3 +42,24 @@
     stdin: true
     stdout: true
     stderr: true
+
+- clean: ['~']
+
+- link:
+    ~/.clang-format: clang/clang-format
+    ~/.cmake-format.py: cmake/cmake-format.py
+    ~/.config/bat: config/bat
+    ~/.config/nvim/coc-settings.json: vim/coc-settings.json
+    ~/.config/nvim/init.vim: vim/vimrc
+    ~/.config/vifm: config/vifm
+    ~/.config/watson/config: config/watson/config
+    ~/.gdbinit: tools/gdb-dashboard/.gdbinit
+    ~/.gdbinit.d:
+    ~/.gitconfig: git/gitconfig
+    ~/.p10k.zsh: zsh/p10k.zsh
+    ~/.sage:
+    ~/.tmux.conf: tools/.tmux/.tmux.conf
+    ~/.tmux.conf.local: tmux/tmux.conf.local
+    ~/.vim:
+    ~/.zsh:
+    ~/.zshrc: zsh/zshrc
