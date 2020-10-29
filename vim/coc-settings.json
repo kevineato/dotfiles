@@ -36,6 +36,9 @@
   "clangd.semanticHighlighting": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
+  // "coc.preferences.snippets.enable": false,
+  "coc.source.around.priority": 90,
+  "coc.source.buffer.priority": 90,
   "coc.source.ultisnips.priority": 100,
   // "diagnostic.enable": false,
   "diagnostic.separateRelatedInformationAsDiagnostics": true,
@@ -46,21 +49,22 @@
   // },
   "signature.floatMaxWidth": 100,
   "signature.preferShownAbove": false,
-  "snippets.extends": {
-    "bash": ["sh", "zsh"],
-    "c": ["cpp", "h", "hpp"],
-    "cpp": ["c", "h", "hpp"],
-    "h": ["c", "cpp", "hpp"],
-    "hpp": ["c", "cpp", "h"],
-    "sh": ["bash", "zsh"],
-    "zsh": ["bash", "sh"]
-  },
-  "snippets.ultisnips.directories": [
-    "UltiSnips",
-    "~/.vim/CustomSnips"
-  ],
-  "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
-  "tabnine.priority": 98,
+  // "snippets.extends": {
+    // "bash": ["sh", "zsh"],
+    // "c": ["cpp", "h", "hpp"],
+    // "cpp": ["c", "h", "hpp"],
+    // "h": ["c", "cpp", "hpp"],
+    // "hpp": ["c", "cpp", "h"],
+    // "sh": ["bash", "zsh"],
+    // "zsh": ["bash", "sh"]
+  // },
+  // "snippets.ultisnips.directories": [
+    // "UltiSnips",
+    // "~/.vim/CustomSnips"
+  // ],
+  // "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
+  "tabnine.priority": 89,
   "vimlsp.suggest.fromRuntimepath": true,
-  "xml.java.home": "/usr"
+  "xml.java.home": "/usr",
+  "yank.priority": 89
 }
