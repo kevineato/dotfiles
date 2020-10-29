@@ -27,7 +27,7 @@ Plug 'wellle/targets.vim'
 Plug 'kevineato/tinykeymap_vim'
 Plug 'SirVer/ultisnips'
 Plug 'mbbill/undotree'
-Plug 'ap/vim-buftabline'
+" Plug 'ap/vim-buftabline'
 Plug 'ryanoasis/vim-devicons'
 Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/vim-easy-align'
@@ -169,7 +169,6 @@ let g:coc_global_extensions = [
       \   "coc-marketplace",
       \   "coc-python",
       \   "coc-sh",
-      \   "coc-snippets",
       \   "coc-tabnine",
       \   "coc-tsserver",
       \   "coc-ultisnips",
@@ -178,6 +177,7 @@ let g:coc_global_extensions = [
       \   "coc-yaml",
       \   "coc-yank"
       \ ]
+      " \   "coc-snippets",
 let g:coc_snippet_next = "<C-j>"
 let g:coc_snippet_prev = "<C-k>"
 let g:markdown_fenced_languages = [
@@ -231,7 +231,7 @@ nnoremap <silent> <Space>sw :<C-u>CocSearch <C-r>=expand('<cword>')<CR><CR>
 vnoremap <silent> <Space>s :<C-u>CocSearch <C-r>=substitute(GetVisual(), ' ', '\\ ', 'g')<CR><CR>
 nnoremap <silent> <Space>S :<C-u>CocList -I -A --input=<C-r>=expand('<cword>')<CR> symbols<CR>
 nnoremap <silent> <Space>y :<C-u>CocList -A --normal yank<CR>
-xnoremap <silent> <Space>y dh:<C-u>CocList -A --normal yank<CR>
+xnoremap <silent> <Space>d dh:<C-u>CocList -A --normal yank<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
@@ -247,6 +247,7 @@ augroup mycocnvim
   autocmd!
   autocmd CursorHold * silent call CocActionAsync('highlight')
   autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
+  autocmd FileType c,cpp,h,hpp nnoremap <silent> <Space>ss :<C-u>CocCommand clangd.switchSourceHeader<CR>
 augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -437,7 +438,7 @@ nnoremap <silent> <Leader>l :BLines<CR>
 let g:lightline = {
       \   'active': {
       \     'left': [['mode', 'paste'],
-      \       ['readonly', 'filename', 'modified', 'cocstatus', 'currfunc']]
+      \       ['readonly', 'filename', 'modified', 'currfunc', 'cocstatus']]
       \   },
       \   'colorscheme': 'gruvbox_material',
       \   'component': {
@@ -704,26 +705,26 @@ nmap <silent> <F5> :UndotreeToggle<CR>
 " vim-buftabline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:buftabline_numbers = 2
-let g:buftabline_indicators = 1
-let g:buftabline_plug_max = 15
+" let g:buftabline_numbers = 2
+" let g:buftabline_indicators = 1
+" let g:buftabline_plug_max = 15
 
-nmap <Leader>1 <Plug>BufTabLine.Go(1)
-nmap <Leader>2 <Plug>BufTabLine.Go(2)
-nmap <Leader>3 <Plug>BufTabLine.Go(3)
-nmap <Leader>4 <Plug>BufTabLine.Go(4)
-nmap <Leader>5 <Plug>BufTabLine.Go(5)
-nmap <Leader>6 <Plug>BufTabLine.Go(6)
-nmap <Leader>7 <Plug>BufTabLine.Go(7)
-nmap <Leader>8 <Plug>BufTabLine.Go(8)
-nmap <Leader>9 <Plug>BufTabLine.Go(9)
-nmap <Leader>10 <Plug>BufTabLine.Go(10)
-nmap <Leader>11 <Plug>BufTabLine.Go(11)
-nmap <Leader>12 <Plug>BufTabLine.Go(12)
-nmap <Leader>13 <Plug>BufTabLine.Go(13)
-nmap <Leader>14 <Plug>BufTabLine.Go(14)
-nmap <Leader>15 <Plug>BufTabLine.Go(15)
-nmap <Leader>0 <Plug>BufTabLine.Go(-1)
+" nmap <Leader>1 <Plug>BufTabLine.Go(1)
+" nmap <Leader>2 <Plug>BufTabLine.Go(2)
+" nmap <Leader>3 <Plug>BufTabLine.Go(3)
+" nmap <Leader>4 <Plug>BufTabLine.Go(4)
+" nmap <Leader>5 <Plug>BufTabLine.Go(5)
+" nmap <Leader>6 <Plug>BufTabLine.Go(6)
+" nmap <Leader>7 <Plug>BufTabLine.Go(7)
+" nmap <Leader>8 <Plug>BufTabLine.Go(8)
+" nmap <Leader>9 <Plug>BufTabLine.Go(9)
+" nmap <Leader>10 <Plug>BufTabLine.Go(10)
+" nmap <Leader>11 <Plug>BufTabLine.Go(11)
+" nmap <Leader>12 <Plug>BufTabLine.Go(12)
+" nmap <Leader>13 <Plug>BufTabLine.Go(13)
+" nmap <Leader>14 <Plug>BufTabLine.Go(14)
+" nmap <Leader>15 <Plug>BufTabLine.Go(15)
+" nmap <Leader>0 <Plug>BufTabLine.Go(-1)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-dirvish
@@ -963,23 +964,27 @@ function! s:safe_close() abort
   endif
 endfunction
 
-function! s:scratch (command, ...)
-  let save_more = &more
-  set nomore
-  redir => lines
-  execute a:command
-  redir END
-  let &more = save_more
-  call feedkeys("\<CR>")
+function! s:scratch (...)
+  if a:0
+    let save_more = &more
+    set nomore
+    redir => lines
+    execute a:1
+    redir END
+    let &more = save_more
+    call feedkeys("\<CR>")
+  endif
   new +only
   setlocal buftype=nofile bufhidden=hide noswapfile
-  put =lines
   if a:0
-    execute 'v/' . a:1 . '/d'
+    put =lines
+  endif
+  if a:0 > 1
+    execute 'v/' . a:2 . '/d'
   endif
   0
 endfunction
-command! -nargs=+ Scratch call <SID>scratch(<f-args>)
+command! -nargs=* Scratch call <SID>scratch(<f-args>)
 
 function! s:compareQuickfixEntries(i1, i2)
   if bufname(a:i1.bufnr) == bufname(a:i2.bufnr)
