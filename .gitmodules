@@ -37,7 +37,7 @@
 [submodule "tools/bat-extras"]
 	path = tools/bat-extras
 	url = https://github.com/eth-p/bat-extras
-	ignore = untracked
+	ignore = dirty
 [submodule "zsh/oh-my-zsh-custom/plugins/zsh-autopair"]
 	path = zsh/oh-my-zsh-custom/plugins/zsh-autopair
 	url = https://github.com/hlissner/zsh-autopair
