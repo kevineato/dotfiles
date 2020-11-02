@@ -1049,9 +1049,6 @@ inoremap <silent> <expr> <Tab>
 inoremap <C-\><C-o> <C-o>
 inoremap <C-o> <C-\><C-o>
 inoremap jj <Esc>
-noremap ` '
-noremap ' `
-noremap \ ,
 nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
 nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
 nnoremap <silent> <Leader>- :split<CR>
@@ -1077,7 +1074,12 @@ noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
+noremap ` '
+noremap ' `
+noremap \ ,
 " noremap ; :
+noremap <expr> j v:count ? 'j' : 'gj'
+noremap <expr> k v:count ? 'k' : 'gk'
 " noremap p ]p
 " noremap P ]P
 nnoremap <silent> <expr> 0 <SID>better_zero()
