@@ -112,8 +112,8 @@ endsnippet
 
 snippet cls "class" b
 /**
- * @class
- *   ${2:description}
+ * @class $1
+ * ${2:description}
  */
 class ${1:`!p snip.rv = snip.basename`}
 {
@@ -122,8 +122,8 @@ endsnippet
 
 snippet clsh "class header" b
 /**
- * @class
- *   ${1:description}
+ * @class ${1:`!p snip.rv = snip.basename`}
+ * ${2:description}
  */$0
 endsnippet
 
@@ -212,7 +212,7 @@ for( ${1:element} : ${2:list} )
 endsnippet
 
 snippet hg "header guard" b
-#ifndef ${1:`!p snip.rv = re.sub('(-|(?<!^)(?=[A-Z][a-z]))', '_', snip.basename).upper() + '_H_'`}
+#ifndef ${1:`!p snip.rv = re.sub('(-|(?<!^)(?=[A-Z][a-z]))', '_', snip.basename).upper() + '_H'`}
 #define $1
 
 ${VISUAL}$0
