@@ -230,8 +230,8 @@ nnoremap <Space>s :<C-u>CocSearch
 nnoremap <silent> <Space>sw :<C-u>CocSearch <C-r>=expand('<cword>')<CR><CR>
 vnoremap <silent> <Space>s :<C-u>CocSearch <C-r>=substitute(GetVisual(), ' ', '\\ ', 'g')<CR><CR>
 nnoremap <silent> <Space>S :<C-u>CocList -I -A --input=<C-r>=expand('<cword>')<CR> symbols<CR>
-nnoremap <silent> <Space>y :<C-u>CocList -A --normal yank<CR>
-xnoremap <silent> <Space>d dh:<C-u>CocList -A --normal yank<CR>
+nnoremap <silent> <Space>y :<C-u>CocList -A yank<CR>
+xnoremap <silent> <Space>y dk:CocList -A yank<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
@@ -426,6 +426,7 @@ nnoremap <silent> <Leader>Fd :RGFiles!<CR>
 nnoremap <silent> <Leader>Fw :RGFiles <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>Fdw :RGFiles! <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>l :BLines<CR>
+nnoremap <silent> <Leader>L :Lines<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " is.vim
@@ -465,7 +466,7 @@ let g:NERDSpaceDelims = 1
 function! s:align_comment()
   let save_pos = getpos('.')[1:2]
   let tab_intro = "call Tabularize('/.*\\*/l1')"
-  let tab_param = "call Tabularize('/.*@param \\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
+  let tab_param = "call Tabularize('/.*@t\\?param \\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
   let tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs \\?/l0')"
 
   if getline('.') =~# '\s*\/\*\*'
@@ -491,9 +492,9 @@ function! s:align_comment()
       execute (c_begin + 1) . ',' . (c_end - 1) . tab_intro
     endif
     call cursor(c_begin, save_pos[1])
-    if search('@param', '', c_end)
+    if search('@t\?param', '', c_end)
       let p_begin = line('.')
-      while search('@param', '', c_end)
+      while search('@t\?param', '', c_end)
       endwhile
       if search('@return', '', c_end)
         let p_end = line('.') - 1
@@ -966,27 +967,44 @@ function! s:safe_close() abort
   endif
 endfunction
 
-function! s:scratch (...)
+function! s:scratch(wipe_buffer, rng, start, end, ...)
+  if a:wipe_buffer
+    for win in range(1, winnr('$'))
+      if getwinvar(win, 'scratch')
+        execute win . 'windo close'
+      endif
+    endfor
+  endif
+	if a:0 && a:1 =~ '^!'
+		let cmd = a:1 =~' %'
+			\ ? matchstr(substitute(a:1, ' %', ' ' . expand('%:p'), ''), '^!\zs.*')
+			\ : matchstr(a:1, '^!\zs.*')
+		if a:rng == 0
+			let output = systemlist(cmd)
+		else
+			let joined_lines = join(getline(a:start, a:end), '\n')
+			let cleaned_lines = substitute(shellescape(joined_lines), "'\\\\''", "\\\\'", 'g')
+			let output = systemlist(cmd . " <<< $" . cleaned_lines)
+		endif
+  elseif a:0
+		redir => output
+		execute a:1
+		redir END
+		let output = split(output, "\n")
+	endif
+  if a:wipe_buffer
+    vnew
+    let w:scratch = 1
+    setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile
+  else
+    new +only
+    setlocal buftype=nofile bufhidden=hide noswapfile
+  endif
   if a:0
-    let save_more = &more
-    set nomore
-    redir => lines
-    execute a:1
-    redir END
-    let &more = save_more
-    call feedkeys("\<CR>")
+    call setline(1, output)
   endif
-  new +only
-  setlocal buftype=nofile bufhidden=hide noswapfile
-  if a:0
-    put =lines
-  endif
-  if a:0 > 1
-    execute 'v/' . a:2 . '/d'
-  endif
-  0
 endfunction
-command! -nargs=* Scratch call <SID>scratch(<f-args>)
+command! -bang -nargs=* -complete=command -bar -range Scratch silent call <SID>scratch(<bang>0, <range>, <line1>, <line2>, <q-args>)
 
 function! s:compareQuickfixEntries(i1, i2)
   if bufname(a:i1.bufnr) == bufname(a:i2.bufnr)
@@ -1054,6 +1072,9 @@ nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
 nnoremap <silent> <Leader>- :split<CR>
 nnoremap <silent> <Leader>/ :vsplit<CR>
 nnoremap <silent> <Leader>c :call <SID>safe_close()<CR>
+nnoremap <Leader>d "_d
+xnoremap <Leader>d "_d
+xnoremap <Leader>p "_dP
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>qa :qa<CR>
 nnoremap <silent> <Leader>qlc :lclose<CR>zz
