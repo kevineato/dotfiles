@@ -47,7 +47,7 @@
     // "<C-n>": "normal:j",
     // "<C-p>": "normal:k"
   // },
-  "signature.floatMaxWidth": 100,
+  "signature.maxWindowWidth": 100,
   "signature.preferShownAbove": false,
   // "snippets.extends": {
     // "bash": ["sh", "zsh"],
