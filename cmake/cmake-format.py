@@ -5,6 +5,13 @@ with section("parse"):
 
   # Specify structure for custom cmake functions
   additional_commands = {
+          'find_package_with_root': {
+              'pargs': '2',
+              'flags': ['REQUIRED'],
+              'kwargs': {
+                  'VERSION': 1
+              }
+          },
           'target_link_options': {
             'kwargs': {
               'INTERFACE': '+',
