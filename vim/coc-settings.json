@@ -47,6 +47,7 @@
     // "<C-n>": "normal:j",
     // "<C-p>": "normal:k"
   // },
+  "python.formatting.provider": "black",
   "signature.maxWindowWidth": 100,
   "signature.preferShownAbove": false,
   // "snippets.extends": {
