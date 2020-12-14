@@ -16,6 +16,8 @@ if [[ -x "$(whence -p howdoi)" ]]; then
     alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
   fi
 fi
+alias dl='dirs -lv'
+alias dv='dirs -v'
 alias nvconfig="$EDITOR $HOME/.vim/vimrc"
 
 # ls replacements
