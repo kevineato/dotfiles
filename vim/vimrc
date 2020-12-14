@@ -3,7 +3,7 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 if !has('nvim')
-  call plug#begin('~/.vim/plugged')
+  call plug#begin(fnamemodify('~/.vim/plugged', ':p'))
 else
   call plug#begin(stdpath('data') . '/plugged')
 endif
@@ -1177,3 +1177,7 @@ augroup myautocmd
   autocmd InsertLeave,WinEnter * set cursorline
   autocmd TextChanged,CursorMoved * call s:easyMotionCoc()
 augroup end
+
+if filereadable(fnamemodify('~/.vim/local.vim', ':p'))
+  execute printf('source %s', fnamemodify('~/.vim/local.vim', ':p'))
+endif

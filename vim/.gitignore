@@ -1,4 +1,5 @@
 .undodir
 autoload
+local.vim
 plugged
 sessions
