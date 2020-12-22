@@ -42,6 +42,7 @@
   "coc.source.ultisnips.priority": 100,
   // "diagnostic.enable": false,
   "diagnostic.separateRelatedInformationAsDiagnostics": true,
+  "explorer.file.autoReveal": false,
   "explorer.icon.enableNerdfont": true,
   // "list.insertMappings": {
     // "<C-n>": "normal:j",
