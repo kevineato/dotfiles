@@ -248,11 +248,11 @@ augroup mycocnvim
   autocmd CursorHold * silent call CocActionAsync('highlight')
   autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
   autocmd FileType c,cpp,h,hpp nnoremap <silent> <Space>ss :<C-u>CocCommand clangd.switchSourceHeader<CR>
-  autocmd FileType coc-explorer nnoremap <silent> H
+  autocmd FileType coc-explorer nnoremap <buffer> <silent> H
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['gotoParent'])<CR>
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['indentPrev'])<CR>
     \ :tcd -<CR>
-  autocmd FileType coc-explorer nnoremap <silent> L
+  autocmd FileType coc-explorer nnoremap <buffer> <silent> L
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['cd'])<CR>
     \ :tcd -<CR>
 augroup end
