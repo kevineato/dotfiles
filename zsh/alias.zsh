@@ -44,7 +44,7 @@ elif [[ -x "$(whence -p exa)" ]] && exa >/dev/null 2>&1; then
 fi
 
 # ranger
-if [[ -x "$(whence -p accurev)" ]]; then alias r='ranger'; fi
+if [[ -x "$(whence -p ranger)" ]]; then alias r='ranger'; fi
 
 # skim
 if [[ -x "$(whence -p sk)" ]]; then
@@ -60,6 +60,7 @@ if [[ -x "$(whence -p watson)" ]]; then
   alias wr='watson report'
   alias wrd='watson report --day'
   alias wrw='watson report --week'
+  alias wswap='watson stop && watson start --no-gap'
 fi
 
 # unalias
