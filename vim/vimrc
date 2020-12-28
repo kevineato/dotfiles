@@ -216,8 +216,8 @@ nmap <silent> <Leader>rn <Plug>(coc-rename)
 nnoremap <expr> <C-f> coc#float#has_float() ? coc#float#scroll(1) : "\<C-f>"
 nnoremap <expr> <C-b> coc#float#has_float() ? coc#float#scroll(0) : "\<C-b>"
 nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
-nnoremap <silent> <Space>e :<C-u>CocCommand explorer<CR>
-nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
+nnoremap <silent> <Space>e :<C-u>CocCommand explorer --quit-on-open<CR>
+nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --quit-on-open --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
 nnoremap <silent> <Space>E :<C-u>CocList marketplace<CR>
 nnoremap <silent> <Space>f :<C-u>Format<CR>
 nnoremap <silent> <Space>j :<C-u>CocNext<CR>
@@ -1160,7 +1160,7 @@ function! s:easyMotionCoc() abort
   endif
 endfunction
 
-let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\|\s*\*\{2,}/\)\@='
+let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\\S*\|\s*\*\{2,}/\)\@='
 
 augroup myautocmd
   autocmd!
