@@ -41,6 +41,7 @@ Plug 'kevineato/vim-protodef'
 Plug 'reconquest/vim-pythonx'
 Plug 'tpope/vim-repeat'
 Plug 'kevineato/vim-sandwich'
+Plug 'kevineato/vim-signature'
 Plug 'mhinz/vim-signify'
 Plug 'mhinz/vim-startify'
 Plug 'kana/vim-textobj-user'
@@ -307,7 +308,45 @@ nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>
 
 let g:skim_layout = { 'down': '~40%'  }
 
-function! s:my_skim_rg_handler(lines, has_column)
+" Color functions from fzf/skim
+function! s:get_color(attr, ...)
+  let gui = has('termguicolors') && &termguicolors
+  let fam = gui ? 'gui' : 'cterm'
+  let pat = gui ? '^#[a-f0-9]\+' : '^[0-9]\+$'
+  for group in a:000
+    let code = synIDattr(synIDtrans(hlID(group)), a:attr, fam)
+    if code =~? pat
+      return code
+    endif
+  endfor
+  return ''
+endfunction
+
+let s:ansi = {'black': 30, 'red': 31, 'green': 32, 'yellow': 33, 'blue': 34, 'magenta': 35, 'cyan': 36}
+
+function! s:csi(color, fg)
+  let prefix = a:fg ? '38;' : '48;'
+  if a:color[0] == '#'
+    return prefix.'2;'.join(map([a:color[1:2], a:color[3:4], a:color[5:6]], 'str2nr(v:val, 16)'), ';')
+  endif
+  return prefix.'5;'.a:color
+endfunction
+
+function! s:ansi(str, group, default, ...)
+  let fg = s:get_color('fg', a:group)
+  let bg = s:get_color('bg', a:group)
+  let color = (empty(fg) ? s:ansi[a:default] : s:csi(fg, 1)) .
+        \ (empty(bg) ? '' : ';'.s:csi(bg, 0))
+  return printf("\x1b[%s%sm%s\x1b[m", color, a:0 ? ';1' : '', a:str)
+endfunction
+
+for s:color_name in keys(s:ansi)
+  execute "function! s:".s:color_name."(str, ...)\n"
+        \ "  return s:ansi(a:str, get(a:, 1, ''), '".s:color_name."')\n"
+        \ "endfunction"
+endfor
+
+function! s:skim_rg_handler(lines, has_column)
   if len(a:lines) < 2
     return
   endif
@@ -360,7 +399,7 @@ function! RipgrepSkim(query, args, do_curr_dir)
     let wrapped = s:skim_wrap('rg', opts, 'sink')
   else
     function! opts.sink(lines)
-      return s:my_skim_rg_handler(a:lines, self.column)
+      return s:skim_rg_handler(a:lines, self.column)
     endfunction
     let opts['sink*'] = remove(opts, 'sink')
     let wrapped = s:skim_wrap('rg', opts, 'sink*')
@@ -404,15 +443,75 @@ function! s:skim_buflist(do_mru)
   return filter(filtered, "filereadable(glob(v:val))")
 endfunction
 
+function! s:skim_delete_buffers(lines)
+  for line in a:lines
+    let b = matchstr(line, '\[\zs[0-9]*\ze\]')
+    execute 'bd' b
+  endfor
+  execute 'DBuffers'
+endfunction
+
+function! s:skim_format_mark(line)
+  return substitute(a:line, '\S', '\=s:yellow(submatch(0), "Number")', '')
+endfunction
+
+function! s:skim_mark_sink(line)
+  let marker = matchstr(a:line, '\S')
+  if index(split(b:SignatureIncludeMarks, '\zs'), marker) == -1
+    let item = split(a:line, '\s\+')
+    let item = map(item[1:2], 'str2nr(v:val)')
+    call cursor(item)
+    execute 'normal! zz'
+  else  
+    execute 'normal! `' . marker . 'zz'
+  endif
+endfunction
+
+function! s:skim_get_markers()
+  let list = signature#marker#List('', 0, 1)
+  let output = []
+  for item in list
+    let marker = s:yellow(item['text'][0], "Number")
+    let text = item['text'][3:]
+    let lnum = item['lnum']
+    let col = 1
+    let line = printf(" %s %6d %4d %s", marker, lnum, col, text)
+    call add(output, line)
+  endfor
+  return output
+endfunction
+
+function! s:skim_get_marks()
+  redir => cout
+  silent marks
+  redir END
+  let list = split(cout, "\n")
+  call extend(list[0:0], map(list[1:], 'v:val'))
+  let curr_marks = signature#mark#GetList('used', 'buf_curr')
+  call map(curr_marks, 'v:val[0]')
+  return extend(list[0:0], map(filter(list[1:], 'index(curr_marks, matchstr(v:val, "\\S")) != -1'), 's:skim_format_mark(v:val)'))
+endfunction
+
+command! SigMarks call skim#run(<SID>skim_wrap('marks', {
+      \   'source': extend(<SID>skim_get_marks(), <SID>skim_get_markers()),
+      \   'sink': function('s:skim_mark_sink'),
+      \   'options': [
+      \     '--no-multi', '--extended', '--ansi', '--tiebreak=index',
+      \     '--header-lines=1', '--tiebreak=begin', '--prompt', 'Marks> '
+      \   ]}))
 command! Mru call skim#run(<SID>skim_wrap('mru' ,{
       \   'source': reverse(<SID>skim_buflist(1)),
       \   'options': ['--multi'],
       \   'down': '40%'
       \ }))
 command! DBuffers call skim#run(<SID>skim_wrap('dBuffers', {
-      \   'source': reverse(<SID>skim_buflist(0)),
-      \   'sink': 'bd',
-      \   'options': ['--multi'],
+      \   'source': map(fzf#vim#_buflisted_sorted(), 'fzf#vim#_format_buffer(v:val)'),
+      \   'sink*': function('s:skim_delete_buffers'),
+      \   'options': [
+      \     '-x', '--tiebreak=index', '--header-lines=1', '--ansi', '-d', '\t',
+      \     '--with-nth', '3..', '-n', '2,1..2', '--prompt', 'Buf> ',
+      \     '--preview-window', '+{2}-/2'
+      \   ],
       \   'down': '40%'
       \ }))
 command! -bang -nargs=* RG call RipgrepSkim(<q-args>, '--column --line-number', <bang>0)
@@ -434,6 +533,7 @@ nnoremap <silent> <Leader>Fw :RGFiles <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>Fdw :RGFiles! <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>l :BLines<CR>
 nnoremap <silent> <Leader>L :Lines<CR>
+nnoremap <silent> <Leader>m :SigMarks<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " is.vim
@@ -830,6 +930,13 @@ let g:textobj_sandwich_function_searchlines = 2
 
 nmap s <Nop>
 xmap s <Nop>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-signature
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:SignatureMarkTextHLDynamic = 1
+let g:SignatureMarkerTextHLDynamic = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-signify
