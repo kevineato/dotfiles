@@ -461,6 +461,7 @@ function! s:skim_mark_sink(line)
     let item = split(a:line, '\s\+')
     let item = map(item[1:2], 'str2nr(v:val)')
     call cursor(item)
+    call search('\S', '', item[0])
     execute 'normal! zz'
   else  
     execute 'normal! `' . marker . 'zz'
