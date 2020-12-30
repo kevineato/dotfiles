@@ -936,6 +936,7 @@ xmap s <Nop>
 " vim-signature
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+let g:SignatureForceRemoveGlobal = 1
 let g:SignatureMarkTextHLDynamic = 1
 let g:SignatureMarkerTextHLDynamic = 1
 
