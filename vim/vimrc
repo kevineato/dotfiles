@@ -11,7 +11,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tjdevries/coc-zsh'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
-Plug 'vim-scripts/DoxygenToolkit.vim'
+Plug 'kevineato/DoxygenToolkit.vim'
 Plug 'mattn/emmet-vim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'sainnhe/gruvbox-material'
@@ -188,14 +188,14 @@ let g:markdown_fenced_languages = [
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
-    let word = expand('<cword>')
-    if match(getline('.'), word . '(') != -1
-      execute 'h ' . word . '()'
-    elseif match(getline('.'), 'set ' . word) != -1 ||
-          \ match(getline('.'), "'" . word . "'") != -1
-      execute 'h ' . "'" . word . "'"
+    let l:word = expand('<cword>')
+    if match(getline('.'), l:word . '(') != -1
+      execute 'h ' . l:word . '()'
+    elseif match(getline('.'), 'set ' . l:word) != -1 ||
+          \ match(getline('.'), "'" . l:word . "'") != -1
+      execute 'h ' . "'" . l:word . "'"
     else
-      execute 'h ' . word
+      execute 'h ' . l:word
     endif
   else
     call CocActionAsync('doHover')
@@ -275,12 +275,12 @@ augroup end
 let g:DoxygenToolkit_briefTag_pre = ""
 
 function! s:shortDoxy()
-  let original_startCommentTag = g:DoxygenToolkit_startCommentTag
-  let original_interCommentTag = g:DoxygenToolkit_interCommentTag
-  let original_endCommentTag = g:DoxygenToolkit_endCommentTag
-  let original_startCommentBlock = g:DoxygenToolkit_startCommentBlock
-  let original_interCommentBlock = g:DoxygenToolkit_interCommentBlock
-  let original_endCommentBlock = g:DoxygenToolkit_endCommentBlock
+  let l:original_startCommentTag = g:DoxygenToolkit_startCommentTag
+  let l:original_interCommentTag = g:DoxygenToolkit_interCommentTag
+  let l:original_endCommentTag = g:DoxygenToolkit_endCommentTag
+  let l:original_startCommentBlock = g:DoxygenToolkit_startCommentBlock
+  let l:original_interCommentBlock = g:DoxygenToolkit_interCommentBlock
+  let l:original_endCommentBlock = g:DoxygenToolkit_endCommentBlock
 
   let g:DoxygenToolkit_startCommentTag = "/// "
   let g:DoxygenToolkit_interCommentTag = "/// "
@@ -291,12 +291,12 @@ function! s:shortDoxy()
 
   execute "Dox"
 
-  let g:DoxygenToolkit_startCommentTag = original_startCommentTag
-  let g:DoxygenToolkit_interCommentTag = original_interCommentTag
-  let g:DoxygenToolkit_endCommentTag = original_endCommentTag
-  let g:DoxygenToolkit_startCommentBlock = original_startCommentBlock
-  let g:DoxygenToolkit_interCommentBlock = original_interCommentBlock
-  let g:DoxygenToolkit_endCommentBlock = original_endCommentBlock
+  let g:DoxygenToolkit_startCommentTag = l:original_startCommentTag
+  let g:DoxygenToolkit_interCommentTag = l:original_interCommentTag
+  let g:DoxygenToolkit_endCommentTag = l:original_endCommentTag
+  let g:DoxygenToolkit_startCommentBlock = l:original_startCommentBlock
+  let g:DoxygenToolkit_interCommentBlock = l:original_interCommentBlock
+  let g:DoxygenToolkit_endCommentBlock = l:original_endCommentBlock
 endfunction
 
 nnoremap <silent> <Leader>ad :<C-u>Dox<CR>
@@ -310,39 +310,48 @@ let g:skim_layout = { 'down': '~40%'  }
 
 " Color functions from fzf/skim
 function! s:get_color(attr, ...)
-  let gui = has('termguicolors') && &termguicolors
-  let fam = gui ? 'gui' : 'cterm'
-  let pat = gui ? '^#[a-f0-9]\+' : '^[0-9]\+$'
-  for group in a:000
-    let code = synIDattr(synIDtrans(hlID(group)), a:attr, fam)
-    if code =~? pat
-      return code
+  let l:gui = has('termguicolors') && &termguicolors
+  let l:fam = l:gui ? 'gui' : 'cterm'
+  let l:pat = l:gui ? '^#[a-f0-9]\+' : '^[0-9]\+$'
+  for l:group in a:000
+    let l:code = synIDattr(synIDtrans(hlID(l:group)), a:attr, l:fam)
+    if l:code =~? l:pat
+      return l:code
     endif
   endfor
   return ''
 endfunction
 
-let s:ansi = {'black': 30, 'red': 31, 'green': 32, 'yellow': 33, 'blue': 34, 'magenta': 35, 'cyan': 36}
+let s:ansi = {
+      \   'black': 30,
+      \   'red': 31,
+      \   'green': 32,
+      \   'yellow': 33,
+      \   'blue': 34,
+      \   'magenta': 35,
+      \   'cyan': 36
+      \ }
 
 function! s:csi(color, fg)
-  let prefix = a:fg ? '38;' : '48;'
+  let l:prefix = a:fg ? '38;' : '48;'
   if a:color[0] == '#'
-    return prefix.'2;'.join(map([a:color[1:2], a:color[3:4], a:color[5:6]], 'str2nr(v:val, 16)'), ';')
+    return l:prefix . '2;' . join(map([a:color[1:2], a:color[3:4], a:color[5:6]],
+          \ 'str2nr(v:val, 16)'), ';')
   endif
-  return prefix.'5;'.a:color
+  return l:prefix . '5;' . a:color
 endfunction
 
 function! s:ansi(str, group, default, ...)
-  let fg = s:get_color('fg', a:group)
-  let bg = s:get_color('bg', a:group)
-  let color = (empty(fg) ? s:ansi[a:default] : s:csi(fg, 1)) .
-        \ (empty(bg) ? '' : ';'.s:csi(bg, 0))
-  return printf("\x1b[%s%sm%s\x1b[m", color, a:0 ? ';1' : '', a:str)
+  let l:fg = s:get_color('fg', a:group)
+  let l:bg = s:get_color('bg', a:group)
+  let l:color = (empty(l:fg) ? s:ansi[a:default] : s:csi(l:fg, 1)) .
+        \ (empty(l:bg) ? '' : ';'.s:csi(l:bg, 0))
+  return printf("\x1b[%s%sm%s\x1b[m", l:color, a:0 ? ';1' : '', a:str)
 endfunction
 
 for s:color_name in keys(s:ansi)
-  execute "function! s:".s:color_name."(str, ...)\n"
-        \ "  return s:ansi(a:str, get(a:, 1, ''), '".s:color_name."')\n"
+  execute "function! s:" . s:color_name . "(str, ...)\n"
+        \ "  return s:ansi(a:str, get(a:, 1, ''), '" . s:color_name . "')\n"
         \ "endfunction"
 endfor
 
@@ -352,39 +361,40 @@ function! s:skim_rg_handler(lines, has_column)
   endif
 
   function! s:my_rg_to_qf(line, has_column)
-    let parts = split(a:line, '[^:]\zs:\ze[^:]')
-    let text = join(parts[(a:has_column ? 3 : 2):], ':')
-    let dict = {'filename': &acd ? fnamemodify(parts[0], ':p') : parts[0], 'lnum': parts[1], 'text': text}
+    let l:parts = split(a:line, '[^:]\zs:\ze[^:]')
+    let l:text = join(l:parts[(a:has_column ? 3 : 2):], ':')
+    let l:dict = {'filename': &acd ? fnamemodify(l:parts[0], ':p') : l:parts[0],
+          \ 'lnum': l:parts[1], 'text': l:text}
     if a:has_column
-      let dict.col = parts[2]
+      let l:dict.col = l:parts[2]
     endif
-    return dict
+    return l:dict
   endfunction
 
-  let list = map(filter(a:lines[1:], 'len(v:val)'), 's:my_rg_to_qf(v:val, a:has_column)')
+  let l:list = map(filter(a:lines[1:], 'len(v:val)'), 's:my_rg_to_qf(v:val, a:has_column)')
 
-  if len(list) == 1
-    execute 'e' list[0].filename
-    call cursor([list[0].lnum, list[0].col])
+  if len(l:list) == 1
+    execute 'e' l:list[0].filename
+    call cursor([l:list[0].lnum, l:list[0].col])
     call feedkeys('zz')
     return
   endif
 
-  call setqflist(list)
+  call setqflist(l:list)
   call s:sortUniqQFList()
   execute 'CocList -A --normal quickfix'
 endfunction
 
 function! RipgrepSkim(query, args, do_curr_dir)
-  let command_fmt = 'rg --pcre2 --no-heading --color=always --smart-case %s "{}" %s'
-  let curr_dir = a:do_curr_dir ? expand('%:h') : '.'
-  let rg_command = printf(command_fmt, a:args, curr_dir)
+  let l:command_fmt = 'rg --pcre2 --no-heading --color=always --smart-case %s "{}" %s'
+  let l:curr_dir = a:do_curr_dir ? expand('%:h') : '.'
+  let l:rg_command = printf(l:command_fmt, a:args, l:curr_dir)
 
-  let has_column = a:args =~# '--column'
-  let opts = {
-  \   'column': has_column,
+  let l:has_column = a:args =~# '--column'
+  let l:opts = {
+  \   'column': l:has_column,
   \   'options': [
-  \     '-i', '-c', rg_command,
+  \     '-i', '-c', l:rg_command,
   \     '--ansi', '--cmd-prompt', 'rg> ',
   \     '--multi', '-d', ':', '--bind',
   \     'alt-a:select-all,alt-d:deselect-all,ctrl-f:preview-down,ctrl-b:preview-up,ctrl-h:preview-left,ctrl-l:preview-right',
@@ -394,17 +404,17 @@ function! RipgrepSkim(query, args, do_curr_dir)
   \   'source': 'none'
   \ }
 
-  if !has_column
-    let opts['sink'] = 'e'
-    let wrapped = s:skim_wrap('rg', opts, 'sink')
+  if !l:has_column
+    let l:opts['sink'] = 'e'
+    let l:wrapped = s:skim_wrap('rg', l:opts, 'sink')
   else
-    function! opts.sink(lines)
+    function! l:opts.sink(lines)
       return s:skim_rg_handler(a:lines, self.column)
     endfunction
-    let opts['sink*'] = remove(opts, 'sink')
-    let wrapped = s:skim_wrap('rg', opts, 'sink*')
+    let l:opts['sink*'] = remove(l:opts, 'sink')
+    let l:wrapped = s:skim_wrap('rg', l:opts, 'sink*')
   endif
-  call skim#run(wrapped)
+  call skim#run(l:wrapped)
   if !empty(a:query)
     sleep 100m
     call feedkeys(a:query, 't')
@@ -413,40 +423,40 @@ endfunction
 
 function! s:skim_wrap(name, opts, ...)
   if a:0
-    let sinks = {}
-    for key in split(a:1)
-      let sinks[key] = remove(a:opts, key)
+    let l:sinks = {}
+    for l:key in split(a:1)
+      let l:sinks[key] = remove(a:opts, l:key)
     endfor
   endif
-  let wrapped = skim#wrap(a:name, fzf#vim#with_preview(a:opts, 'right:50%', 'alt-h'))
+  let l:wrapped = skim#wrap(a:name, fzf#vim#with_preview(a:opts, 'right:50%', 'alt-h'))
   if a:0
-    for key in keys(sinks)
-      let wrapped[key] = sinks[key]
+    for l:key in keys(l:sinks)
+      let l:wrapped[key] = l:sinks[l:key]
     endfor
   endif
-  return wrapped
+  return l:wrapped
 endfunction
 
 function! s:skim_buflist(do_mru)
   if a:do_mru
-    redir => ls
+    redir => l:ls
     silent ls!
     redir END
-    let filtered = filter(split(ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
-    let filtered = map(filtered, "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
-    return filter(filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
+    let l:filtered = filter(split(l:ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
+    let l:filtered = map(l:filtered, "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
+    return filter(l:filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
   endif
-  redir => ls
+  redir => l:ls
   silent ls
   redir END
-  let filtered = map(split(ls, '\n'), "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
-  return filter(filtered, "filereadable(glob(v:val))")
+  let l:filtered = map(split(l:ls, '\n'), "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
+  return filter(l:filtered, "filereadable(glob(v:val))")
 endfunction
 
 function! s:skim_delete_buffers(lines)
-  for line in a:lines
-    let b = matchstr(line, '\[\zs[0-9]*\ze\]')
-    execute 'bd' b
+  for l:line in a:lines
+    let l:b = matchstr(l:line, '\[\zs[0-9]*\ze\]')
+    execute 'bd' l:b
   endfor
   execute 'DBuffers'
 endfunction
@@ -456,41 +466,41 @@ function! s:skim_format_mark(line)
 endfunction
 
 function! s:skim_mark_sink(line)
-  let marker = matchstr(a:line, '\S')
-  if index(split(b:SignatureIncludeMarks, '\zs'), marker) == -1
-    let item = split(a:line, '\s\+')
-    let item = map(item[1:2], 'str2nr(v:val)')
-    call cursor(item)
-    call search('\S', '', item[0])
+  let l:marker = matchstr(a:line, '\S')
+  if index(split(b:SignatureIncludeMarks, '\zs'), l:marker) == -1
+    let l:item = split(a:line, '\s\+')
+    let l:item = map(l:item[1:2], 'str2nr(v:val)')
+    call cursor(l:item)
+    call search('\S', '', l:item[0])
     execute 'normal! zz'
   else  
-    execute 'normal! `' . marker . 'zz'
+    execute 'normal! `' . l:marker . 'zz'
   endif
 endfunction
 
 function! s:skim_get_markers()
-  let list = signature#marker#List('', 0, 1)
-  let output = []
-  for item in list
-    let marker = s:yellow(item['text'][0], "Number")
-    let text = item['text'][3:]
-    let lnum = item['lnum']
-    let col = 1
-    let line = printf(" %s %6d %4d %s", marker, lnum, col, text)
-    call add(output, line)
+  let l:list = signature#marker#List('', 0, 1)
+  let l:output = []
+  for l:item in l:list
+    let l:marker = s:yellow(l:item['text'][0], "Number")
+    let l:lnum = l:item['lnum']
+    let l:col = 1
+    let l:text = l:item['text'][3:]
+    let l:line = printf(" %s %6d %4d %s", l:marker, l:lnum, l:col, l:text)
+    call add(l:output, l:line)
   endfor
-  return output
+  return l:output
 endfunction
 
 function! s:skim_get_marks()
-  redir => cout
+  redir => l:cout
   silent marks
   redir END
-  let list = split(cout, "\n")
-  call extend(list[0:0], map(list[1:], 'v:val'))
-  let curr_marks = signature#mark#GetList('used', 'buf_curr')
-  call map(curr_marks, 'v:val[0]')
-  return extend(list[0:0], map(filter(list[1:], 'index(curr_marks, matchstr(v:val, "\\S")) != -1'), 's:skim_format_mark(v:val)'))
+  let l:list = split(l:cout, "\n")
+  call extend(l:list[0:0], map(l:list[1:], 'v:val'))
+  let l:curr_marks = signature#mark#GetList('used', 'buf_curr')
+  call map(l:curr_marks, 'v:val[0]')
+  return extend(l:list[0:0], map(filter(l:list[1:], 'index(curr_marks, matchstr(v:val, "\\S")) != -1'), 's:skim_format_mark(v:val)'))
 endfunction
 
 command! SigMarks call skim#run(<SID>skim_wrap('marks', {
@@ -572,49 +582,49 @@ let g:NERDSpaceDelims = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! s:align_comment()
-  let save_pos = getpos('.')[1:2]
-  let tab_intro = "call Tabularize('/.*\\*/l1')"
-  let tab_param = "call Tabularize('/.*@t\\?param \\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
-  let tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs \\?/l0')"
+  let l:save_pos = getpos('.')[1:2]
+  let l:tab_intro = "call Tabularize('/.*\\*/l1')"
+  let l:tab_param = "call Tabularize('/.*@t\\?param \\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
+  let l:tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs \\?/l0')"
 
   if getline('.') =~# '\s*\/\*\*'
-    let c_begin = getpos('.')[1]
+    let l:c_begin = getpos('.')[1]
   else
-    let c_begin = search('\/\*\*', 'bcn')
+    let l:c_begin = search('\/\*\*', 'bcn')
   endif
 
   if getline('.') =~# '\s*\*\+/'
-    let c_end = getpos('.')[1]
+    let l:c_end = getpos('.')[1]
   else
-    let c_end = search('\*\/', 'cn')
+    let l:c_end = search('\*\/', 'cn')
   endif
 
-  let prev_text = getline(c_begin, c_end)
-  let curr_text = ['']
+  let l:prev_text = getline(l:c_begin, l:c_end)
+  let l:curr_text = ['']
 
-  while curr_text != prev_text
+  while l:curr_text != l:prev_text
 
-    let prev_text = getline(c_begin, c_end)
+    let l:prev_text = getline(l:c_begin, l:c_end)
 
-    if c_begin + 1 != c_end - 1
-      execute (c_begin + 1) . ',' . (c_end - 1) . tab_intro
+    if l:c_begin + 1 != l:c_end - 1
+      execute (l:c_begin + 1) . ',' . (l:c_end - 1) . l:tab_intro
     endif
-    call cursor(c_begin, save_pos[1])
-    if search('@t\?param', '', c_end)
-      let p_begin = line('.')
-      while search('@t\?param', '', c_end)
+    call cursor(l:c_begin, l:save_pos[1])
+    if search('@t\?param', '', l:c_end)
+      let l:p_begin = line('.')
+      while search('@t\?param', '', l:c_end)
       endwhile
-      if search('@return', '', c_end)
-        let p_end = line('.') - 1
+      if search('@return', '', l:c_end)
+        let l:p_end = line('.') - 1
       else
-        let p_end = c_end - 1
+        let l:p_end = l:c_end - 1
       endif
-      execute (p_begin - 1) . ',' . p_end . tab_param
+      execute (l:p_begin - 1) . ',' . l:p_end . l:tab_param
     endif
-    if search('@return', 'c', c_end)
-      let r_begin = line('.')
-      if r_begin != c_end - 1
-        execute r_begin . ',' . (c_end - 1) . tab_ret
+    if search('@return', 'c', l:c_end)
+      let l:r_begin = line('.')
+      if l:r_begin != l:c_end - 1
+        execute l:r_begin . ',' . (l:c_end - 1) . l:tab_ret
       endif
     endif
 
@@ -622,25 +632,25 @@ function! s:align_comment()
     silent execute "normal \<Plug>(coc-format-selected)"
     sleep 100m
 
-    call cursor(save_pos)
+    call cursor(l:save_pos)
 
     if getline('.') =~# '\s*\/\*\*'
-      let c_begin = getpos('.')[1]
+      let l:c_begin = getpos('.')[1]
     else
-      let c_begin = search('\/\*\*', 'bcn')
+      let l:c_begin = search('\/\*\*', 'bcn')
     endif
 
     if getline('.') =~# '\s*\*\+/'
-      let c_end = getpos('.')[1]
+      let l:c_end = getpos('.')[1]
     else
-      let c_end = search('\*\/', 'cn')
+      let l:c_end = search('\*\/', 'cn')
     endif
 
-    let curr_text = getline(c_begin, c_end)
+    let l:curr_text = getline(l:c_begin, l:c_end)
   endwhile
-  " let c_begin = search('\/\*\*', 'bc')
+  " let l:c_begin = search('\/\*\*', 'bc')
   " normal! m<
-  " let c_end = search('\*\/', 'c')
+  " let l:c_end = search('\*\/', 'c')
   " normal! m>gv
   " if visualmode() ==# 'v'
     " normal! V
@@ -695,29 +705,29 @@ if !empty(glob((has('nvim') ? stdpath('data') : '~/.vim') . '/plugged/tinykeymap
     else
       let a:mappings['options'] = { 'name': a:prefix }
     endif
-    let ind = 0
-    for [key, val] in items(a:mappings['startmaps'])
-      let temp = deepcopy(a:mappings['options'])
-      if has_key(val, 'start')
-        let temp['start'] = val['start']
+    let l:ind = 0
+    for [l:key, l:val] in items(a:mappings['startmaps'])
+      let l:temp = deepcopy(a:mappings['options'])
+      if has_key(l:val, 'start')
+        let l:temp['start'] = l:val['start']
       endif
-      if has_key(val, 'stop')
-        let temp['stop'] = val['stop']
+      if has_key(l:val, 'stop')
+        let l:temp['stop'] = l:val['stop']
       else
-        let temp['stop'] = 'mode'
+        let l:temp['stop'] = 'mode'
       endif
-      if has_key(val, 'after')
-        let temp['after'] = val['after']
+      if has_key(l:val, 'after')
+        let l:temp['after'] = l:val['after']
       endif
-      call tinykeymap#EnterMap(a:prefix . ind, key, temp)
-      for [m_key, m_val] in items(a:mappings['maps'])
-        if type(m_val) == v:t_string
-          call tinykeymap#Map(a:prefix . ind, m_key, m_val)
-        elseif type(m_val) == v:t_dict
-          call tinykeymap#Map(a:prefix . ind, m_key, m_val['cmd'], m_val['options'])
+      call tinykeymap#EnterMap(a:prefix . l:ind, l:key, l:temp)
+      for [l:m_key, l:m_val] in items(a:mappings['maps'])
+        if type(l:m_val) == v:t_string
+          call tinykeymap#Map(a:prefix . l:ind, l:m_key, l:m_val)
+        elseif type(l:m_val) == v:t_dict
+          call tinykeymap#Map(a:prefix . l:ind, l:m_key, l:m_val['cmd'], l:m_val['options'])
         endif
       endfor
-      let ind += 1
+      let l:ind += 1
     endfor
   endfunction
 
@@ -1007,8 +1017,8 @@ call textobj#user#plugin('comment', {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 function! s:better_g_under()
-  let col = col('.') - 1
-  if getline('.')[0:col] =~# '^\s*$'
+  let l:col = col('.') - 1
+  if getline('.')[0:l:col] =~# '^\s*$'
     return "^"
   else
     return "g_"
@@ -1016,8 +1026,8 @@ function! s:better_g_under()
 endfunction
 
 function! s:better_zero()
-  let col = col('.') - 2
-  if col < 0 || getline('.')[0:col] =~# '^\s*$'
+  let l:col = col('.') - 2
+  if l:col < 0 || getline('.')[0:l:col] =~# '^\s*$'
     return "0"
   else
     return "^"
@@ -1025,14 +1035,14 @@ function! s:better_zero()
 endfunction
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1] =~# '\s'
+  let l:col = col('.') - 1
+  return !l:col || getline('.')[l:col - 1] =~# '\s'
 endfunction
 
 function! s:cmake_format()
-  let save_pos = getpos('.')[1:2]
+  let l:save_pos = getpos('.')[1:2]
   execute '%!cmake-format %'
-  call cursor(save_pos)
+  call cursor(l:save_pos)
 endfunction
 
 function! s:edit_impl(header_name, impl_name)
@@ -1048,15 +1058,15 @@ function! s:edit_impl(header_name, impl_name)
 endfunction
 
 function! GetVisual()
-  let [line_start, column_start] = getpos("'<")[1:2]
-  let [line_end, column_end] = getpos("'>")[1:2]
-  let lines = getline(line_start, line_end)
-  if len(lines) == 0
+  let [l:line_start, l:column_start] = getpos("'<")[1:2]
+  let [l:line_end, l:column_end] = getpos("'>")[1:2]
+  let l:lines = getline(l:line_start, l:line_end)
+  if len(l:lines) == 0
     return ''
   endif
-  let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-  let lines[0] = lines[0][column_start - 1:]
-  return join(lines, "\n")
+  let l:lines[-1] = l:lines[-1][:l:column_end - (&selection == 'inclusive' ? 1 : 2)]
+  let l:lines[0] = l:lines[0][l:column_start - 1:]
+  return join(l:lines, "\n")
 endfunction
 
 function! s:last_buf() abort
@@ -1068,15 +1078,15 @@ function! s:last_buf() abort
 endfunction
 
 function! s:make_backup(file_name) abort
-  let full_name = fnamemodify(a:file_name, ':p')
-  let backup_name = full_name . '.bak'
-  silent! execute '!cp ' . full_name . ' ' . backup_name
+  let l:full_name = fnamemodify(a:file_name, ':p')
+  let l:backup_name = l:full_name . '.bak'
+  silent! execute '!cp ' . l:full_name . ' ' . l:backup_name
 endfunction
 
 function! s:safe_close() abort
-  let curr_buf = bufnr()
+  let l:curr_buf = bufnr()
   call s:last_buf()
-  if curr_buf == bufnr()
+  if l:curr_buf == bufnr()
     bd
   else
     bd #
@@ -1085,28 +1095,28 @@ endfunction
 
 function! s:scratch(wipe_buffer, rng, start, end, ...)
   if a:wipe_buffer
-    for win in range(1, winnr('$'))
-      if getwinvar(win, 'scratch')
-        execute win . 'windo close'
+    for l:win in range(1, winnr('$'))
+      if getwinvar(l:win, 'scratch')
+        execute l:win . 'windo close'
       endif
     endfor
   endif
 	if a:0 && a:1 =~ '^!'
-		let cmd = a:1 =~' %'
+		let l:cmd = a:1 =~' %'
 			\ ? matchstr(substitute(a:1, ' %', ' ' . expand('%:p'), ''), '^!\zs.*')
 			\ : matchstr(a:1, '^!\zs.*')
 		if a:rng == 0
-			let output = systemlist(cmd)
+			let l:output = systemlist(l:cmd)
 		else
-			let joined_lines = join(getline(a:start, a:end), '\n')
-			let cleaned_lines = substitute(shellescape(joined_lines), "'\\\\''", "\\\\'", 'g')
-			let output = systemlist(cmd . " <<< $" . cleaned_lines)
+			let l:joined_lines = join(getline(a:start, a:end), '\n')
+			let l:cleaned_lines = substitute(shellescape(l:joined_lines), "'\\\\''", "\\\\'", 'g')
+			let l:output = systemlist(l:cmd . " <<< $" . l:cleaned_lines)
 		endif
   elseif a:0
-		redir => output
+		redir => l:output
 		execute a:1
 		redir END
-		let output = split(output, "\n")
+		let l:output = split(l:output, "\n")
 	endif
   if a:wipe_buffer
     vnew
@@ -1117,7 +1127,7 @@ function! s:scratch(wipe_buffer, rng, start, end, ...)
     setlocal buftype=nofile bufhidden=hide noswapfile
   endif
   if a:0
-    call setline(1, output)
+    call setline(1, l:output)
   endif
 endfunction
 command! -bang -nargs=* -complete=command -bar -range Scratch silent call <SID>scratch(<bang>0, <range>, <line1>, <line2>, <q-args>)
@@ -1132,23 +1142,23 @@ endfunction
 
 function! s:sortUniqQFList(...)
   if a:0
-    let sortedList = sort(getloclist(), 's:compareQuickfixEntries')
+    let l:sorted_list = sort(getloclist(), 's:compareQuickfixEntries')
   else
-    let sortedList = sort(getqflist(), 's:compareQuickfixEntries')
+    let l:sorted_list = sort(getqflist(), 's:compareQuickfixEntries')
   endif
-  let uniqedList = []
-  let last = ''
-  for item in sortedList
-    let this = bufname(item.bufnr) . "\t" . item.lnum
-    if this !=# last
-      call add(uniqedList, item)
-      let last = this
+  let l:uniqed_list = []
+  let l:last = ''
+  for l:item in l:sorted_list
+    let l:this = bufname(l:item.bufnr) . "\t" . l:item.lnum
+    if l:this !=# l:last
+      call add(l:uniqed_list, l:item)
+      let l:last = l:this
     endif
   endfor
   if a:0
-    call setloclist(uniqedList)
+    call setloclist(l:uniqed_list)
   else
-    call setqflist(uniqedList)
+    call setqflist(l:uniqed_list)
   endif
 endfunction
 
@@ -1245,14 +1255,14 @@ function! s:autoSaveWinView()
 endfunction
 
 function! s:autoRestoreWinView()
-  let buf = bufnr("%")
-  if exists("w:SavedBufView") && has_key(w:SavedBufView, buf)
-    let v = winsaveview()
-    let atStartOfFile = v.lnum == 1 && v.col == 0
-    if atStartOfFile && !&diff
-      call winrestview(w:SavedBufView[buf])
+  let l:buf = bufnr("%")
+  if exists("w:SavedBufView") && has_key(w:SavedBufView, l:buf)
+    let l:v = winsaveview()
+    let l:atStartOfFile = l:v.lnum == 1 && l:v.col == 0
+    if l:atStartOfFile && !&diff
+      call winrestview(w:SavedBufView[l:buf])
     endif
-    unlet w:SavedBufView[buf]
+    unlet w:SavedBufView[l:buf]
   endif
 endfunction
 
