@@ -214,8 +214,8 @@ nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
 nmap <silent> <Space>qf <Plug>(coc-fix-current)
 nmap <silent> <Space>v <Plug>(coc-format-selected)
 nmap <silent> <Leader>rn <Plug>(coc-rename)
-nnoremap <expr> <C-f> coc#float#has_float() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <expr> <C-b> coc#float#has_float() ? coc#float#scroll(0) : "\<C-b>"
+nnoremap <expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
 nnoremap <silent> <Space>e :<C-u>CocCommand explorer --quit-on-open<CR>
 nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --quit-on-open --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
