@@ -62,6 +62,10 @@ def acc_spec_comm(snip, spec, comm_type):
         snip.rv  = '/**' + prolog_stars + '*******************'
         snip    += ' * ' + class_spec   + ' member functions *'
         snip    += ' **' + prolog_stars + '******************/'
+    elif types[0] == 'd':
+        snip.rv  = '/**' + prolog_stars + '***************************'
+        snip    += ' * ' + class_spec   + ' deleted member functions *'
+        snip    += ' **' + prolog_stars + '**************************/'
     elif types[0] == 'p':
         snip.rv  = '/**' + prolog_stars + '********************'
         snip    += ' * ' + class_spec   + ' virtual functions *'
@@ -73,7 +77,7 @@ def acc_spec_comm(snip, spec, comm_type):
             snip += '/**' + prolog_stars + '********'
             snip += ' * ' + class_spec   + ' types *'
             snip += ' **' + prolog_stars + '*******/'
-        elif types[0] == 'x':
+        elif types[i] == 'x':
             snip += '/**' + prolog_stars + '************'
             snip += ' * ' + class_spec   + ' constants *'
             snip += ' **' + prolog_stars + '***********/'
@@ -89,7 +93,11 @@ def acc_spec_comm(snip, spec, comm_type):
             snip += '/**' + prolog_stars + '*******************'
             snip += ' * ' + class_spec   + ' member functions *'
             snip += ' **' + prolog_stars + '******************/'
-        elif types[0] == 'p':
+        elif types[i] == 'd':
+            snip += '/**' + prolog_stars + '***************************'
+            snip += ' * ' + class_spec   + ' deleted member functions *'
+            snip += ' **' + prolog_stars + '**************************/'
+        elif types[i] == 'p':
             snip += '/**' + prolog_stars + '********************'
             snip += ' * ' + class_spec   + ' virtual functions *'
             snip += ' **' + prolog_stars + '*******************/'
@@ -416,16 +424,16 @@ ${VISUAL}$0
 }  // namespace $1
 endsnippet
 
-snippet "priv([tcvfp]+)?" "private access" br
-`!p acc_spec_comm(snip, 'private', match.groups('txcvfp'))`
+snippet "priv([txcvfdp]+)?" "private access" br
+`!p acc_spec_comm(snip, 'private', match.groups('txcvfdp'))`
 endsnippet
 
-snippet "prot([txcvfp]+)?" "protected access" br
-`!p acc_spec_comm(snip, 'protected', match.groups('txcvfp'))`
+snippet "prot([txcvfdp]+)?" "protected access" br
+`!p acc_spec_comm(snip, 'protected', match.groups('txcvfdp'))`
 endsnippet
 
-snippet "pub([txcvfp]+)?" "public access" br
-`!p acc_spec_comm(snip, 'public', match.groups('txcvfp'))`
+snippet "pub([txcvfdp]+)?" "public access" br
+`!p acc_spec_comm(snip, 'public', match.groups('txcvfdp'))`
 endsnippet
 
 snippet stru "struct" b
