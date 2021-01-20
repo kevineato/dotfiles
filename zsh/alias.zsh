@@ -3,6 +3,7 @@ if [[ -x "$(whence -p bat)" ]]; then
   alias -g B='| bat'
   alias -g BB='|& bat'
 fi
+alias -g BG='&> /dev/null &|'
 if [[ -x "$(whence -p fzf)" ]]; then alias -g F='| fzf'; fi
 alias -g L='| less -iR'
 alias -g LL='|& less -iR'
