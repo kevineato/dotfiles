@@ -315,6 +315,12 @@ bind 7 set key-table root \; select-window -t :=7
 bind 8 set key-table root \; select-window -t :=8
 bind 9 set key-table root \; select-window -t :=9
 
+# resize panes
+bind H resize-pane -L
+bind J resize-pane -D
+bind K resize-pane -U
+bind L resize-pane -R
+
 bind , set key-table root \; command-prompt -I "#W" "rename-window -- '%%'"
 bind C-h swap-window -d -t ':-'
 bind C-j set key-table root \; choose-tree -w "join-pane -hd -s '%%'"
