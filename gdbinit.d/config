@@ -1,0 +1,47 @@
+set case-sensitive off
+
+define downt
+  python
+output = run("info threads")
+output = output.split("\n")[1:-1]
+for i in range(len(output)):
+    if output[i].startswith("*"):
+        next_thread = output[(i - 1) % len(output)].lstrip().split(" ")[0]
+run("thread " + next_thread)
+  end
+end
+
+define upt
+  python
+output = run("info threads")
+output = output.split("\n")[1:-1]
+for i in range(len(output)):
+    if output[i].startswith("*"):
+        next_thread = output[(i + 1) % len(output)].lstrip().split(" ")[0]
+run("thread " + next_thread)
+  end
+end
+
+define hookpost-frame
+  dashboard
+end
+
+define hookpost-up
+  dashboard
+end
+
+define hookpost-upt
+  dashboard
+end
+
+define hookpost-down
+  dashboard
+end
+
+define hookpost-downt
+  dashboard
+end
+
+define hookpost-thread
+  dashboard
+end
