@@ -386,7 +386,7 @@ function! s:skim_rg_handler(lines, has_column)
 endfunction
 
 function! RipgrepSkim(query, args, do_curr_dir)
-  let l:command_fmt = 'rg --pcre2 --no-heading --color=always --smart-case %s "{}" %s'
+  let l:command_fmt = 'rg --pcre2 --no-heading --color=always --smart-case %s {} %s'
   let l:curr_dir = a:do_curr_dir ? expand('%:h') : '.'
   let l:rg_command = printf(l:command_fmt, a:args, l:curr_dir)
 
