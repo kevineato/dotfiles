@@ -1,4 +1,5 @@
 [options]
+confirm_new_project = true
+confirm_new_tag = true
 log_current = true
 report_current = true
-
