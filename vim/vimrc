@@ -14,6 +14,7 @@ Plug 'lfilho/cosco.vim'
 Plug 'kevineato/DoxygenToolkit.vim'
 Plug 'mattn/emmet-vim'
 Plug 'gruvbox-community/gruvbox'
+Plug 'brooth/far.vim'
 Plug 'sainnhe/gruvbox-material'
 " Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
@@ -101,6 +102,7 @@ let g:gruvbox_material_background = 'hard'
 let g:gruvbox_material_current_word = 'underline'
 let g:gruvbox_material_visual = 'grey background'
 let g:gruvbox_material_diagnostic_line_highlight = 1
+let g:gruvbox_material_diagnostic_virtual_text = 'colored'
 colorscheme gruvbox-material
 
 set colorcolumn=80
@@ -121,7 +123,6 @@ set mouse=a
 set mousemodel=popup
 set nobackup
 set nohlsearch
-set noshowcmd
 set noshowmode
 set nowritebackup
 set number relativenumber
@@ -232,7 +233,6 @@ nnoremap <silent> <Space>sw :<C-u>CocSearch <C-r>=expand('<cword>')<CR><CR>
 vnoremap <silent> <Space>s :<C-u>CocSearch <C-r>=substitute(GetVisual(), ' ', '\\ ', 'g')<CR><CR>
 nnoremap <silent> <Space>S :<C-u>CocList -I -A --input=<C-r>=expand('<cword>')<CR> symbols<CR>
 nnoremap <silent> <Space>y :<C-u>CocList -A yank<CR>
-xnoremap <silent> <Space>y dk:CocList -A yank<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 omap ac <Plug>(coc-classobj-a)
 omap af <Plug>(coc-funcobj-a)
@@ -247,7 +247,7 @@ xmap if <Plug>(coc-funcobj-i)
 augroup mycocnvim
   autocmd!
   autocmd CursorHold * silent call CocActionAsync('highlight')
-  autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   autocmd FileType c,cpp,h,hpp nnoremap <silent> <Space>ss :<C-u>CocCommand clangd.switchSourceHeader<CR>
   autocmd FileType coc-explorer nnoremap <buffer> <silent> H
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['gotoParent'])<CR>
@@ -584,8 +584,8 @@ let g:NERDSpaceDelims = 1
 function! s:align_comment()
   let l:save_pos = getpos('.')[1:2]
   let l:tab_intro = "call Tabularize('/.*\\*/l1')"
-  let l:tab_param = "call Tabularize('/.*@t\\?param \\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
-  let l:tab_ret = "call Tabularize('/.*@return\\zs \\|\\*\\zs \\?/l0')"
+  let l:tab_param = "call Tabularize('/.*@t\\?param\\%(\\[.*]\\)\\? \\+\\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
+  let l:tab_ret = "call Tabularize('/.*@returns\\?\\zs \\|\\*\\zs \\?/l0')"
 
   if getline('.') =~# '\s*\/\*\*'
     let l:c_begin = getpos('.')[1]
@@ -619,7 +619,7 @@ function! s:align_comment()
       else
         let l:p_end = l:c_end - 1
       endif
-      execute (l:p_begin - 1) . ',' . l:p_end . l:tab_param
+      execute l:p_begin . ',' . l:p_end . l:tab_param
     endif
     if search('@return', 'c', l:c_end)
       let l:r_begin = line('.')
@@ -935,7 +935,11 @@ let g:sandwich#recipes += [
   \
   \   {'buns': ['<\s*', '\s*>'],   'nesting': 1, 'regex': 1,
   \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
-  \    'action': ['delete'], 'input': ['<']}
+  \    'action': ['delete'], 'input': ['<']},
+  \
+  \   {'buns': ['\s\@<=\%(\k\|:\)*<\s*', '\s*>'],   'nesting': 1, 'regex': 1,
+  \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
+  \    'action': ['delete'], 'input': ['p']}
   \ ]
 let g:textobj_sandwich_function_searchlines = 2
 
