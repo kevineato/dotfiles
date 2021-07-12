@@ -47,11 +47,6 @@ fi
 # ranger
 if [[ -x "$(whence -p ranger)" ]]; then alias r='ranger'; fi
 
-# skim
-if [[ -x "$(whence -p sk)" ]]; then
-  alias nve='$EDITOR $(sk)'
-fi
-
 # watson
 if [[ -x "$(whence -p watson)" ]]; then
   alias watson='watson --color'
@@ -61,6 +56,10 @@ if [[ -x "$(whence -p watson)" ]]; then
   alias wr='watson report'
   alias wrd='watson report --day'
   alias wrw='watson report --week'
+  alias wsng='watson start --no-gap'
+  alias wstart='watson start'
+  alias wstop='watson stop'
+  alias wstoa='watson stop --at'
   alias wswap='watson stop && watson start --no-gap'
 fi
 

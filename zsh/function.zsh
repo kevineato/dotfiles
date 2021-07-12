@@ -1,6 +1,28 @@
 # skim
 function cdd() {
-  cd "${$(fd --type d --hidden --follow --no-ignore '' ${1:-.} | sk):-.}"
+  local directory="$(fd --type d --hidden --follow --no-ignore '' ${1:-.} | sk --no-multi)"
+  if [[ -n $directory ]]; then
+    cd $directory
+  fi
+}
+
+function cdl() {
+  local directory="$(dirs -lv | sk --no-multi | cut -f 2)"
+  if [[ -n $directory ]]; then
+    cd $directory
+  fi
+}
+
+function cdv() {
+  local directory="$(dirs -v | sk --no-multi | cut -f 2 | sed -E "s@~@$HOME@")"
+  if [[ -n $directory ]]; then
+    cd $directory
+  fi
+}
+
+function nve() {
+  local files="$(fd --type f --hidden --follow --no-ignore '' ${1:-.} | sk)"
+  $EDITOR ${files:+"${(ps.\n.)files}"}
 }
 
 function fh() {
@@ -47,6 +69,18 @@ function _skim_compgen_dir() {
   command fd -H -L \
     -E '.git/*' -E '.hg/*' -E '.svn/*' -t d \
     -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
+}
+
+function wa() {
+  watson add -f "$1" -t "$2" "$3"
+}
+
+function wstaa() {
+  watson start --at "$1" "$2"
+}
+
+function wss() {
+  watson stop --at "$1" && watson start --no-gap "$2"
 }
 
 # _complete_plus_hist_args() {
