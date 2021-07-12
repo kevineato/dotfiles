@@ -119,6 +119,7 @@ set grepprg=rg\ --vimgrep
 set helpheight=9999
 set hidden
 set ignorecase
+set matchpairs+=<:>
 set mouse=a
 set mousemodel=popup
 set nobackup
@@ -153,6 +154,7 @@ let mapleader = ','
 augroup myautopairs
   autocmd!
   autocmd FileType c,cpp,h,hpp,java,snippets let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
+  autocmd FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'}, ["'"])
 augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -170,6 +172,7 @@ let g:coc_global_extensions = [
       \   "coc-lists",
       \   "coc-marketplace",
       \   "coc-python",
+      \   "coc-rust-analyzer",
       \   "coc-sh",
       \   "coc-tabnine",
       \   "coc-tsserver",
@@ -386,7 +389,7 @@ function! s:skim_rg_handler(lines, has_column)
 endfunction
 
 function! RipgrepSkim(query, args, do_curr_dir)
-  let l:command_fmt = 'rg --pcre2 --no-heading --color=always --smart-case %s {} %s'
+  let l:command_fmt = "rg --pcre2 --no-heading --color=always --smart-case %s '{}' %s"
   let l:curr_dir = a:do_curr_dir ? expand('%:h') : '.'
   let l:rg_command = printf(l:command_fmt, a:args, l:curr_dir)
 
@@ -860,6 +863,7 @@ augroup mydirvish
   " autocmd FileType dirvish nmap <buffer> <silent> x <Plug>(dirvish_arg):<C-u>bd <C-r>=bufnr(argv(argc() - 1))<CR><CR>
   " autocmd FileType dirvish xmap <buffer> <silent> x <Plug>(dirvish_arg):<C-u>bd <C-r>=bufnr(argv(argc() - 1))<CR><CR>
   autocmd FileType dirvish nnoremap <buffer> <silent> <Leader>bu :call <SID>make_backup('<C-r><C-f>')<CR>
+  autocmd FileType dirvish nnoremap <buffer> <silent> <Leader>sb :call <SID>swap_backup('<C-r><C-f>')<CR>
 augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -880,6 +884,13 @@ let g:EasyMotion_use_upper = 1
 nmap <Leader>s <Plug>(easymotion-sn)
 omap <Leader>s <Plug>(easymotion-sn)
 xmap <Leader>s <Plug>(easymotion-sn)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-lsp-cxx-highlight
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:lsp_cxx_hl_use_nvim_text_props = 1
+let g:lsp_cxx_hl_use_text_props = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-multiple-cursors
@@ -1085,6 +1096,21 @@ function! s:make_backup(file_name) abort
   let l:full_name = fnamemodify(a:file_name, ':p')
   let l:backup_name = l:full_name . '.bak'
   silent! execute '!cp ' . l:full_name . ' ' . l:backup_name
+endfunction
+
+function! s:swap_backup(file_name) abort
+  let l:full_name = fnamemodify(a:file_name, ':p')
+  let l:extension = fnamemodify(l:full_name, ':e')
+  if l:extension == 'bak'
+    let l:backup_name = l:full_name
+    let l:normal_name = fnamemodify(l:full_name, ':r')
+  else
+    let l:backup_name = l:full_name . '.bak'
+    let l:normal_name = l:full_name
+  endif
+  silent! execute '!mv ' . l:normal_name . ' ' . l:normal_name . '.bak2'
+  silent! execute '!mv ' . l:backup_name . ' ' . l:normal_name
+  silent! execute '!mv ' . l:normal_name . '.bak2 ' . l:backup_name
 endfunction
 
 function! s:safe_close() abort
