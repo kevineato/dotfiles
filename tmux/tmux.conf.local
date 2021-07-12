@@ -328,6 +328,7 @@ bind C-k set key-table root \; display-panes -d 0 "select-pane -t '%%' \; break-
 bind C-l swap-window -d -t ':+'
 bind Tab set key-table root \; last-window
 bind c set key-table root \; new-window -c "#{pane_current_path}"
+bind d set key-table root \; detach-client
 bind s set key-table root \; choose-tree -w "swap-window -s ':' -t '%%'"
 
 bind w set key-table root \; choose-tree -w
