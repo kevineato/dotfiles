@@ -41,6 +41,7 @@
   "coc.source.buffer.priority": 95,
   "coc.source.ultisnips.priority": 100,
   // "diagnostic.enable": false,
+  "diagnostic.refreshOnInsertMode": true,
   "diagnostic.separateRelatedInformationAsDiagnostics": true,
   "explorer.file.autoReveal": false,
   "explorer.icon.enableNerdfont": true,
