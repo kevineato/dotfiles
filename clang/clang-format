@@ -22,8 +22,10 @@ AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
+# AttributeMacros: ['']
 BinPackArguments: true
 BinPackParameters: true
+BitFieldColonSpacing: Both
 BreakBeforeBraces: Custom
 BraceWrapping:
   AfterCaseLabel: true
@@ -46,6 +48,7 @@ BraceWrapping:
   SplitEmptyNamespace: true
 BreakAfterJavaFieldAnnotations: true
 BreakBeforeBinaryOperators: None
+BreakBeforeConceptDeclarations: true
 BreakBeforeTernaryOperators: false
 BreakConstructorInitializers: AfterColon
 BreakInheritanceList: AfterColon
@@ -60,22 +63,29 @@ Cpp11BracedListStyle: false
 DeriveLineEnding: true
 DerivePointerAlignment: false
 DisableFormat: false
+EmptyLineBeforeAccessModifier: Always
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
+ForEachMacros:
+  - FOREACH
 IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^<.*\.(h|hpp)>'
     Priority: 1
     SortPriority: 2
+    CaseSensitive: true
   - Regex: '^<.*'
     Priority: 1
     SortPriority: 1
+    CaseSensitive: true
   - Regex: '".*catch.hpp"'
     Priority: 1
     SortPriority: 1
+    CaseSensitive: true
   - Regex: '".*"'
     Priority: 2
     SortPriority: 3
+    CaseSensitive: true
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IncludeIsMainSourceRegex: ''
 IndentCaseBlocks: false
@@ -83,9 +93,11 @@ IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
 IndentGotoLabels: false
 IndentPPDirectives: None
+IndentRequires: false
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertTrailingCommas: None
+# JavaImportGroups: ['']
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true
 KeepEmptyLinesAtTheStartOfBlocks: false
@@ -93,6 +105,7 @@ MacroBlockBegin: ''
 MacroBlockEnd: ''
 MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
+# NamespaceMacros: ['']
 ObjCBinPackProtocolList: Never
 ObjCBlockIndentWidth: 4
 ObjCBreakBeforeNestedBlockParam: true
@@ -105,14 +118,18 @@ PenaltyBreakFirstLessLess: 120
 PenaltyBreakString: 1000
 PenaltyBreakTemplateDeclaration: 10
 PenaltyExcessCharacter: 1000000
+PenaltyIndentedWhitespace: 0
 PenaltyReturnTypeOnItsOwnLine: 200
 PointerAlignment: Left
+# RawStringFormats: [RawStringFormat]
 ReflowComments: true
 SortIncludes: true
+SortJavaStaticImport: Before
 SortUsingDeclarations: false
-SpaceAfterCStyleCast: true
+SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
+SpaceAroundPointerQualifiers: Default
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeCpp11BracedList: false
 SpaceBeforeCtorInitializerColon: true
@@ -130,6 +147,10 @@ SpacesInContainerLiterals: true
 SpacesInParentheses: true
 SpacesInSquareBrackets: true
 Standard: c++11
+# StatementAttributeLikeMacros: ['']
+# StatementMacros: ['']
 TabWidth: 4
+# TypenameMacros: ['']
 UseCRLF: false
 UseTab: Never
+# WhitespaceSensitiveMacros: ['']
