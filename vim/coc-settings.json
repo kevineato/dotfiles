@@ -33,9 +33,11 @@
     "--suggest-missing-includes"
   ],
   "clangd.enabled": true,
-  "clangd.semanticHighlighting": true,
+  // "clangd.semanticHighlighting": true,
+  "coc.preferences.colorSupport": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
   "coc.preferences.rootPatterns": ["build", ".git"],
+  "coc.preferences.semanticTokensHighlights": false,
   // "coc.preferences.snippets.enable": false,
   "coc.source.around.priority": 95,
   "coc.source.buffer.priority": 95,

@@ -19,6 +19,7 @@ Plug 'sainnhe/gruvbox-material'
 " Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
 Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
@@ -35,7 +36,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'farmergreg/vim-lastplace'
-Plug 'jackguo380/vim-lsp-cxx-highlight'
+" Plug 'jackguo380/vim-lsp-cxx-highlight'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-peekaboo'
 Plug 'kevineato/vim-protodef'
@@ -581,6 +582,18 @@ let g:NERDCustomDelimiters = {
 let g:NERDSpaceDelims = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" nvim-treesitter
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true
+  }
+}
+EOF
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " tabular
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -889,8 +902,8 @@ xmap <Leader>s <Plug>(easymotion-sn)
 " vim-lsp-cxx-highlight
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:lsp_cxx_hl_use_nvim_text_props = 1
-let g:lsp_cxx_hl_use_text_props = 1
+" let g:lsp_cxx_hl_use_nvim_text_props = 1
+" let g:lsp_cxx_hl_use_text_props = 1
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-multiple-cursors
