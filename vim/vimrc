@@ -162,6 +162,7 @@ augroup end
 " coc.nvim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" let g:coc_default_semantic_highlight_groups = 0
 let g:coc_global_extensions = [
       \   "coc-clangd",
       \   "coc-cmake",
@@ -222,8 +223,8 @@ nmap <silent> <Leader>rn <Plug>(coc-rename)
 nnoremap <expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
 nnoremap <expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
 nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
-nnoremap <silent> <Space>e :<C-u>CocCommand explorer --quit-on-open<CR>
-nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --quit-on-open --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
+nnoremap <silent> <Space>e :<C-u>CocCommand explorer<CR>
+nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
 nnoremap <silent> <Space>E :<C-u>CocList marketplace<CR>
 nnoremap <silent> <Space>f :<C-u>Format<CR>
 nnoremap <silent> <Space>j :<C-u>CocNext<CR>

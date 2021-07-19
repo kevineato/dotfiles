@@ -1,23 +1,23 @@
 {
   // "languageserver": {
-    // "ccls": {
-      // "command": "ccls",
-      // "filetypes": ["c", "cpp", "h", "hpp", "cuda", "objc", "objcpp"],
-      // "rootPatterns": ["build", "compile_commands.json", ".git"],
-      // "initializationOptions": {
-        // "cache": {
-          // "directory": "/tmp/ccls-cache"
-        // },
-        // "compilationDatabaseDirectory": "build",
-        // "completion": {
-          // "caseSensitivity": 1,
-          // "duplicateOptional": false
-        // },
-        // "highlight": {
-          // "lsRanges": true
-        // }
-      // }
-    // }
+  // "ccls": {
+  // "command": "ccls",
+  // "filetypes": ["c", "cpp", "h", "hpp", "cuda", "objc", "objcpp"],
+  // "rootPatterns": ["build", "compile_commands.json", ".git"],
+  // "initializationOptions": {
+  // "cache": {
+  // "directory": "/tmp/ccls-cache"
+  // },
+  // "compilationDatabaseDirectory": "build",
+  // "completion": {
+  // "caseSensitivity": 1,
+  // "duplicateOptional": false
+  // },
+  // "highlight": {
+  // "lsRanges": true
+  // }
+  // }
+  // }
   // },
   "clangd.arguments": [
     "--all-scopes-completion",
@@ -36,36 +36,39 @@
   // "clangd.semanticHighlighting": true,
   "coc.preferences.colorSupport": true,
   "coc.preferences.currentFunctionSymbolAutoUpdate": true,
-  "coc.preferences.rootPatterns": ["build", ".git"],
+  "coc.preferences.extensionUpdateCheck": "daily",
+  "coc.preferences.rootPatterns": [
+    "build",
+    ".git"
+  ],
   "coc.preferences.semanticTokensHighlights": false,
-  // "coc.preferences.snippets.enable": false,
   "coc.source.around.priority": 95,
   "coc.source.buffer.priority": 95,
   "coc.source.ultisnips.priority": 100,
   // "diagnostic.enable": false,
   "diagnostic.refreshOnInsertMode": true,
   "diagnostic.separateRelatedInformationAsDiagnostics": true,
-  "explorer.file.autoReveal": false,
+  "explorer.file.reveal.auto": false,
   "explorer.icon.enableNerdfont": true,
   // "list.insertMappings": {
-    // "<C-n>": "normal:j",
-    // "<C-p>": "normal:k"
+  // "<C-n>": "normal:j",
+  // "<C-p>": "normal:k"
   // },
   "python.formatting.provider": "black",
   "signature.maxWindowWidth": 100,
   "signature.preferShownAbove": false,
   // "snippets.extends": {
-    // "bash": ["sh", "zsh"],
-    // "c": ["cpp", "h", "hpp"],
-    // "cpp": ["c", "h", "hpp"],
-    // "h": ["c", "cpp", "hpp"],
-    // "hpp": ["c", "cpp", "h"],
-    // "sh": ["bash", "zsh"],
-    // "zsh": ["bash", "sh"]
+  // "bash": ["sh", "zsh"],
+  // "c": ["cpp", "h", "hpp"],
+  // "cpp": ["c", "h", "hpp"],
+  // "h": ["c", "cpp", "hpp"],
+  // "hpp": ["c", "cpp", "h"],
+  // "sh": ["bash", "zsh"],
+  // "zsh": ["bash", "sh"]
   // },
   // "snippets.ultisnips.directories": [
-    // "UltiSnips",
-    // "~/.vim/CustomSnips"
+  // "UltiSnips",
+  // "~/.vim/CustomSnips"
   // ],
   // "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
   "suggest.defaultSortMethod": "alphabetical",
