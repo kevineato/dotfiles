@@ -601,7 +601,7 @@ EOF
 function! s:align_comment()
   let l:save_pos = getpos('.')[1:2]
   let l:tab_intro = "call Tabularize('/.*\\*/l1')"
-  let l:tab_param = "call Tabularize('/.*@t\\?param\\%(\\[.*]\\)\\? \\+\\zs\\w\\+\\|\\*\\zs \\?/l1l2')"
+  let l:tab_param = "call Tabularize('/.*@t\\?param\\%(\\[.*]\\)\\? \\+\\zs\\w\\+"
   let l:tab_ret = "call Tabularize('/.*@returns\\?\\zs \\|\\*\\zs \\?/l0')"
 
   if getline('.') =~# '\s*\/\*\*'
@@ -636,7 +636,12 @@ function! s:align_comment()
       else
         let l:p_end = l:c_end - 1
       endif
-      execute l:p_begin . ',' . l:p_end . l:tab_param
+      let l:p_tail = "/l1l2')"
+      if l:p_begin == l:p_end
+        execute l:p_begin . ',' . l:p_end . l:tab_param . l:p_tail
+      else
+        execute l:p_begin . ',' . l:p_end . l:tab_param . "\\|\\*\\zs \\?" . l:p_tail
+      endif
     endif
     if search('@return', 'c', l:c_end)
       let l:r_begin = line('.')
@@ -1286,6 +1291,16 @@ map H 0
 map L g_
 vmap < <gv
 vmap > >gv
+vnoremap <silent> * :<C-U>
+  \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \ gvy/<C-r>=&ic?'\c':'\C'<CR><C-r><C-r>=substitute(
+  \ escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \ gVzv:call setreg('"', old_reg, old_regtype)<CR>
+vnoremap <silent> # :<C-U>
+  \ let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \ gvy?<C-r>=&ic?'\c':'\C'<CR><C-r><C-r>=substitute(
+  \ escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \ gVzv:call setreg('"', old_reg, old_regtype)<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General autocmds
