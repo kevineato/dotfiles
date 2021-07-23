@@ -300,7 +300,6 @@ snippet logh "log header" b
 endsnippet
 
 snippet ncdec "no copy declaration" b
-/// No copying
 ${1:name}( $1 const& ) = delete;
 $1& operator=( $1 const& ) = delete;$0
 endsnippet
