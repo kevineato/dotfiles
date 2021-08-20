@@ -71,7 +71,7 @@
   // "~/.vim/CustomSnips"
   // ],
   // "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
-  "suggest.defaultSortMethod": "alphabetical",
+  "suggest.defaultSortMethod": "none",
   "tabnine.priority": 89,
   "vimlsp.suggest.fromRuntimepath": true,
   "xml.java.home": "/usr",

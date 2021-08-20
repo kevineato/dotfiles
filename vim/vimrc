@@ -257,10 +257,8 @@ augroup mycocnvim
   autocmd FileType coc-explorer nnoremap <buffer> <silent> H
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['gotoParent'])<CR>
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['indentPrev'])<CR>
-    \ :tcd -<CR>
   autocmd FileType coc-explorer nnoremap <buffer> <silent> L
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['cd'])<CR>
-    \ :tcd -<CR>
 augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
