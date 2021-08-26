@@ -75,5 +75,6 @@
   "tabnine.priority": 89,
   "vimlsp.suggest.fromRuntimepath": true,
   "xml.java.home": "/usr",
+  "xml.validation.noGrammar": "ignore",
   "yank.priority": 89
 }
