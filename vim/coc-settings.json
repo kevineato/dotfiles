@@ -22,7 +22,7 @@
   "clangd.arguments": [
     "--all-scopes-completion",
     "--background-index",
-    "--compile-commands-dir=build",
+    // "--compile-commands-dir=build",
     "--completion-style=detailed",
     "--cross-file-rename",
     "--header-insertion=never",
@@ -30,8 +30,9 @@
     // "--header-insertion=iwyu",
     // "--header-insertion-decorators",
     "-j=12",
-    "--suggest-missing-includes"
+    "--malloc-trim"
   ],
+  "clangd.compilationDatabasePath": "build",
   "clangd.enabled": true,
   // "clangd.semanticHighlighting": true,
   "coc.preferences.colorSupport": true,
