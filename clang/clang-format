@@ -78,7 +78,7 @@ IncludeCategories:
     Priority: 1
     SortPriority: 1
     CaseSensitive: true
-  - Regex: '".*catch.hpp"'
+  - Regex: '".*catch(2?/)?.*\.hpp"'
     Priority: 1
     SortPriority: 1
     CaseSensitive: true
