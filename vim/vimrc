@@ -16,6 +16,7 @@ Plug 'mattn/emmet-vim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'brooth/far.vim'
 Plug 'sainnhe/gruvbox-material'
+Plug 'phaazon/hop.nvim'
 " Plug 'haya14busa/is.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/nerdcommenter'
@@ -33,7 +34,7 @@ Plug 'mbbill/undotree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/vim-easy-align'
-Plug 'easymotion/vim-easymotion'
+" Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'farmergreg/vim-lastplace'
 " Plug 'jackguo380/vim-lsp-cxx-highlight'
@@ -306,6 +307,16 @@ nnoremap <silent> <Leader>ad :<C-u>Dox<CR>
 nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" hop.nvim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+nnoremap <silent> <Leader>ll :<C-u>HopLineStart<CR>
+nnoremap <silent> <Leader>s :<C-u>HopPattern<CR>
+nnoremap <silent> <Leader>t :<C-u>HopChar1<CR>
+nnoremap <silent> <Leader>w :<C-u>HopWord<CR>
+nnoremap <silent> <Leader>z :<C-u>HopChar2<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " skim.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -535,8 +546,8 @@ nmap <Leader>y :History:<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>B :Mru<CR>
 nnoremap <silent> <Leader>db :DBuffers<CR>
-nnoremap <silent> <Leader>e :SK -q !.clangd/\ !.dep\ !.obj\ !.git/\ !build/\ !.o\ !.lo\ !.la\ <CR>
-nnoremap <silent> <Leader>ed :SK -q !.clangd/\ !.dep\ !.obj\ !.git/\ !build/\ !.o\ !.lo\ !.la\  <C-r>=expand('%:h')<CR><CR>
+nnoremap <silent> <Leader>e :SK -q !.cache/\ !.clangd/\ !.dep\ !.obj\ !.git/\ !build/\ !.o\ !.lo\ !.la\ <CR>
+nnoremap <silent> <Leader>ed :SK -q !.cache/\ !.clangd/\ !.dep\ !.obj\ !.git/\ !build/\ !.o\ !.lo\ !.la\  <C-r>=expand('%:h')<CR><CR>
 nnoremap <silent> <Leader>f :RG<CR>
 nnoremap <silent> <Leader>fd :RG!<CR>
 nnoremap <silent> <Leader>fw :RG <C-r>=expand('<cword>')<CR><CR>
@@ -545,8 +556,8 @@ nnoremap <silent> <Leader>F :RGFiles<CR>
 nnoremap <silent> <Leader>Fd :RGFiles!<CR>
 nnoremap <silent> <Leader>Fw :RGFiles <C-r>=expand('<cword>')<CR><CR>
 nnoremap <silent> <Leader>Fdw :RGFiles! <C-r>=expand('<cword>')<CR><CR>
-nnoremap <silent> <Leader>l :BLines<CR>
-nnoremap <silent> <Leader>L :Lines<CR>
+nnoremap <silent> <Leader>ls :BLines<CR>
+nnoremap <silent> <Leader>Ls :Lines<CR>
 nnoremap <silent> <Leader>m :SigMarks<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -894,13 +905,13 @@ xmap ga <Plug>(EasyAlign)
 " vim-easymotion
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-let g:EasyMotion_keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;'
-let g:EasyMotion_smartcase = 1
-let g:EasyMotion_use_upper = 1
+" let g:EasyMotion_keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;'
+" let g:EasyMotion_smartcase = 1
+" let g:EasyMotion_use_upper = 1
 
-nmap <Leader>s <Plug>(easymotion-sn)
-omap <Leader>s <Plug>(easymotion-sn)
-xmap <Leader>s <Plug>(easymotion-sn)
+" nmap <Leader>s <Plug>(easymotion-sn)
+" omap <Leader>s <Plug>(easymotion-sn)
+" xmap <Leader>s <Plug>(easymotion-sn)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-lsp-cxx-highlight
@@ -1131,9 +1142,9 @@ function! s:swap_backup(file_name) abort
 endfunction
 
 function! s:safe_close() abort
-  let l:curr_buf = bufnr()
+  let l:prev_buf = bufnr()
   call s:last_buf()
-  if l:curr_buf == bufnr()
+  if l:prev_buf == bufnr()
     bd
   else
     bd #
@@ -1244,22 +1255,19 @@ nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fro
 nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
 nnoremap <silent> <Leader>- :split<CR>
 nnoremap <silent> <Leader>/ :vsplit<CR>
-nnoremap <silent> <Leader>c :call <SID>safe_close()<CR>
+nnoremap <silent> <Leader>C :call <SID>safe_close()<CR>
 nnoremap <Leader>d "_d
 xnoremap <Leader>d "_d
 xnoremap <Leader>p "_dP
-nnoremap <silent> <Leader>q :q<CR>
-nnoremap <silent> <Leader>qa :qa<CR>
-nnoremap <silent> <Leader>qlc :lclose<CR>zz
-nnoremap <silent> <Leader>qlr :lclose<CR>zz:call setloclist(0, [])<CR>
-nnoremap <silent> <Leader>qlo :lopen<CR><C-w>pzz
-nnoremap <silent> <Leader>qls :call <SID>sortUniqQFList(1)<CR>
-nnoremap <silent> <Leader>qc :cclose<CR>zz
-nnoremap <silent> <Leader>qr :cclose<CR>zz:call setqflist([])<CR>
-nnoremap <silent> <Leader>qs :call <SID>sortUniqQFList()<CR>
-nnoremap <silent> <Leader>qo :copen<CR><C-w>pzz
-nnoremap <silent> <Leader>Q :call <SID>safe_close()<CR>:q<CR>
-nnoremap <silent> <Leader>w :up<CR>
+nnoremap <silent> <Leader>qc :<C-u>cclose<CR>zz
+nnoremap <silent> <Leader>qlc :<C-u>lclose<CR>zz
+nnoremap <silent> <Leader>qlr :<C-u>lclose<CR>zz:call setloclist(0, [])<CR>
+nnoremap <silent> <Leader>qlo :<C-u>lopen<CR><C-w>pzz
+nnoremap <silent> <Leader>qls :<C-u>call <SID>sortUniqQFList(1)<CR>
+nnoremap <silent> <Leader>qo :<C-u>copen<CR><C-w>pzz
+nnoremap <silent> <Leader>qr :<C-u>cclose<CR>zz:call setqflist([])<CR>
+nnoremap <silent> <Leader>qs :<C-u>call <SID>sortUniqQFList()<CR>
+nnoremap <silent> <Leader>u :<C-u>up<CR>
 nnoremap <Space><CR> m`o<Esc>``
 nnoremap <Space><A-CR> m`O<Esc>``
 nnoremap <Space>gd gd
@@ -1323,19 +1331,6 @@ function! s:autoRestoreWinView()
   endif
 endfunction
 
-let g:easymotion#is_active = 0
-function! s:easyMotionCoc() abort
-  if EasyMotion#is_active()
-    let g:easymotion#is_active = 1
-    silent! CocDisable
-  else
-    if g:easymotion#is_active == 1
-      let g:easymotion#is_active = 0
-      silent! CocEnable
-    endif
-  endif
-endfunction
-
 let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\\S*\|\s*\*\{2,}/\)\@='
 
 augroup myautocmd
@@ -1358,7 +1353,6 @@ augroup myautocmd
   autocmd FileType json syntax match Comment +\/\/.\+$+
   autocmd InsertEnter,WinLeave * set nocursorline
   autocmd InsertLeave,WinEnter * set cursorline
-  " autocmd TextChanged,CursorMoved * call s:easyMotionCoc()
 augroup end
 
 if filereadable(fnamemodify('~/.vim/local.vim', ':p'))
