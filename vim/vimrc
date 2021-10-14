@@ -942,7 +942,7 @@ let g:sandwich#magicchar#f#patterns = [
 let g:sandwich#recipes = deepcopy(g:sandwich#default_recipes)
 let g:sandwich#recipes += [
   \   {'buns': ['{ ', ' }'], 'nesting': 1, 'match_syntax': 1,
-  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['{']},
+  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['}']},
   \
   \   {'buns': ['{', '}'], 'kind': ['add', 'replace'], 'action': ['add'],
   \    'motionwise': ['line'], 'command': ["'[+1,']-1normal! =="]},
@@ -952,13 +952,13 @@ let g:sandwich#recipes += [
   \    'action': ['delete'], 'input': ['{{'], 'command': ["'[,']normal! =="]},
   \
   \   {'buns': ['[ ', ' ]'], 'nesting': 1, 'match_syntax': 1,
-  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['[']},
+  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': [']']},
   \
   \   {'buns': ['( ', ' )'], 'nesting': 1, 'match_syntax': 1,
-  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['(']},
+  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': [')']},
   \
   \   {'buns': ['< ', ' >'], 'nesting': 1, 'match_syntax': 1,
-  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['<']},
+  \    'kind': ['add', 'replace'], 'action': ['add'], 'input': ['>']},
   \
   \   {'buns': ['{\s*', '\s*}'], 'nesting': 1, 'regex': 1,
   \    'match_syntax': 1, 'kind': ['delete', 'replace', 'textobj'],
