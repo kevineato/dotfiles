@@ -5,21 +5,37 @@ with section("parse"):
 
   # Specify structure for custom cmake functions
   additional_commands = {
-          'find_package_with_root': {
-              'pargs': '2',
-              'flags': ['REQUIRED'],
-              'kwargs': {
-                  'VERSION': 1
-              }
-          },
-          'target_link_options': {
-            'kwargs': {
-              'INTERFACE': '+',
-              'PUBLIC': '+', 
-              'PRIVATE': '+'
-            }
+      "find_package_with_root": {
+          "pargs": 2,
+          "flags": ["REQUIRED"],
+          "kwargs": {
+              "VERSION": 1
           }
-        }
+      },
+      "target_link_options": {
+          "kwargs": {
+              "INTERFACE": "+",
+              "PUBLIC": "+", 
+              "PRIVATE": "+"
+          }
+      },
+      "generate_export_header": {
+          "pargs": 1,
+          "flags": ["DEFINE_NO_DEPRECATED"],
+          "kwargs": {
+              "BASE_NAME": 1,
+              "EXPORT_FILE_NAME": 1,
+              "EXPORT_MACRO_NAME": 1,
+              "NO_EXPORT_MACRO_NAME": 1,
+              "DEPRECATED_MACRO_NAME": 1,
+              "INCLUDE_GUARD_NAME": 1,
+              "STATIC_DEFINE": 1,
+              "NO_DEPRECATED_MACRO_NAME": 1,
+              "PREFIX_NAME": 1,
+              "CUSTOM_CONTENT_FROM_VARIABLE": 1
+          }
+      }
+  }
 
   # Override configurations per-command where available
   override_spec = {}
