@@ -47,21 +47,5 @@ fi
 # ranger
 if [[ -x "$(whence -p ranger)" ]]; then alias r='ranger'; fi
 
-# watson
-if [[ -x "$(whence -p watson)" ]]; then
-  alias watson='watson --color'
-  alias wl='watson log'
-  alias wld='watson log --day'
-  alias wlw='watson log --week'
-  alias wr='watson report'
-  alias wrd='watson report --day'
-  alias wrw='watson report --week'
-  alias wsng='watson start --no-gap'
-  alias wstart='watson start'
-  alias wstop='watson stop'
-  alias wstoa='watson stop --at'
-  alias wswap='watson stop && watson start --no-gap'
-fi
-
 # unalias
 if [[ -x "$(whence -p fd)" && -n "$(alias -m 'fd')" ]]; then unalias fd; fi
