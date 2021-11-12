@@ -68,31 +68,24 @@ ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: true
 ForEachMacros:
   - FOREACH
-IncludeBlocks: Regroup
+IncludeBlocks: Preserve
 IncludeCategories:
-  - Regex: '^<.*\.(h|hpp)>'
+  - Regex: '^(<|").*catch(2?/)?.*\.hpp(>|")'
     Priority: 1
-    SortPriority: 2
     CaseSensitive: true
-  - Regex: '^<.*'
-    Priority: 1
-    SortPriority: 1
-    CaseSensitive: true
-  - Regex: '".*catch(2?/)?.*\.hpp"'
-    Priority: 1
-    SortPriority: 1
-    CaseSensitive: true
-  - Regex: '".*"'
+  - Regex: '^".*"'
     Priority: 2
-    SortPriority: 3
-    CaseSensitive: true
-IncludeIsMainRegex: '([-_](test|unittest))?$'
+  - Regex: '^<.*\..+>'
+    Priority: 3
+  - Regex: '^<.*>'
+    Priority: 4
+IncludeIsMainRegex: ''
 IncludeIsMainSourceRegex: ''
 IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: AfterExternBlock
 IndentGotoLabels: false
-IndentPPDirectives: None
+IndentPPDirectives: BeforeHash
 IndentRequires: false
 IndentWidth: 4
 IndentWrappedFunctionNames: false
