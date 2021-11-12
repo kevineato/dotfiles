@@ -22,10 +22,6 @@ def acc_spec_comm(snip, spec, comm_type):
         snip.rv  = '/**' + prolog_stars + '************'
         snip    += ' * ' + class_spec   + ' constants *'
         snip    += ' **' + prolog_stars + '***********/'
-    elif types[0] == 'c':
-        snip.rv  = '/**' + prolog_stars + '******************'
-        snip    += ' * ' + class_spec   + ' classes/structs *'
-        snip    += ' **' + prolog_stars + '*****************/'
     elif types[0] == 'v':
         snip.rv  = '/**' + prolog_stars + '*******************'
         snip    += ' * ' + class_spec   + ' member variables *'
@@ -53,10 +49,6 @@ def acc_spec_comm(snip, spec, comm_type):
             snip += '/**' + prolog_stars + '************'
             snip += ' * ' + class_spec   + ' constants *'
             snip += ' **' + prolog_stars + '***********/'
-        elif types[i] == 'c':
-            snip += '/**' + prolog_stars + '************************'
-            snip += ' * ' + class_spec   + ' classes/structs/types *'
-            snip += ' **' + prolog_stars + '***********************/'
         elif types[i] == 'v':
             snip += '/**' + prolog_stars + '*******************'
             snip += ' * ' + class_spec   + ' member variables *'
@@ -89,7 +81,6 @@ snip += box[3]
 `
 endsnippet
 
-post_jump "if snip.tabstop == 3 and snip.tabstops[2].current_text == "": snip.buffer[snip.line + 2] = re.sub(" : ", "", snip.buffer[snip.line + 2])"
 snippet cls "class" b
 /**
  * @class $1
@@ -101,17 +92,17 @@ class ${1:name}$0
 endsnippet
 
 snippet cerr "cerr" b
-std::cerr << $0 << std::endl;
+std::cerr << $0;
 endsnippet
 
 snippet cout "cout" b
-std::cout << $0 << std::endl;
+std::cout << $0;
 endsnippet
 
-snippet dox "/**" b
+snippet dox "doxygen comment" b
 /**
- * $0
- */
+ * ${1:@todo description}
+ */$0
 endsnippet
 
 snippet fh "file header" b
@@ -129,7 +120,7 @@ snippet fh "file header" b
 endsnippet
 
 snippet hg "header guard" b
-#ifndef ${1:`!p snip.rv = re.sub('(-|(?<!^)(?=[A-Z][a-z]))', '_', snip.basename).upper() + '_H'`}
+#ifndef ${1:`!p snip.rv = snip.basename.upper() + '_H'`}
 #define $1
 
 ${VISUAL}$0
@@ -145,7 +136,7 @@ endsnippet
 
 snippet nocm "no copy/move declarations" b
 ${1:name}($1 const&) = delete;
-$1($1&& ) = delete;
+$1($1&&) = delete;
 $1& operator=($1 const&) = delete;
 $1& operator=($1&&) = delete;$0
 endsnippet
@@ -157,19 +148,18 @@ ${VISUAL}$0
 }  // namespace $1
 endsnippet
 
-snippet "priv([txcvfpd]+)?" "private access" br
-`!p acc_spec_comm(snip, 'private', match.groups('txcvfpd'))`
+snippet "priv([txvfpd]+)?" "private access" br
+`!p acc_spec_comm(snip, 'private', match.groups('txvfpd'))`
 endsnippet
 
-snippet "prot([txcvfpd]+)?" "protected access" br
-`!p acc_spec_comm(snip, 'protected', match.groups('txcvfpd'))`
+snippet "prot([txvfpd]+)?" "protected access" br
+`!p acc_spec_comm(snip, 'protected', match.groups('txvfpd'))`
 endsnippet
 
-snippet "pub([txcvfpd]+)?" "public access" br
-`!p acc_spec_comm(snip, 'public', match.groups('txcvfpd'))`
+snippet "pub([txvfpd]+)?" "public access" br
+`!p acc_spec_comm(snip, 'public', match.groups('txvfpd'))`
 endsnippet
 
-post_jump "if snip.tabstop == 3 and snip.tabstops[2].current_text == "": snip.buffer[snip.line + 2] = re.sub(" : ", "", snip.buffer[snip.line + 2])"
 snippet stru "struct" b
 /**
  * @class $1
