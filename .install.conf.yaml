@@ -47,6 +47,7 @@
 
 - link:
     ~/.clang-format: clang/clang-format
+    ~/.clang-tidy: clang/clang-tidy
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
     ~/.config/nvim/coc-settings.json: vim/coc-settings.json
