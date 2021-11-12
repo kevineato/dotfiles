@@ -1,87 +1,77 @@
 # skim
-function cdd() {
-  local directory="$(fd --type d --hidden --follow --no-ignore '' ${1:-.} | sk --no-multi)"
-  if [[ -n $directory ]]; then
-    cd $directory
-  fi
-}
+if [[ -x "$(whence -p sk)" ]]; then
+  function cdd() {
+    local directory="$(fd --type d --hidden --follow --no-ignore '' ${1:-.} | sk --no-multi)"
+    if [[ -n $directory ]]; then
+      cd $directory
+    fi
+  }
 
-function cdl() {
-  local directory="$(dirs -lv | sk --no-multi | cut -f 2)"
-  if [[ -n $directory ]]; then
-    cd $directory
-  fi
-}
+  function cdl() {
+    local directory="$(dirs -lv | sk --no-multi | cut -f 2)"
+    if [[ -n $directory ]]; then
+      cd $directory
+    fi
+  }
 
-function cdv() {
-  local directory="$(dirs -v | sk --no-multi | cut -f 2 | sed -E "s@~@$HOME@")"
-  if [[ -n $directory ]]; then
-    cd $directory
-  fi
-}
+  function cdv() {
+    local directory="$(dirs -v | sk --no-multi | cut -f 2 | sed -E "s@~@$HOME@")"
+    if [[ -n $directory ]]; then
+      cd $directory
+    fi
+  }
 
-function nve() {
-  local files="$(fd --type f --hidden --follow --no-ignore '' ${1:-.} | sk)"
-  $EDITOR ${files:+"${(ps.\n.)files}"}
-}
+  function nve() {
+    local files="$(fd --type f --hidden --follow --no-ignore '' ${1:-.} | sk)"
+    $EDITOR ${files:+"${(ps.\n.)files}"}
+  }
 
-function fh() {
-  print -z "$( ([ -n $ZSH_NAME ] && fc -l 1 || history) | sk --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')"
-}
+  function fh() {
+    print -z "$( ([ -n $ZSH_NAME ] && fc -l 1 || history) | sk --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')"
+  }
 
-function fif() {
-  if [ ! "$#" -gt 0 ]; then
-    echo "Need a string to search for!"
-    return 1
-  fi
+  function fif() {
+    if [ ! "$#" -gt 0 ]; then
+      echo "Need a string to search for!"
+      return 1
+    fi
 
-  rg --files-with-matches --no-messages "$1" $2 | sk -m --bind 'alt-enter:execute($EDITOR -p {})' --preview "bat --style=numbers --color=always {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
-}
+    rg --files-with-matches --no-messages "$1" $2 | sk -m --bind 'alt-enter:execute($EDITOR -p {})' --preview "bat --style=numbers --color=always {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+  }
 
-function fkill() {
-  local pid 
-  if [ "$UID" != "0" ]; then
-    pid="$(ps -f -u $UID | sed 1d | sk -m | awk '{print $2}')"
-  else
-    pid="$(ps -ef | sed 1d | sk -m | awk '{print $2}')"
-  fi  
+  function fkill() {
+    local pid 
+    if [ "$UID" != "0" ]; then
+      pid="$(ps -f -u $UID | sed 1d | sk -m | awk '{print $2}')"
+    else
+      pid="$(ps -ef | sed 1d | sk -m | awk '{print $2}')"
+    fi  
 
-  if [ "x$pid" != "x" ]
-  then
-    echo "$pid" | xargs kill -"${1:-9}"
-  fi  
-}
+    if [ "x$pid" != "x" ]
+    then
+      echo "$pid" | xargs kill -"${1:-9}"
+    fi  
+  }
 
-if [[ -n "$(alias -m 'j')" ]]; then unalias j; fi
-function j() {
-  local destination="$(fasd -s -d | sk --tac -n 2 ${1:+-q $1} | awk '{print $2}')"
-  cd "${destination-$(pwd)}"
-}
+  if [[ -n "$(alias -m 'j')" ]]; then unalias j; fi
+  function j() {
+    local destination="$(fasd -s -d | sk --tac -n 2 ${1:+-q $1} | awk '{print $2}')"
+    cd "${destination-$(pwd)}"
+  }
 
-function _skim_compgen_path() {
-  echo "$1"
-  command fd -H -L \
-    -E '.git/*' -E '.hg/*' -E '.svn/*' -t f -t d -t l \
-    -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
-}
+  function _skim_compgen_path() {
+    echo "$1"
+    command fd -H -L \
+      -E '.git/*' -E '.hg/*' -E '.svn/*' -t f -t d -t l \
+      -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
+  }
 
-function _skim_compgen_dir() {
-  command fd -H -L \
-    -E '.git/*' -E '.hg/*' -E '.svn/*' -t d \
-    -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
-}
-
-function wa() {
-  watson add -f "$1" -t "$2" "$3"
-}
-
-function wstaa() {
-  watson start --at "$1" "$2"
-}
-
-function wss() {
-  watson stop --at "$1" && watson start --no-gap "$2"
-}
+  function _skim_compgen_dir() {
+    command fd -H -L \
+      -E '.git/*' -E '.hg/*' -E '.svn/*' -t d \
+      -p --no-ignore --no-ignore-vcs "$1" "$1" 2> /dev/null | sed 's@^\./@@'
+  }
+fi
 
 # _complete_plus_hist_args() {
   # local query q_commands q_commands_array q_commands_arr
