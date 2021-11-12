@@ -22,15 +22,16 @@
   "clangd.arguments": [
     "--all-scopes-completion",
     "--background-index",
+    "--clang-tidy",
     // "--compile-commands-dir=build",
     "--completion-style=detailed",
     "--cross-file-rename",
     "--header-insertion=never",
-    "--hidden-features",
     // "--header-insertion=iwyu",
     // "--header-insertion-decorators",
+    "--hidden-features",
     "-j=12",
-    "--malloc-trim"
+    "--ranking-model=decision_forest"
   ],
   "clangd.compilationDatabasePath": "build",
   "clangd.enabled": true,
@@ -73,9 +74,9 @@
   // ],
   // "snippets.userSnippetsDirectory": "~/.vim/CustomSnips",
   "suggest.defaultSortMethod": "none",
-  "tabnine.priority": 89,
+  // "tabnine.priority": 89,
   "vimlsp.suggest.fromRuntimepath": true,
   "xml.java.home": "/usr",
-  "xml.validation.noGrammar": "ignore",
-  "yank.priority": 89
+  "xml.validation.noGrammar": "ignore"
+  // "yank.priority": 89
 }
