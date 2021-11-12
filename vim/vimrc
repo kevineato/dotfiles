@@ -177,15 +177,12 @@ let g:coc_global_extensions = [
       \   "coc-python",
       \   "coc-rust-analyzer",
       \   "coc-sh",
-      \   "coc-tabnine",
       \   "coc-tsserver",
       \   "coc-ultisnips",
       \   "coc-vimlsp",
       \   "coc-xml",
       \   "coc-yaml",
-      \   "coc-yank"
       \ ]
-      " \   "coc-snippets",
 let g:coc_snippet_next = "<C-j>"
 let g:coc_snippet_prev = "<C-k>"
 let g:markdown_fenced_languages = [
@@ -255,6 +252,7 @@ augroup mycocnvim
   autocmd CursorHold * silent call CocActionAsync('highlight')
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
   autocmd FileType c,cpp,h,hpp nnoremap <silent> <Space>ss :<C-u>CocCommand clangd.switchSourceHeader<CR>
+  autocmd FileType coc-explorer set number relativenumber
   autocmd FileType coc-explorer nnoremap <buffer> <silent> H
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['gotoParent'])<CR>
     \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['indentPrev'])<CR>
@@ -303,12 +301,16 @@ function! s:shortDoxy()
   let g:DoxygenToolkit_endCommentBlock = l:original_endCommentBlock
 endfunction
 
-nnoremap <silent> <Leader>ad :<C-u>Dox<CR>
-nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>
+nnoremap <silent> <Leader>ad :<C-u>Dox<CR>@todo description<Esc>v?@<CR><C-g>
+nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>@todo description<Esc>v?@<CR><C-g>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " hop.nvim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+lua << EOF
+require'hop'.setup()
+EOF
 
 nnoremap <silent> <Leader>ll :<C-u>HopLineStart<CR>
 nnoremap <silent> <Leader>s :<C-u>HopPattern<CR>
@@ -595,7 +597,7 @@ let g:NERDSpaceDelims = 1
 " nvim-treesitter
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua <<EOF
+lua << EOF
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true
@@ -1262,8 +1264,12 @@ xnoremap <Leader>p "_dP
 nnoremap <silent> <Leader>qc :<C-u>cclose<CR>zz
 nnoremap <silent> <Leader>qlc :<C-u>lclose<CR>zz
 nnoremap <silent> <Leader>qlr :<C-u>lclose<CR>zz:call setloclist(0, [])<CR>
+nnoremap <silent> <Leader>qln :<C-u>lnext<CR>zz
+nnoremap <silent> <Leader>qlp :<C-u>lprevious<CR>zz
 nnoremap <silent> <Leader>qlo :<C-u>lopen<CR><C-w>pzz
 nnoremap <silent> <Leader>qls :<C-u>call <SID>sortUniqQFList(1)<CR>
+nnoremap <silent> <Leader>qn :<C-u>cnext<CR>zz
+nnoremap <silent> <Leader>qp :<C-u>cprevious<CR>zz
 nnoremap <silent> <Leader>qo :<C-u>copen<CR><C-w>pzz
 nnoremap <silent> <Leader>qr :<C-u>cclose<CR>zz:call setqflist([])<CR>
 nnoremap <silent> <Leader>qs :<C-u>call <SID>sortUniqQFList()<CR>
