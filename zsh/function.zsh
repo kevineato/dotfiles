@@ -1,9 +1,12 @@
 # skim
 if [[ -x "$(whence -p sk)" ]]; then
   function cdd() {
-    local directory="$(fd --type d --hidden --follow --no-ignore '' ${1:-.} | sk --no-multi)"
+    local input_dir=${1:-.}
+    local directory="$(fd --type d --hidden --follow --no-ignore '' $input_dir | sk --no-multi --exit-0)"
     if [[ -n $directory ]]; then
       cd $directory
+    elif [[ -d $input_dir ]]; then
+      cd $input_dir
     fi
   }
 
@@ -47,8 +50,7 @@ if [[ -x "$(whence -p sk)" ]]; then
       pid="$(ps -ef | sed 1d | sk -m | awk '{print $2}')"
     fi  
 
-    if [ "x$pid" != "x" ]
-    then
+    if [ "x$pid" != "x" ]; then
       echo "$pid" | xargs kill -"${1:-9}"
     fi  
   }
