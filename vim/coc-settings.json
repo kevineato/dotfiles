@@ -46,6 +46,7 @@
   "coc.preferences.semanticTokensHighlights": false,
   "coc.source.around.priority": 95,
   "coc.source.buffer.priority": 95,
+  "coc.source.file.priority": 98,
   "coc.source.ultisnips.priority": 100,
   // "diagnostic.enable": false,
   "diagnostic.autoRefresh": true,
