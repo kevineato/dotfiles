@@ -5,20 +5,6 @@ with section("parse"):
 
   # Specify structure for custom cmake functions
   additional_commands = {
-      "find_package_with_root": {
-          "pargs": 2,
-          "flags": ["REQUIRED"],
-          "kwargs": {
-              "VERSION": 1
-          }
-      },
-      "target_link_options": {
-          "kwargs": {
-              "INTERFACE": "+",
-              "PUBLIC": "+", 
-              "PRIVATE": "+"
-          }
-      },
       "generate_export_header": {
           "pargs": 1,
           "flags": ["DEFINE_NO_DEPRECATED"],
@@ -33,6 +19,13 @@ with section("parse"):
               "NO_DEPRECATED_MACRO_NAME": 1,
               "PREFIX_NAME": 1,
               "CUSTOM_CONTENT_FROM_VARIABLE": 1
+          }
+      },
+      "target_link_options": {
+          "kwargs": {
+              "INTERFACE": "*",
+              "PUBLIC": "*", 
+              "PRIVATE": "*"
           }
       }
   }
@@ -62,7 +55,7 @@ with section("format"):
 
   # If an argument group contains more than this many sub-groups (parg or kwarg
   # groups) then force it to a vertical layout.
-  max_subgroups_hwrap = 2
+  max_subgroups_hwrap = 3
 
   # If a positional argument group contains more than this many arguments, then
   # force it to a vertical layout.
@@ -137,7 +130,7 @@ with section("format"):
 with section("markup"):
 
   # What character to use for bulleted lists
-  bullet_char = '*'
+  bullet_char = '-'
 
   # What character to use as punctuation after numerals in an enumerated list
   enum_char = '.'
