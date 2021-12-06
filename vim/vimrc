@@ -309,12 +309,11 @@ nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>@todo description<Es
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 lua << EOF
-require'hop'.setup()
+require'hop'.setup{ char2_fallback_key = '<CR>' }
 EOF
 
 nnoremap <silent> <Leader>ll :<C-u>HopLineStart<CR>
 nnoremap <silent> <Leader>s :<C-u>HopPattern<CR>
-nnoremap <silent> <Leader>t :<C-u>HopChar1<CR>
 nnoremap <silent> <Leader>w :<C-u>HopWord<CR>
 nnoremap <silent> <Leader>z :<C-u>HopChar2<CR>
 
@@ -1348,8 +1347,8 @@ augroup myautocmd
   autocmd BufNewFile,BufRead .clang-format set filetype=yaml
   autocmd BufNewFile,BufReadPre *.c,*.cpp,*.h,*.hpp,*.java let b:load_doxygen_syntax=1
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
-  autocmd FileType c,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
-  autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :w<CR>:call <SID>cmake_format()<CR>
+  autocmd FileType c,cmake,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
+  autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :update<CR>:call <SID>cmake_format()<CR>
   autocmd FileType gitcommit setlocal formatoptions-=t
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
   autocmd FileType help,man nnoremap <buffer> d <C-d>
