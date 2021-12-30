@@ -2,11 +2,9 @@
 if [[ -x "$(whence -p sk)" ]]; then
   function cdd() {
     local input_dir=${1:-.}
-    local directory="$(fd --type d --hidden --follow --no-ignore '' $input_dir | sk --no-multi --exit-0)"
+    local directory="$(fd --type d --hidden --no-ignore '' $input_dir | awk -F / -v input_dir=$input_dir 'BEGIN{ $0=input_dir; print NF, input_dir } { print NF, $0 }' | sort -k 1n,1 -k 2d,2 -s | cut -d ' ' -f 2- | sk --no-multi --exit-0)"
     if [[ -n $directory ]]; then
       cd $directory
-    elif [[ -d $input_dir ]]; then
-      cd $input_dir
     fi
   }
 
