@@ -58,7 +58,19 @@
   // "<C-n>": "normal:j",
   // "<C-p>": "normal:k"
   // },
+  "markdownlint.config": {
+    "default": true,
+    "MD007": {
+      "indent": 4
+    },
+    "line-length": false
+  },
   "python.formatting.provider": "black",
+  "python.linting.flake8Enabled": true,
+  "python.linting.flake8Args": [
+    "--max-line-length=88",
+    "--extend-ignore=E203"
+  ],
   "signature.preferShownAbove": false,
   // "snippets.extends": {
   // "bash": ["sh", "zsh"],
