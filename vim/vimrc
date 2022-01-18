@@ -15,6 +15,8 @@ Plug 'kevineato/DoxygenToolkit.vim'
 Plug 'mattn/emmet-vim'
 Plug 'gruvbox-community/gruvbox'
 Plug 'brooth/far.vim'
+Plug 'ellisonleao/glow.nvim'
+Plug 'junegunn/goyo.vim'
 Plug 'sainnhe/gruvbox-material'
 Plug 'phaazon/hop.nvim'
 " Plug 'haya14busa/is.vim'
@@ -111,7 +113,7 @@ set colorcolumn=80
 highlight! link ColorColumn CursorLine
 
 set breakindent
-set breakindentopt=sbr
+set breakindentopt=sbr,list:-1
 set clipboard=unnamed,unnamedplus
 set cmdheight=2
 set completeopt=menuone,preview,noinsert,noselect
@@ -131,7 +133,7 @@ set nowritebackup
 set number relativenumber
 set shiftwidth=2
 set shortmess+=c
-set showbreak=﬌
+let &showbreak = ' '
 set signcolumn=yes
 set smartcase
 set tabstop=2
@@ -1349,12 +1351,15 @@ augroup myautocmd
   autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
   autocmd FileType c,cmake,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
   autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :update<CR>:call <SID>cmake_format()<CR>
+  " autocmd FileType glowpreview wincmd _ | wincmd |
   autocmd FileType gitcommit setlocal formatoptions-=t
   autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
-  autocmd FileType help,man nnoremap <buffer> d <C-d>
-  autocmd FileType help,man nnoremap <buffer> u <C-u>
+  autocmd FileType glowpreview,help,man nnoremap <buffer> d <C-d>
+  autocmd FileType glowpreview,help,man nnoremap <buffer> u <C-u>
+  autocmd FileType glowpreview,markdown setlocal linebreak
   autocmd FileType man nnoremap <buffer> <silent> q :call <SID>safe_close()<CR>:if winnr('$') > 1 <Bar> q <Bar> endif<CR>
   autocmd FileType man wincmd _
+  autocmd FileType markdown setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:
   autocmd FileType json syntax match Comment +\/\/.\+$+
   autocmd InsertEnter,WinLeave * set nocursorline
   autocmd InsertLeave,WinEnter * set cursorline
