@@ -296,59 +296,59 @@ unbind C-b
 unbind -n C-l
 
 # modify prefix keys
-# set -g prefix C-Space
-# bind C-Space send-prefix
-set -g prefix None
-bind -n C-Space set key-table prefix
+set -g prefix C-Space
+bind C-Space send-prefix
 bind q set key-table root
-bind C-Space set key-table root
-bind : set key-table root \; command-prompt
+# set -g prefix None
+# bind -n C-Space set key-table prefix
+# bind C-Space set key-table root
+bind : command-prompt
 
-bind 0 set key-table root \; select-window -t :=0
-bind 1 set key-table root \; select-window -t :=1
-bind 2 set key-table root \; select-window -t :=2
-bind 3 set key-table root \; select-window -t :=3
-bind 4 set key-table root \; select-window -t :=4
-bind 5 set key-table root \; select-window -t :=5
-bind 6 set key-table root \; select-window -t :=6
-bind 7 set key-table root \; select-window -t :=7
-bind 8 set key-table root \; select-window -t :=8
-bind 9 set key-table root \; select-window -t :=9
+bind 0 select-window -t :=0
+bind 1 select-window -t :=1
+bind 2 select-window -t :=2
+bind 3 select-window -t :=3
+bind 4 select-window -t :=4
+bind 5 select-window -t :=5
+bind 6 select-window -t :=6
+bind 7 select-window -t :=7
+bind 8 select-window -t :=8
+bind 9 select-window -t :=9
 
 # resize panes
-bind H resize-pane -L
-bind J resize-pane -D
-bind K resize-pane -U
-bind L resize-pane -R
+bind -r H resize-pane -L
+bind -r J resize-pane -D
+bind -r K resize-pane -U
+bind -r L resize-pane -R
 
-bind , set key-table root \; command-prompt -I "#W" "rename-window -- '%%'"
-bind C-h swap-window -d -t ':-'
-bind C-j set key-table root \; choose-tree -w "join-pane -hd -s '%%'"
-bind C-k set key-table root \; display-panes -d 0 "select-pane -t '%%' \; break-pane -a \; rename-window '#{pane_title}' \; last-window"
-bind C-l swap-window -d -t ':+'
-bind Tab set key-table root \; last-window
-bind c set key-table root \; new-window -c "#{pane_current_path}"
-bind d set key-table root \; detach-client
-bind s set key-table root \; choose-tree -w "swap-window -s ':' -t '%%'"
+bind , command-prompt -I "#W" "rename-window -- '%%'"
+bind -r C-h swap-window -d -t ':-'
+bind -r C-l swap-window -d -t ':+'
+bind C-j choose-tree -w "join-pane -hd -s '%%'"
+bind C-k display-panes -d 0 "select-pane -t '%%' \; break-pane -a \; rename-window '#{pane_title}' \; last-window"
+bind Tab last-window
+bind c new-window -c "#{pane_current_path}"
+bind d detach-client
+bind s choose-tree -w "swap-window -s ':' -t '%%'"
 
-bind w set key-table root \; choose-tree -w
+bind w choose-tree -w
 
 # mark current pane
 bind m select-pane -m
 
 # cycle through windows
-bind [ previous-window
-bind ] next-window
+bind -r [ previous-window
+bind -r ] next-window
 
 # visual mode
-bind n set key-table root \; copy-mode
+bind n copy-mode
 bind -T copy-mode-vi d send-keys -X halfpage-down
 bind -T copy-mode-vi u send-keys -X halfpage-up
-bind p set key-table root \; paste-buffer
-bind P set key-table root \; choose-buffer
+bind p paste-buffer
+bind P choose-buffer
 
 # split windows
-bind - set key-table root \; split-window -v
-bind / set key-table root \; split-window -h
+bind - split-window -v
+bind / split-window -h
 
 set-hook -g window-renamed "select-pane -T '#{window_name}'"
