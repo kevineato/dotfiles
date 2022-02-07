@@ -2,55 +2,60 @@
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-if !has('nvim')
-    call plug#begin(fnamemodify('~/.vim/plugged', ':p'))
-else
-    call plug#begin(stdpath('data') . '/plugged')
-endif
+call plug#begin(stdpath('data') . '/plugged')
 Plug 'jiangmiao/auto-pairs'
-Plug 'tjdevries/coc-zsh'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'lfilho/cosco.vim'
-Plug 'kevineato/DoxygenToolkit.vim'
 Plug 'mattn/emmet-vim'
-Plug 'gruvbox-community/gruvbox'
-Plug 'brooth/far.vim'
-Plug 'ellisonleao/glow.nvim'
-Plug 'junegunn/goyo.vim'
-Plug 'sainnhe/gruvbox-material'
-Plug 'phaazon/hop.nvim'
-" Plug 'haya14busa/is.vim'
-Plug 'itchyny/lightline.vim'
-Plug 'preservim/nerdcommenter'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'lotabout/skim', {'dir': '~/.skim', 'do': './install'}
-Plug 'lotabout/skim.vim'
 Plug 'godlygeek/tabular'
 Plug 'kevineato/tagbar'
 Plug 'wellle/targets.vim'
-" Plug 'tbabej/taskwiki'
-Plug 'kevineato/tinykeymap_vim'
 Plug 'SirVer/ultisnips'
-Plug 'mbbill/undotree'
-" Plug 'ap/vim-buftabline'
 Plug 'ryanoasis/vim-devicons'
-Plug 'justinmk/vim-dirvish'
 Plug 'junegunn/vim-easy-align'
-" Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'farmergreg/vim-lastplace'
-" Plug 'jackguo380/vim-lsp-cxx-highlight'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'junegunn/vim-peekaboo'
-Plug 'kevineato/vim-protodef'
 Plug 'reconquest/vim-pythonx'
 Plug 'tpope/vim-repeat'
+Plug 'kevineato/vim-protodef'
+Plug 'kana/vim-textobj-user'
+Plug 'kevineato/tinykeymap_vim'
+Plug 'preservim/nerdcommenter'
+Plug 'itchyny/lightline.vim'
+Plug 'ellisonleao/glow.nvim'
+
+Plug 'kevineato/DoxygenToolkit.vim'
+Plug 'justinmk/vim-dirvish'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'kevineato/vim-sandwich'
 Plug 'kevineato/vim-signature'
 Plug 'mhinz/vim-signify'
 Plug 'mhinz/vim-startify'
-Plug 'kana/vim-textobj-user'
-" Plug 'vimwiki/vimwiki'
+Plug 'sainnhe/gruvbox-material'
+Plug 'phaazon/hop.nvim'
+Plug 'mbbill/undotree'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
+" Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+" Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+" Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+Plug 'onsails/lspkind-nvim'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'quangnguyen30192/cmp-nvim-ultisnips'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'nvim-lua/lsp_extensions.nvim'
+Plug 'junegunn/fzf', {'do': {-> fzf#install()}}
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzy-native.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', {'do': 'make'}
+Plug 'sbdchd/neoformat'
+Plug 'simrat39/symbols-outline.nvim'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -59,45 +64,62 @@ call plug#end()
 
 filetype plugin indent on
 
-if !has('nvim')
-    set autoindent
-    set autoread
-    set background=dark
-    set backspace=indent,eol,start
-    set belloff=all
-    set complete-=i
-    set cscopeverbose
-    set display=lastline
-    set encoding=utf-8
-    set fileencoding=utf-8
-    set fileencodings=utf-8
-    set formatoptions+=j
-    set history=10000
-    set incsearch
-    set langnoremap
-    set laststatus=2
-    set listchars="tab:> ,trail:-,nbsp+"
-    set nocompatible
-    set nofsync
-    set nostartofline
-    set nrformats=bin,hex
-    set ruler
-    set sessionoptions-=options
-    set shortmess+=F
-    set shortmess-=S
-    set sidescroll=1
-    set t_Co=256
-    set t_ut=
-    set tabpagemax=50
-    set ttimeout
-    set ttimeoutlen=50
-    set ttyfast
-    set viminfo+=!
-    set wildmenu
-    syntax enable
-else
-    set nosmarttab
+set autoindent
+set autoread
+set background=dark
+set backspace=indent,eol,start
+set belloff=all
+set breakindent
+set breakindentopt=sbr,list:-1
+set clipboard=unnamed,unnamedplus
+set cmdheight=2
+set colorcolumn=80
+set complete-=i
+set completeopt=menuone,preview,noinsert,noselect
+set cursorline
+set display=lastline
+set encoding=utf-8
+set expandtab
+set fileencoding=utf-8
+set fileencodings=utf-8
+set formatoptions+=j
+set grepprg=rg\ --vimgrep
+set helpheight=9999
+set hidden
+set history=10000
+set ignorecase
+set inccommand=split
+set matchpairs+=<:>
+set mouse=a
+set nohlsearch
+set noshowmode
+set nosmarttab
+set number
+set relativenumber
+set ruler
+set shiftwidth=4
+set shortmess+=c
+let &showbreak = ' '
+set signcolumn=yes
+set smartcase
+set t_Co=256
+set t_ut=
+set tabstop=4
+set termguicolors
+set timeoutlen=300
+set updatetime=50
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
+set wildmode=longest:full,full
+syntax enable
+
+if has('persistent_undo')
+    set undodir=$XDG_DATA_HOME/nvim/.undo
+    set undofile
 endif
+
+let g:netrw_banner = 0
+
+let mapleader = ','
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " gruvbox/gruvbox-material
@@ -110,47 +132,7 @@ let g:gruvbox_material_diagnostic_line_highlight = 1
 let g:gruvbox_material_diagnostic_virtual_text = 'colored'
 colorscheme gruvbox-material
 
-set colorcolumn=80
 highlight! link ColorColumn CursorLine
-
-set breakindent
-set breakindentopt=sbr,list:-1
-set clipboard=unnamed,unnamedplus
-set cmdheight=2
-set completeopt=menuone,preview,noinsert,noselect
-set cursorline
-set expandtab
-set grepprg=rg\ --vimgrep
-set helpheight=9999
-set hidden
-set ignorecase
-set matchpairs+=<:>
-set mouse=a
-set mousemodel=popup
-set nobackup
-set nohlsearch
-set noshowmode
-set nowritebackup
-set number relativenumber
-set shiftwidth=4
-set shortmess+=c
-let &showbreak = ' '
-set signcolumn=yes
-set smartcase
-set tabstop=4
-set termguicolors
-set timeoutlen=300
-set updatetime=50
-set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,__pycache__
-set wildmode=longest:full,full
-set wrap
-
-if has("persistent_undo")
-    set undodir=$HOME/.vim/.undodir
-    set undofile
-endif
-
-let mapleader = ','
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " auto-pairs
@@ -160,107 +142,7 @@ augroup myautopairs
     autocmd!
     autocmd FileType c,cpp,h,hpp,java,snippets let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'})
     autocmd FileType rust let b:AutoPairs = AutoPairsDefine({'\w\zs<': '>'}, ["'"])
-augroup end
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" coc.nvim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" let g:coc_default_semantic_highlight_groups = 1
-let g:coc_global_extensions = [
-            \   "coc-clangd",
-            \   "coc-cmake",
-            \   "coc-css",
-            \   "coc-explorer",
-            \   "coc-html",
-            \   "coc-java",
-            \   "coc-json",
-            \   "coc-lists",
-            \   "coc-marketplace",
-            \   "coc-pyright",
-            \   "coc-rust-analyzer",
-            \   "coc-sh",
-            \   "coc-tsserver",
-            \   "coc-ultisnips",
-            \   "coc-vimlsp",
-            \   "coc-xml",
-            \   "coc-yaml",
-            \ ]
-let g:coc_snippet_next = "<C-j>"
-let g:coc_snippet_prev = "<C-k>"
-let g:markdown_fenced_languages = [
-            \ 'vim',
-            \ 'help'
-            \ ]
-
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        let l:word = expand('<cword>')
-        if match(getline('.'), l:word . '(') != -1
-            execute 'h ' . l:word . '()'
-        elseif match(getline('.'), 'set ' . l:word) != -1 ||
-                    \ match(getline('.'), "'" . l:word . "'") != -1
-            execute 'h ' . "'" . l:word . "'"
-        else
-            execute 'h ' . l:word
-        endif
-    else
-        call CocActionAsync('doHover')
-    endif
-endfunction
-
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-command! -nargs=0 Format :call CocAction('format')
-
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> ]e <Plug>(coc-diagnostic-next)
-nmap <silent> [e <Plug>(coc-diagnostic-prev)
-nmap <silent> <Space>qf <Plug>(coc-fix-current)
-nmap <silent> <Space>v <Plug>(coc-format-selected)
-nmap <silent> <Leader>rn <Plug>(coc-rename)
-nnoremap <expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-nnoremap <expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-nnoremap <silent> <Space>c :<C-u>CocList commands<CR>
-nnoremap <silent> <Space>e :<C-u>CocCommand explorer<CR>
-nnoremap <silent> <Space>ef :<C-u>CocCommand explorer --reveal <C-r>=expand('%:p')<CR> <C-r>=expand('%:p:h')<CR><CR>
-nnoremap <silent> <Space>E :<C-u>CocList marketplace<CR>
-nnoremap <silent> <Space>f :<C-u>Format<CR>
-nnoremap <silent> <Space>j :<C-u>CocNext<CR>
-nnoremap <silent> <Space>k :<C-u>CocPrev<CR>
-nnoremap <silent> <Space>o :<C-u>CocList -A outline<CR>
-" nnoremap <silent> <Space>q :<C-u>CocList -A --normal quickfix<CR>
-nnoremap <silent> <Space>r :<C-u>CocListResume<CR>
-nnoremap <silent> <Space>R :<C-u>CocRestart<CR>
-nnoremap <Space>s :<C-u>CocSearch 
-nnoremap <silent> <Space>sw :<C-u>CocSearch <C-r>=expand('<cword>')<CR><CR>
-vnoremap <silent> <Space>s :<C-u>CocSearch <C-r>=substitute(GetVisual(), ' ', '\\ ', 'g')<CR><CR>
-nnoremap <silent> <Space>S :<C-u>CocList -I -A --input=<C-r>=expand('<cword>')<CR> symbols<CR>
-nnoremap <silent> <Space>y :<C-u>CocList -A yank<CR>
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-omap ac <Plug>(coc-classobj-a)
-omap af <Plug>(coc-funcobj-a)
-omap ic <Plug>(coc-classobj-i)
-omap if <Plug>(coc-funcobj-i)
-xmap <silent> <Space>v <Plug>(coc-format-selected)
-xmap ac <Plug>(coc-classobj-a)
-xmap af <Plug>(coc-funcobj-a)
-xmap ic <Plug>(coc-classobj-i)
-xmap if <Plug>(coc-funcobj-i)
-
-augroup mycocnvim
-    autocmd!
-    autocmd CursorHold * silent call CocActionAsync('highlight')
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-    autocmd FileType c,cpp,h,hpp nnoremap <silent> <Space>ss :<C-u>CocCommand clangd.switchSourceHeader<CR>
-    autocmd FileType coc-explorer set number relativenumber
-    autocmd FileType coc-explorer nnoremap <buffer> <silent> H
-                \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['gotoParent'])<CR>
-                \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['indentPrev'])<CR>
-    autocmd FileType coc-explorer nnoremap <buffer> <silent> L
-                \ :silent call CocAction('runCommand', 'explorer.doAction', 0, ['cd'])<CR>
+    autocmd FileType TelescopePrompt let b:autopairs_enabled = 0
 augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -304,271 +186,19 @@ function! s:shortDoxy()
     let g:DoxygenToolkit_endCommentBlock = l:original_endCommentBlock
 endfunction
 
-nnoremap <silent> <Leader>ad :<C-u>Dox<CR>@todo description<Esc>v?@<CR><C-g>
-nnoremap <silent> <Leader>as :<C-u>call <SID>shortDoxy()<CR>@todo description<Esc>v?@<CR><C-g>
+nnoremap <silent> <Leader>ad <Cmd>Dox<CR>@todo description<Esc>v?@<CR><C-g>
+nnoremap <silent> <Leader>as <Cmd>call <SID>shortDoxy()<CR>@todo description<Esc>v?@<CR><C-g>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " hop.nvim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-lua << EOF
-require'hop'.setup{ char2_fallback_key = '<CR>' }
-EOF
+lua require("hop").setup{char2_fallback_key = "<CR>"}
 
-nnoremap <silent> <Leader>ll :<C-u>HopLineStart<CR>
-nnoremap <silent> <Leader>s :<C-u>HopPattern<CR>
-nnoremap <silent> <Leader>w :<C-u>HopWord<CR>
-nnoremap <silent> <Leader>z :<C-u>HopChar2<CR>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" skim.vim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:skim_layout = { 'down': '~40%'  }
-
-" Color functions from fzf/skim
-function! s:get_color(attr, ...)
-    let l:gui = has('termguicolors') && &termguicolors
-    let l:fam = l:gui ? 'gui' : 'cterm'
-    let l:pat = l:gui ? '^#[a-f0-9]\+' : '^[0-9]\+$'
-    for l:group in a:000
-        let l:code = synIDattr(synIDtrans(hlID(l:group)), a:attr, l:fam)
-        if l:code =~? l:pat
-            return l:code
-        endif
-    endfor
-    return ''
-endfunction
-
-let s:ansi = {
-            \   'black': 30,
-            \   'red': 31,
-            \   'green': 32,
-            \   'yellow': 33,
-            \   'blue': 34,
-            \   'magenta': 35,
-            \   'cyan': 36
-            \ }
-
-function! s:csi(color, fg)
-    let l:prefix = a:fg ? '38;' : '48;'
-    if a:color[0] == '#'
-        return l:prefix . '2;' . join(map([a:color[1:2], a:color[3:4], a:color[5:6]],
-                    \ 'str2nr(v:val, 16)'), ';')
-    endif
-    return l:prefix . '5;' . a:color
-endfunction
-
-function! s:ansi(str, group, default, ...)
-    let l:fg = s:get_color('fg', a:group)
-    let l:bg = s:get_color('bg', a:group)
-    let l:color = (empty(l:fg) ? s:ansi[a:default] : s:csi(l:fg, 1)) .
-                \ (empty(l:bg) ? '' : ';'.s:csi(l:bg, 0))
-    return printf("\x1b[%s%sm%s\x1b[m", l:color, a:0 ? ';1' : '', a:str)
-endfunction
-
-for s:color_name in keys(s:ansi)
-    execute "function! s:" . s:color_name . "(str, ...)\n"
-                \ "  return s:ansi(a:str, get(a:, 1, ''), '" . s:color_name . "')\n"
-                \ "endfunction"
-endfor
-
-function! s:skim_rg_handler(lines, has_column)
-    if len(a:lines) < 2
-        return
-    endif
-
-    function! s:my_rg_to_qf(line, has_column)
-        let l:parts = split(a:line, '[^:]\zs:\ze[^:]')
-        let l:text = join(l:parts[(a:has_column ? 3 : 2):], ':')
-        let l:dict = {'filename': &acd ? fnamemodify(l:parts[0], ':p') : l:parts[0],
-                    \ 'lnum': l:parts[1], 'text': l:text}
-        if a:has_column
-            let l:dict.col = l:parts[2]
-        endif
-        return l:dict
-    endfunction
-
-    let l:list = map(filter(a:lines[1:], 'len(v:val)'), 's:my_rg_to_qf(v:val, a:has_column)')
-
-    if len(l:list) == 1
-        execute 'e' l:list[0].filename
-        call cursor([l:list[0].lnum, l:list[0].col])
-        call feedkeys('zz')
-        return
-    endif
-
-    call setqflist(l:list)
-    call s:sortUniqQFList()
-    execute 'CocList -A --normal quickfix'
-endfunction
-
-function! RipgrepSkim(query, args, do_curr_dir)
-    let l:command_fmt = "rg --pcre2 --no-heading --color=always --smart-case %s '{}' %s"
-    let l:curr_dir = a:do_curr_dir ? expand('%:h') : '.'
-    let l:rg_command = printf(l:command_fmt, a:args, l:curr_dir)
-
-    let l:has_column = a:args =~# '--column'
-    let l:opts = {
-                \   'column': l:has_column,
-                \   'options': [
-                    \     '-i', '-c', l:rg_command,
-                    \     '--ansi', '--cmd-prompt', 'rg> ',
-                    \     '--multi', '-d', ':', '--bind',
-                    \     'alt-a:select-all,alt-d:deselect-all,ctrl-f:preview-down,ctrl-b:preview-up,ctrl-h:preview-left,ctrl-l:preview-right',
-                    \     '--preview-window', '+{2}-/2',
-                    \      '--color', 'hl:4,hl+:12'
-                    \   ],
-                    \   'source': 'none'
-                    \ }
-
-    if !l:has_column
-        let l:opts['sink'] = 'e'
-        let l:wrapped = s:skim_wrap('rg', l:opts, 'sink')
-    else
-        function! l:opts.sink(lines)
-            return s:skim_rg_handler(a:lines, self.column)
-        endfunction
-        let l:opts['sink*'] = remove(l:opts, 'sink')
-        let l:wrapped = s:skim_wrap('rg', l:opts, 'sink*')
-    endif
-    call skim#run(l:wrapped)
-    if !empty(a:query)
-        sleep 100m
-        call feedkeys(a:query, 't')
-    endif
-endfunction
-
-function! s:skim_wrap(name, opts, ...)
-    if a:0
-        let l:sinks = {}
-        for l:key in split(a:1)
-            let l:sinks[key] = remove(a:opts, l:key)
-        endfor
-    endif
-    let l:wrapped = skim#wrap(a:name, fzf#vim#with_preview(a:opts, 'right:50%', 'alt-h'))
-    if a:0
-        for l:key in keys(l:sinks)
-            let l:wrapped[key] = l:sinks[l:key]
-        endfor
-    endif
-    return l:wrapped
-endfunction
-
-function! s:skim_buflist(do_mru)
-    if a:do_mru
-        redir => l:ls
-        silent ls!
-        redir END
-        let l:filtered = filter(split(l:ls, '\n'), "v:val !~ '/tmp/\\|Tagbar\\|/\"\\|\\[Scratch]'")
-        let l:filtered = map(l:filtered, "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
-        return filter(l:filtered, "filereadable(glob(v:val)) && !buflisted(glob(v:val))")
-    endif
-    redir => l:ls
-    silent ls
-    redir END
-    let l:filtered = map(split(l:ls, '\n'), "expand(substitute(v:val, '.*\"\\(.\\+\\)\".*', '\\1', ''))")
-    return filter(l:filtered, "filereadable(glob(v:val))")
-endfunction
-
-function! s:skim_delete_buffers(lines)
-    for l:line in a:lines
-        let l:b = matchstr(l:line, '\[\zs[0-9]*\ze\]')
-        execute 'bd' l:b
-    endfor
-    execute 'DBuffers'
-endfunction
-
-function! s:skim_format_mark(line)
-    return substitute(a:line, '\S', '\=s:yellow(submatch(0), "Number")', '')
-endfunction
-
-function! s:skim_mark_sink(line)
-    let l:marker = matchstr(a:line, '\S')
-    if index(split(b:SignatureIncludeMarks, '\zs'), l:marker) == -1
-        let l:item = split(a:line, '\s\+')
-        let l:item = map(l:item[1:2], 'str2nr(v:val)')
-        call cursor(l:item)
-        call search('\S', '', l:item[0])
-        execute 'normal! zz'
-    else  
-        execute 'normal! `' . l:marker . 'zz'
-    endif
-endfunction
-
-function! s:skim_get_markers()
-    let l:list = signature#marker#List('', 0, 1)
-    let l:output = []
-    for l:item in l:list
-        let l:marker = s:yellow(l:item['text'][0], "Number")
-        let l:lnum = l:item['lnum']
-        let l:col = 1
-        let l:text = l:item['text'][3:]
-        let l:line = printf(" %s %6d %4d %s", l:marker, l:lnum, l:col, l:text)
-        call add(l:output, l:line)
-    endfor
-    return l:output
-endfunction
-
-function! s:skim_get_marks()
-    redir => l:cout
-    silent marks
-    redir END
-    let l:list = split(l:cout, "\n")
-    call extend(l:list[0:0], map(l:list[1:], 'v:val'))
-    let l:curr_marks = signature#mark#GetList('used', 'buf_curr')
-    call map(l:curr_marks, 'v:val[0]')
-    return extend(l:list[0:0], map(filter(l:list[1:], 'index(curr_marks, matchstr(v:val, "\\S")) != -1'), 's:skim_format_mark(v:val)'))
-endfunction
-
-command! SigMarks call skim#run(<SID>skim_wrap('marks', {
-            \   'source': extend(<SID>skim_get_marks(), <SID>skim_get_markers()),
-            \   'sink': function('s:skim_mark_sink'),
-            \   'options': [
-                \     '--no-multi', '--extended', '--ansi', '--tiebreak=index',
-                \     '--header-lines=1', '--tiebreak=begin', '--prompt', 'Marks> '
-                \   ]}))
-command! Mru call skim#run(<SID>skim_wrap('mru' ,{
-            \   'source': reverse(<SID>skim_buflist(1)),
-            \   'options': ['--multi'],
-            \   'down': '40%'
-            \ }))
-command! DBuffers call skim#run(<SID>skim_wrap('dBuffers', {
-            \   'source': map(fzf#vim#_buflisted_sorted(), 'fzf#vim#_format_buffer(v:val)'),
-            \   'sink*': function('s:skim_delete_buffers'),
-            \   'options': [
-                \     '-x', '--tiebreak=index', '--header-lines=1', '--ansi', '-d', '\t',
-                \     '--with-nth', '3..', '-n', '2,1..2', '--prompt', 'Buf> ',
-                \     '--preview-window', '+{2}-/2'
-                \   ],
-                \   'down': '40%'
-                \ }))
-command! -bang -nargs=* RG call RipgrepSkim(<q-args>, '--column --line-number', <bang>0)
-command! -bang -nargs=* RGFiles call RipgrepSkim(<q-args>, '--files-with-matches', <bang>0)
-
-nmap <Leader>y :History:<CR>
-nnoremap <silent> <Leader>b :Buffers<CR>
-nnoremap <silent> <Leader>B :Mru<CR>
-nnoremap <silent> <Leader>db :DBuffers<CR>
-nnoremap <silent> <Leader>e :SK -q !.cache/\ !.clangd/\ !.dep\ !.obj\ !.git/\ !build/\ !.o\ !.lo\ !.la\ <CR>
-nnoremap <silent> <Leader>ed :SK -q !.cache/\ !.clangd/\ !.dep\ !.obj\ !.git/\ !build/\ !.o\ !.lo\ !.la\  <C-r>=expand('%:h')<CR><CR>
-nnoremap <silent> <Leader>f :RG<CR>
-nnoremap <silent> <Leader>fd :RG!<CR>
-nnoremap <silent> <Leader>fw :RG <C-r>=expand('<cword>')<CR><CR>
-nnoremap <silent> <Leader>fdw :RG! <C-r>=expand('<cword>')<CR><CR>
-nnoremap <silent> <Leader>F :RGFiles<CR>
-nnoremap <silent> <Leader>Fd :RGFiles!<CR>
-nnoremap <silent> <Leader>Fw :RGFiles <C-r>=expand('<cword>')<CR><CR>
-nnoremap <silent> <Leader>Fdw :RGFiles! <C-r>=expand('<cword>')<CR><CR>
-nnoremap <silent> <Leader>ls :BLines<CR>
-nnoremap <silent> <Leader>Ls :Lines<CR>
-nnoremap <silent> <Leader>m :SigMarks<CR>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" is.vim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" let g:is#do_default_mappings = 1
+nnoremap <Leader>ll <Cmd>HopLineStart<CR>
+nnoremap <Leader>s <Cmd>HopPattern<CR>
+nnoremap <Leader>w <Cmd>HopWord<CR>
+nnoremap <Leader>z <Cmd>HopChar2<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " lightline.vim
@@ -577,14 +207,10 @@ nnoremap <silent> <Leader>m :SigMarks<CR>
 let g:lightline = {
             \   'active': {
                 \     'left': [['mode', 'paste'],
-                \       ['readonly', 'relativepath', 'modified', 'currfunc', 'cocstatus']]
+                \       ['readonly', 'relativepath', 'modified']]
                 \   },
-                \   'colorscheme': 'gruvbox_material',
-                \   'component': {
-                    \     'cocstatus': '%{coc#status()}',
-                    \     'currfunc': '%{get(b:, "coc_current_function", "")}'
-                    \   }
-                    \ }
+                \   'colorscheme': 'gruvbox_material'
+                \ }
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " nerdcommenter
@@ -600,10 +226,10 @@ let g:NERDSpaceDelims = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 lua << EOF
-require'nvim-treesitter.configs'.setup {
-    highlight = {
-    enable = true
-    }
+require("nvim-treesitter.configs").setup {
+    highlight = {enable = true},
+    incremental_selection = {enable = true},
+    textobjects = {enable = true}
 }
 EOF
 
@@ -664,7 +290,8 @@ function! s:align_comment()
         endif
 
         silent execute "normal v\<Plug>(textobj-comment-multiline-a)"
-        silent execute "normal \<Plug>(coc-format-selected)"
+        " silent execute "normal \<Plug>(coc-format-selected)"
+        silent execute "NeoFormat"
         sleep 100m
 
         call cursor(l:save_pos)
@@ -683,18 +310,11 @@ function! s:align_comment()
 
         let l:curr_text = getline(l:c_begin, l:c_end)
     endwhile
-    " let l:c_begin = search('\/\*\*', 'bc')
-    " normal! m<
-    " let l:c_end = search('\*\/', 'c')
-    " normal! m>gv
-    " if visualmode() ==# 'v'
-    " normal! V
-    " endif
 endfunction
 
 augroup mytabular
     autocmd!
-    autocmd FileType c,cpp,h,hpp,java nnoremap <buffer> <silent> <Leader>ac :call <SID>align_comment()<CR>
+    autocmd FileType c,cpp,h,hpp,java nnoremap <buffer> <Leader>ac <Cmd>call <SID>align_comment()<CR>
 augroup end
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -722,7 +342,7 @@ let g:tagbar_type_cpp = {
                 \   ]
                 \ }
 
-nmap <silent> <F4> :TagbarToggle<CR>
+nnoremap <F4> <Cmd>SymbolsOutline<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " tinykeymap_vim
@@ -855,32 +475,7 @@ let g:undotree_HelpLine = 0
 let g:undotree_SetFocusWhenToggle = 1
 let g:undotree_WindowLayout = 2
 
-nmap <silent> <F5> :UndotreeToggle<CR>
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-buftabline
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" let g:buftabline_numbers = 2
-" let g:buftabline_indicators = 1
-" let g:buftabline_plug_max = 15
-
-" nmap <Leader>1 <Plug>BufTabLine.Go(1)
-" nmap <Leader>2 <Plug>BufTabLine.Go(2)
-" nmap <Leader>3 <Plug>BufTabLine.Go(3)
-" nmap <Leader>4 <Plug>BufTabLine.Go(4)
-" nmap <Leader>5 <Plug>BufTabLine.Go(5)
-" nmap <Leader>6 <Plug>BufTabLine.Go(6)
-" nmap <Leader>7 <Plug>BufTabLine.Go(7)
-" nmap <Leader>8 <Plug>BufTabLine.Go(8)
-" nmap <Leader>9 <Plug>BufTabLine.Go(9)
-" nmap <Leader>10 <Plug>BufTabLine.Go(10)
-" nmap <Leader>11 <Plug>BufTabLine.Go(11)
-" nmap <Leader>12 <Plug>BufTabLine.Go(12)
-" nmap <Leader>13 <Plug>BufTabLine.Go(13)
-" nmap <Leader>14 <Plug>BufTabLine.Go(14)
-" nmap <Leader>15 <Plug>BufTabLine.Go(15)
-" nmap <Leader>0 <Plug>BufTabLine.Go(-1)
+nnoremap <F5> <Cmd>UndotreeToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-dirvish
@@ -906,30 +501,11 @@ nmap ga <Plug>(EasyAlign)
 xmap ga <Plug>(EasyAlign)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-easymotion
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" let g:EasyMotion_keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ;'
-" let g:EasyMotion_smartcase = 1
-" let g:EasyMotion_use_upper = 1
-
-" nmap <Leader>s <Plug>(easymotion-sn)
-" omap <Leader>s <Plug>(easymotion-sn)
-" xmap <Leader>s <Plug>(easymotion-sn)
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-lsp-cxx-highlight
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" let g:lsp_cxx_hl_use_nvim_text_props = 1
-" let g:lsp_cxx_hl_use_text_props = 1
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-multiple-cursors
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-nnoremap <silent> <C-a> :<C-u>call multiple_cursors#select_all("n", 1)<CR>
-xnoremap <silent> <C-a> :<C-u>call multiple_cursors#select_all("v", 0)<CR>
+nnoremap <C-a> <Cmd>call multiple_cursors#select_all("n", 1)<CR>
+xnoremap <C-a> <Cmd>call multiple_cursors#select_all("v", 0)<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-sandwich
@@ -1030,8 +606,8 @@ let g:signify_vcs_cmds_diffmode = {
             \ 'tfs':      'tf view -version:W -noprompt %f',
             \ }
 
-nnoremap <silent> <Leader>hd :<C-u>SignifyHunkDiff<CR>
-nnoremap <silent> <Leader>hu :<C-u>SignifyHunkUndo<CR>
+nnoremap <Leader>hd <Cmd>SignifyHunkDiff<CR>
+nnoremap <Leader>hu <Cmd>SignifyHunkUndo<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-startify
@@ -1084,12 +660,6 @@ endfunction
 function! s:check_back_space() abort
     let l:col = col('.') - 1
     return !l:col || getline('.')[l:col - 1] =~# '\s'
-endfunction
-
-function! s:cmake_format()
-    let l:save_pos = getpos('.')[1:2]
-    execute '%!cmake-format %'
-    call cursor(l:save_pos)
 endfunction
 
 function! s:edit_impl(header_name, impl_name)
@@ -1233,52 +803,42 @@ function! s:ulti_expandable()
 endfunction
 
 command! EditImpl call s:edit_impl(expand('%:t'), expand('%:r') . '.cpp')
-command! NvConfig edit $HOME/.dotfiles/vim/vimrc
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General key maps
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-cnoremap <C-a> <Home>
+cnoremap <C-h> <Home>
+cnoremap <C-l> <End>
 cnoremap <C-b> <Left>
-cnoremap <C-d> <S-Right>
-cnoremap <C-e> <End>
 cnoremap <C-f> <Right>
-cnoremap <C-p> <Up>
-cnoremap <C-n> <Down>
 cnoremap <C-s> <S-Left>
-inoremap <silent> <expr> <Tab>
-            \ <SID>ulti_expandable() ? "\<C-r>=UltiSnips#ExpandSnippet()\<CR>" :
-            \ pumvisible() ? coc#_select_confirm() :
-            \ <SID>check_back_space() ? "\<Tab>" :
-            \ coc#refresh()
-inoremap <C-\><C-o> <C-o>
-inoremap <C-o> <C-\><C-o>
-inoremap jj <Esc>
-nnoremap <silent> <Leader><Space> :nohlsearch<CR>:diffupdate<CR>:syntax sync fromstart<CR>:mode<CR>
-nnoremap <silent> <Leader><Tab> :call <SID>last_buf()<CR>
-nnoremap <silent> <Leader>- :split<CR>
-nnoremap <silent> <Leader>/ :vsplit<CR>
-nnoremap <silent> <Leader>C :call <SID>safe_close()<CR>
+cnoremap <C-d> <S-Right>
+cnoremap <C-o> <Up>
+cnoremap <C-k> <Down>
+nnoremap <Leader><Space> <Cmd>nohlsearch<CR><Cmd>diffupdate<CR><Cmd>syntax sync fromstart<CR><Cmd>mode<CR>
+nnoremap <Leader><Tab> <Cmd>call <SID>last_buf()<CR>
+nnoremap <Leader>- <Cmd>split<CR>
+nnoremap <Leader>/ <Cmd>vsplit<CR>
+nnoremap <Leader>C <Cmd>call <SID>safe_close()<CR>
 nnoremap <Leader>d "_d
 xnoremap <Leader>d "_d
 xnoremap <Leader>p "_dP
-nnoremap <silent> <Leader>qc :<C-u>cclose<CR>zz
-nnoremap <silent> <Leader>qlc :<C-u>lclose<CR>zz
-nnoremap <silent> <Leader>qlr :<C-u>lclose<CR>zz:call setloclist(0, [])<CR>
-nnoremap <silent> <Leader>qln :<C-u>lnext<CR>zz
-nnoremap <silent> <Leader>qlp :<C-u>lprevious<CR>zz
-nnoremap <silent> <Leader>qlo :<C-u>lopen<CR><C-w>pzz
-nnoremap <silent> <Leader>qls :<C-u>call <SID>sortUniqQFList(1)<CR>
-nnoremap <silent> <Leader>qn :<C-u>cnext<CR>zz
-nnoremap <silent> <Leader>qp :<C-u>cprevious<CR>zz
-nnoremap <silent> <Leader>qo :<C-u>copen<CR><C-w>pzz
-nnoremap <silent> <Leader>qr :<C-u>cclose<CR>zz:call setqflist([])<CR>
-nnoremap <silent> <Leader>qs :<C-u>call <SID>sortUniqQFList()<CR>
-nnoremap <silent> <Leader>u :<C-u>up<CR>
+nnoremap <Leader>qc <Cmd>cclose<CR>zz
+nnoremap <Leader>qlc <Cmd>lclose<CR>zz
+nnoremap <Leader>qlr <Cmd>lclose<CR>zz<Cmd>call setloclist(0, [])<CR>
+nnoremap <Leader>qln <Cmd>lnext<CR>zz
+nnoremap <Leader>qlp <Cmd>lprevious<CR>zz
+nnoremap <Leader>qlo <Cmd>lopen<CR><C-w>pzz
+nnoremap <Leader>qls <Cmd>call <SID>sortUniqQFList(1)<CR>
+nnoremap <Leader>qn <Cmd>cnext<CR>zz
+nnoremap <Leader>qp <Cmd>cprevious<CR>zz
+nnoremap <Leader>qo <Cmd>copen<CR><C-w>pzz
+nnoremap <Leader>qr <Cmd>cclose<CR>zz<Cmd>call setqflist([])<CR>
+nnoremap <Leader>qs <Cmd>call <SID>sortUniqQFList()<CR>
+nnoremap <Leader>u <Cmd>up<CR>
 nnoremap <Space><CR> m`o<Esc>``
 nnoremap <Space><A-CR> m`O<Esc>``
-nnoremap <Space>gd gd
 nnoremap <Space>w <C-w>
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
@@ -1287,11 +847,8 @@ noremap <C-l> <C-w>l
 noremap ` '
 noremap ' `
 noremap \ ,
-" noremap ; :
 noremap <expr> j v:count ? 'j' : 'gj'
 noremap <expr> k v:count ? 'k' : 'gk'
-" noremap p ]p
-" noremap P ]P
 nnoremap <silent> <expr> 0 <SID>better_zero()
 onoremap <silent> <expr> 0
             \ col('.') == len(getline('.')) ?
@@ -1341,24 +898,33 @@ endfunction
 
 let g:doxygen_end_punctuation='\n\%(\s*\*\s*@param\\S*\|\s*\*\{2,}/\)\@='
 
+lua << EOF
+require("telescope").setup({
+    defaults = {
+        layout_strategy = "vertical"
+    }
+})
+require("telescope").load_extension("fzy_native")
+EOF
+
+lua require("personal")
+
 augroup myautocmd
     autocmd!
     autocmd BufEnter * call s:autoRestoreWinView()
-    autocmd BufEnter *.h,*.hpp nnoremap <buffer> <silent> <Leader>PP :EditImpl<CR>
-    autocmd BufEnter *.c,*.cpp nnoremap <buffer> <silent> <Leader>PP o<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})<CR><Esc>v`[:<C-u>call CocActionAsync('formatSelected', visualmode())<CR>
+    autocmd BufEnter *.h,*.hpp nnoremap <buffer> <Leader>PP <Cmd>EditImpl<CR>
+    " autocmd BufEnter *.c,*.cpp nnoremap <buffer> <silent> <Leader>PP o<C-r>=protodef#ReturnSkeletonsFromPrototypesForCurrentBuffer({})<CR><Esc>v`[:<C-u>call CocActionAsync('formatSelected', visualmode())<CR>
     autocmd BufLeave * call s:autoSaveWinView()
     autocmd BufNewFile,BufRead .clang-format set filetype=yaml
     autocmd BufNewFile,BufReadPre *.c,*.cpp,*.h,*.hpp,*.java let b:load_doxygen_syntax=1
-    autocmd BufWritePost ~/.dotfiles/vim/vimrc ++nested source ~/.dotfiles/vim/vimrc
+    autocmd BufWritePost ~/.dotfiles/config/nvim/init.vim ++nested source ~/.dotfiles/config/nvim/init.vim
     autocmd FileType c,cmake,cpp,h,hpp,java,snippets setlocal expandtab tabstop=4 shiftwidth=4
-    autocmd FileType cmake nnoremap <buffer> <silent> <Space>f :update<CR>:call <SID>cmake_format()<CR>
-    " autocmd FileType glowpreview wincmd _ | wincmd |
     autocmd FileType gitcommit setlocal formatoptions-=t
-    autocmd FileType help nnoremap <buffer> <silent> q :q<CR>
+    autocmd FileType help nnoremap <buffer> q <Cmd>q<CR>
     autocmd FileType glowpreview,help,man nnoremap <buffer> d <C-d>
     autocmd FileType glowpreview,help,man nnoremap <buffer> u <C-u>
     autocmd FileType glowpreview,markdown setlocal linebreak
-    autocmd FileType man nnoremap <buffer> <silent> q :call <SID>safe_close()<CR>:if winnr('$') > 1 <Bar> q <Bar> endif<CR>
+    autocmd FileType man nnoremap <buffer> <silent> q <Cmd>call <SID>safe_close()<CR><Cmd>if winnr('$') > 1 <Bar> q <Bar> endif<CR>
     autocmd FileType man wincmd _
     autocmd FileType markdown setlocal formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\|^\\s*[-*+]\\s\\+\\\|^\\[^\\ze[^\\]]\\+\\]:
     autocmd FileType json syntax match Comment +\/\/.\+$+
@@ -1366,6 +932,6 @@ augroup myautocmd
     autocmd InsertLeave,WinEnter * set cursorline
 augroup end
 
-if filereadable(fnamemodify('~/.vim/local.vim', ':p'))
-    execute printf('source %s', fnamemodify('~/.vim/local.vim', ':p'))
+if filereadable(stdpath('config') . '/local.vim')
+    execute printf('source %s', stdpath('config') . '/local.vim')
 endif

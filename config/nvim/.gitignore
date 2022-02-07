@@ -1,5 +1,7 @@
-.undodir
+.netrwhist
+.undo
 autoload
 local.vim
+local.lua
 plugged
 sessions
