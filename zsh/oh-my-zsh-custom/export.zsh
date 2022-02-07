@@ -1,36 +1,36 @@
 # LD_LIBRARY_PATH functions
 function lib_remove() {
-  LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
+    LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
 }
 
 function lib_append() {
-  lib_remove "$1"
-  LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+"$LD_LIBRARY_PATH:"}$1"
+    lib_remove "$1"
+    LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+"$LD_LIBRARY_PATH:"}$1"
 }
 
 function lib_prepend() {
-  lib_remove "$1"
-  LD_LIBRARY_PATH="$1${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}"
+    lib_remove "$1"
+    LD_LIBRARY_PATH="$1${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}"
 }
 
 # PATH functions
 function path_remove() {
-  PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
+    PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
 }
 
 function path_append() {
-  path_remove "$1"
-  PATH="${PATH:+"$PATH:"}$1"
+    path_remove "$1"
+    PATH="${PATH:+"$PATH:"}$1"
 }
 
 function path_prepend() {
-  path_remove "$1"
-  PATH="$1${PATH:+":$PATH"}"
+    path_remove "$1"
+    PATH="$1${PATH:+":$PATH"}"
 }
 
 # check for ruby
 if [[ -d "$HOME/.gem/ruby/2.5.0/bin" ]]; then
-  path_append "$HOME/.gem/ruby/2.5.0/bin"
+    path_append "$HOME/.gem/ruby/2.5.0/bin"
 fi
 
 # check for rust
@@ -45,7 +45,7 @@ fi
 
 # prepend
 if [[ -d '/snap/bin' ]]; then
-  path_prepend '/snap/bin'
+    path_prepend '/snap/bin'
 fi
 path_prepend "$HOME/.local/bin"
 
@@ -65,9 +65,9 @@ export EDITOR='nvim'
 export KEYTIMEOUT=1
 export LESS='iR'
 if [[ -x "$(whence -p bat)" ]]; then
-  export PAGER='bat'
+    export PAGER='bat'
 else
-  export PAGER='less'
+    export PAGER='less'
 fi
 export TIME='real %e user %U sys %S CPU %P\n'
 export TZ='America/Chicago'

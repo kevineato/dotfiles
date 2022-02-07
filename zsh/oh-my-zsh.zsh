@@ -65,17 +65,20 @@ HIST_STAMPS="yyyy-mm-dd"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  alias-tips
-  colored-man-pages
-  common-aliases
-  extract
-  history-substring-search
-  vi-mode
-  zsh-autopair
-  zsh-autosuggestions
-  zsh-completions
-  zsh-syntax-highlighting
+    alias-tips
+    colored-man-pages
+    common-aliases
+    extract
+    history-substring-search
+    vi-mode
+    zsh-autopair
+    zsh-autosuggestions
+    zsh-completions
+    zsh-syntax-highlighting
 )
+
+# Reload for zsh-completions
+autoload -Uz compinit && compinit
 
 if [[ -x "$(command -v fasd)" ]]; then plugins+=(fasd); fi
 if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
@@ -83,6 +86,3 @@ if [[ -x "$(command -v rg)" ]]; then plugins+=(ripgrep); fi
 if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
 
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
-
-# Reload for zsh-completions
-autoload -Uz compinit && compinit
