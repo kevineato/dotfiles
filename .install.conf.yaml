@@ -3,13 +3,18 @@
       create: true
       relink: true
 
+- create:
+  - ~/.local/bin
+
 - shell:
   -
-    command: [git submodule sync --recursive, Syncing submodules]
+    command: git submodule sync --recursive
+    description: Syncing submodules
     stdout: true
     stderr: true
   -
-    command: [git submodule update --init --recursive, Updating submodules]
+    command: git submodule update --init --recursive
+    description: Updating submodules
     stdout: true
     stderr: true
   -
@@ -18,40 +23,54 @@
     stdout: true
     stderr: true
   -
-    command: [tools/install/install-vim-plug.sh, Installing vim-plug]
-    stdin: true
+    command: tools/install/install-vim-plug.sh
+    description: Installing vim-plug
     stdout: true
     stderr: true
   -
-    command: [nvim +PlugInstall +qall, Installing neovim plugins]
-    stdin: true
+    command: |
+        if [[ ! -d "$HOME"/.local/share/nvim/plugged ]]; then
+            nvim +PlugInstall +qall
+        fi
+    description: Installing neovim plugins
     stdout: true
     stderr: true
   -
-    command: [tools/install/install-fira.sh, Installing FiraCode nerd fonts]
-    stdin: true
+    command: tools/install/install-fira.sh
+    description: Installing FiraCode nerd fonts
     stdout: true
     stderr: true
   -
-    command: [bat cache --build, Adding Gruvbox bat theme]
-    stdin: true
+    command: |
+      if [[ -x "$(whence -p bat)" ]]; then
+          bat cache --build
+      fi
+    description: Adding Gruvbox bat theme
     stdout: true
     stderr: true
   -
-    command: [mkdir -p "$HOME"/.local/bin && tools/bat-extras/build.sh --minify=none --no-verify --prefix="$HOME"/.local --install, Installing bat-extras]
-    stdin: true
+    command: |
+      if [[ -x "$(whence -p bat)" ]]; then
+          found=true
+          for file in tools/bat-extras/src/*.sh; do
+              found=$found && [[ -x "$HOME"/.local/bin/"$file" ]]
+          done
+          if [[ ! $found ]]; then
+              tools/bat-extras/build.sh --minify=none --no-verify --prefix="$HOME"/.local --install
+          fi
+      fi
+    description: Installing bat-extras
     stdout: true
     stderr: true
 
-- clean: ['~']
+- clean: ["~"]
 
 - link:
     ~/.clang-format: clang/clang-format
     ~/.clang-tidy: clang/clang-tidy
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
-    ~/.config/nvim/coc-settings.json: vim/coc-settings.json
-    ~/.config/nvim/init.vim: vim/vimrc
+    ~/.config/nvim: config/nvim
     ~/.config/vifm: config/vifm
     ~/.config/watson/config: config/watson/config
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
@@ -61,6 +80,5 @@
     ~/.sage:
     ~/.tmux.conf: tools/.tmux/.tmux.conf
     ~/.tmux.conf.local: tmux/tmux.conf.local
-    ~/.vim:
     ~/.zsh:
     ~/.zshrc: zsh/zshrc
