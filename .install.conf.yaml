@@ -23,14 +23,9 @@
     stdout: true
     stderr: true
   -
-    command: tools/install/install-vim-plug.sh
-    description: Installing vim-plug
-    stdout: true
-    stderr: true
-  -
     command: |
-        if [[ ! -d "$HOME"/.local/share/nvim/plugged ]]; then
-            nvim +PlugInstall +qall
+        if [[ ! -d "$HOME"/.config/nvim ]]; then
+            git clone https://github.com/kevineato/CosmicNvim.git "$HOME"/.config/nvim
         fi
     description: Installing neovim plugins
     stdout: true
@@ -70,7 +65,7 @@
     ~/.clang-tidy: clang/clang-tidy
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
-    ~/.config/nvim: config/nvim
+    ~/.config/nvim/lua/cosmic/config: config/nvim/config
     ~/.config/vifm: config/vifm
     ~/.config/watson/config: config/watson/config
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
