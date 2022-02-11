@@ -12,7 +12,12 @@ map("n", "L", "g_")
 map("x", "L", "g_")
 map("n", "j", "gj")
 map("n", "k", "gk")
-map("n", "<Leader><Tab>", [[bufloaded(bufnr('#')) ? '<Cmd>b #<CR>' : exists(':BufferLineCyclePrev') == 2 ? '<Cmd>BufferLineCyclePrev<CR>' : '<Cmd>bp<CR>']], {expr = true})
+map(
+	"n",
+	"<Leader><Tab>",
+	[[bufloaded(bufnr('#')) ? '<Cmd>b #<CR>' : exists(':BufferLineCyclePrev') == 2 ? '<Cmd>BufferLineCyclePrev<CR>' : '<Cmd>bp<CR>']],
+	{ expr = true }
+)
 map("n", "<Leader>d", '"_d')
 map("x", "<Leader>d", '"_d')
 map("x", "<Leader>p", '"_dP')

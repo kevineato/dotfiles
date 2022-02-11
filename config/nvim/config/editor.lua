@@ -19,10 +19,10 @@ opt.undofile = true
 opt.writebackup = true
 
 -- completion
-opt.completeopt = {"menuone", "preview", "noinsert", "noselect"}
+opt.completeopt = { "menuone", "preview", "noinsert", "noselect" }
 opt.wildignore = {}
 opt.wildmenu = true
-opt.wildmode = {"longest:full", "full"}
+opt.wildmode = { "longest:full", "full" }
 
 -- indent
 opt.autoindent = true
@@ -39,7 +39,7 @@ opt.smartcase = true
 
 -- ui
 opt.breakindent = true
-opt.breakindentopt = {"sbr", "list:-1"}
+opt.breakindentopt = { "sbr", "list:-1" }
 opt.cmdheight = 1
 opt.colorcolumn = "80"
 opt.cursorline = true
@@ -59,7 +59,7 @@ opt.termguicolors = true
 opt.wrap = true
 
 vim.defer_fn(function()
-    vim.cmd([[
+	vim.cmd([[
         highlight Comment cterm=NONE gui=NONE
         highlight TSComment gui=NONE
         highlight Todo gui=bold
