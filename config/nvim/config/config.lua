@@ -502,9 +502,6 @@ local server_opts = {
 			return {
 				diagnostics_format = "#{m} [#{c}]",
 				sources = {
-					null_ls.builtins.diagnostics.shellcheck.with({
-						extra_filetypes = { "zsh" },
-					}),
 					null_ls.builtins.formatting.cmake_format,
 					null_ls.builtins.formatting.black,
 					null_ls.builtins.diagnostics.flake8.with({
