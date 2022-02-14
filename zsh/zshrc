@@ -7,13 +7,21 @@ fi
 
 export ZSH_HOME="$HOME/.zsh"
 
+[[ -f "$ZSH_HOME/export.zsh" ]] && source "$ZSH_HOME/export.zsh"
+
 [[ -f "$ZSH_HOME/oh-my-zsh.zsh" ]] && source "$ZSH_HOME/oh-my-zsh.zsh"
+
+[[ -f "$ZSH_HOME/alias.zsh" ]] && source "$ZSH_HOME/alias.zsh"
+[[ -f "$ZSH_HOME/function.zsh" ]] && source "$ZSH_HOME/function.zsh"
+
+if [[ -f "$ZSH_HOME/local.zsh" ]]; then source "$ZSH_HOME/local.zsh"; fi
 
 if [[ -f "$HOME/.skim/shell/completion.zsh" ]]; then source "$HOME/.skim/shell/completion.zsh"; fi
 if [[ -f "$HOME/.skim/shell/key-bindings.zsh" ]]; then source "$HOME/.skim/shell/key-bindings.zsh"; fi
 
 if [[ -f "$HOME/.dircolors" ]]; then eval "$(dircolors $HOME/.dircolors)"; fi
 if [[ -r "$HOME/.local/share/lscolors.sh" ]]; then source "$HOME/.local/share/lscolors.sh"; fi
+if [[ -x "$(whence -p fasd)" ]]; then eval "$(fasd --init auto)"; fi
 
 # Widgets
 autoload -Uz copy-earlier-word
