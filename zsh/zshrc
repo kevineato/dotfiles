@@ -45,6 +45,7 @@ bindkey "${terminfo[kcbt]}" reverse-menu-complete
 setopt extendedglob
 setopt histignorealldups
 setopt histignorespace
+setopt magicequalsubst
 # setopt rematchpcre
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
