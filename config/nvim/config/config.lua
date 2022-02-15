@@ -4,6 +4,15 @@ config.mapleader = " "
 
 config.add_plugins = {
 	{
+		"simrat39/symbols-outline.nvim",
+		cmd = { "SymbolsOutline", "SymbolsOutlineOpen", "SymbolsOutlineClose" },
+		keys = { { "n", "<F4>" } },
+		config = function()
+			require("symbols-outline").setup({ width = 50 })
+			require("cosmic.utils").map("n", "<F4>", "<Cmd>SymbolsOutline<CR>")
+		end,
+	},
+	{
 		"godlygeek/tabular",
 		ft = { "c", "cpp", "h", "hpp", "java" },
 	},
