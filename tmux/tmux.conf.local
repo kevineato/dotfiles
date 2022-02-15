@@ -341,7 +341,7 @@ bind -r [ previous-window
 bind -r ] next-window
 
 # visual mode
-bind n copy-mode
+bind Space copy-mode
 bind -T copy-mode-vi d send-keys -X halfpage-down
 bind -T copy-mode-vi u send-keys -X halfpage-up
 bind p paste-buffer
