@@ -17,6 +17,7 @@ if [[ -x "$(whence -p howdoi)" ]]; then
         alias h='function hdi(){ howdoi $* -c -n 5; }; hdi'
     fi
 fi
+if [[ -x "$(whence -p lazygit)" ]]; then alias lg='lazygit'; fi
 alias dl='dirs -lv'
 alias dv='dirs -v'
 
