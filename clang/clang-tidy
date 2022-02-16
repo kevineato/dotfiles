@@ -40,6 +40,8 @@ FormatStyle: file
 User: kevin
 
 CheckOptions:
+  - key: modernize-use-override.IgnoreDestructors
+    value: 'true'
   - key: performance-inefficient-string-concatenation.StrictMode
     value: 'true'
   - key: readability-implicit-bool-conversion.AllowIntegerConditions
