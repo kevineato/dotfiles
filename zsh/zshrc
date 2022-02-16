@@ -16,8 +16,8 @@ export ZSH_HOME="$HOME/.zsh"
 
 if [[ -f "$ZSH_HOME/local.zsh" ]]; then source "$ZSH_HOME/local.zsh"; fi
 
-if [[ -f "$HOME/.skim/shell/completion.zsh" ]]; then source "$HOME/.skim/shell/completion.zsh"; fi
-if [[ -f "$HOME/.skim/shell/key-bindings.zsh" ]]; then source "$HOME/.skim/shell/key-bindings.zsh"; fi
+# if [[ -f "$HOME/.skim/shell/completion.zsh" ]]; then source "$HOME/.skim/shell/completion.zsh"; fi
+# if [[ -f "$HOME/.skim/shell/key-bindings.zsh" ]]; then source "$HOME/.skim/shell/key-bindings.zsh"; fi
 
 if [[ -f "$HOME/.dircolors" ]]; then eval "$(dircolors $HOME/.dircolors)"; fi
 if [[ -r "$HOME/.local/share/lscolors.sh" ]]; then source "$HOME/.local/share/lscolors.sh"; fi

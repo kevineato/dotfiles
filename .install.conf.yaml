@@ -5,6 +5,7 @@
 
 - create:
   - ~/.local/bin
+  - ~/.local/share
 
 - shell:
   -
@@ -18,8 +19,12 @@
     stdout: true
     stderr: true
   -
-    command: cd tools/LS_COLORS && ./install.sh
-    description: Installing LS_COLORS script
+    command: |
+        if [[ ! -d "$HOME"/.fzf ]]; then
+            git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
+            "$HOME"/.fzf/install --bin
+        fi
+    description: Installing fzf
     stdout: true
     stderr: true
   -
@@ -72,6 +77,7 @@
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
     ~/.gdbinit.d:
     ~/.gitconfig: git/gitconfig
+    ~/.local/share/lscolors.sh: tools/LS_COLORS/lscolors.sh
     ~/.p10k.zsh: zsh/p10k.zsh
     ~/.sage:
     ~/.tmux.conf: tools/.tmux/.tmux.conf

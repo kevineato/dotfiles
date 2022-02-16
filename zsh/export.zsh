@@ -38,9 +38,9 @@ if [[ -d "$HOME/.cargo/bin" ]]; then
     path_append "$HOME/.cargo/bin"
 fi
 
-# check for skim
-if [[ -d "$HOME/.skim/bin" ]]; then
-    path_append "$HOME/.skim/bin"
+# check for fzf
+if [[ -d "$HOME/.fzf/bin" ]]; then
+    path_append "$HOME/.fzf/bin"
 fi
 
 # prepend
@@ -53,12 +53,12 @@ path_prepend "$HOME/.local/bin"
 export BAT_THEME='Gruvbox-N'
 
 # fzf
-# export DISABLE_FZF_AUTO_COMPLETION='false'
-# export DISABLE_FZF_KEY_BINDINGS='false'
-# export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
-# export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow --ignore-file '~/.fdignore'"
-# export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always' --history=$HOME/.fzf_history --bind 'alt-a:toggle-all'"
+export DISABLE_FZF_AUTO_COMPLETION='false'
+export DISABLE_FZF_KEY_BINDINGS='false'
+export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
+export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always' --history=$HOME/.fzf_history --preview-window hidden --bind 'alt-a:toggle-all' --bind 'alt-h:toggle-preview'"
 
 # general
 export EDITOR='nvim'
@@ -79,8 +79,8 @@ export GTAGSLABEL=pygments
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # skim
-export SKIM_DEFAULT_COMMAND='fd --type f --hidden --follow'
-export SKIM_DEFAULT_OPTIONS="--multi --preview-window=':hidden' --preview='bat --style=numbers --color=always {}' --cmd-history=$HOME/.skim_cmd_history --history=$HOME/.skim_history --bind='alt-a:toggle-all,alt-h:toggle-preview'"
+# export SKIM_DEFAULT_COMMAND='fd --type f --hidden --follow'
+# export SKIM_DEFAULT_OPTIONS="--multi --preview-window=':hidden' --preview='bat --style=numbers --color=always {}' --cmd-history=$HOME/.skim_cmd_history --history=$HOME/.skim_history --bind='alt-a:toggle-all,alt-h:toggle-preview'"
 
 # zsh-autosuggestions
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)

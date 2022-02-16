@@ -7,7 +7,7 @@ alias -g BG='&> /dev/null &|'
 if [[ -x "$(whence -p fzf)" ]]; then alias -g F='| fzf'; fi
 alias -g L='| less -iR'
 alias -g LL='|& less -iR'
-if [[ -x "$(whence -p sk)" ]]; then alias -g S='| sk'; fi
+# if [[ -x "$(whence -p sk)" ]]; then alias -g S='| sk'; fi
 
 # general
 if [[ -x "$(whence -p howdoi)" ]]; then
