@@ -1,8 +1,9 @@
 local utils = {}
 
-utils.buf_kill = function(kill_command, bufnr, force)
+utils.buf_kill = function(kill_command, bufnr, swap, force)
 	local bo = vim.bo
 	local api = vim.api
+	local alt_bufnr = vim.fn.bufnr("#")
 
 	-- If buffer is modified and force isn't true, print error and abort
 	if not force and bo[bufnr].modified then
@@ -46,6 +47,9 @@ utils.buf_kill = function(kill_command, bufnr, force)
 	-- Check if buffer still exists, to ensure the target buffer wasn't killed
 	-- due to options like bufhidden=wipe.
 	if api.nvim_buf_is_valid(bufnr) and bo[bufnr].buflisted then
+		if swap and api.nvim_buf_is_valid(alt_bufnr) and bo[alt_bufnr].buflisted then
+			vim.cmd(string.format("b %d", alt_bufnr))
+		end
 		vim.cmd(string.format("%s %d", kill_command, bufnr))
 	end
 end
@@ -119,6 +123,8 @@ utils.align_comment = function()
 			local p_end = api.nvim_win_get_cursor(0)[1]
 			if vim.fn.search("@return", "", c_end) == 0 then
 				p_end = c_end - 1
+			else
+				p_end = api.nvim_win_get_cursor(0)[1] - 1
 			end
 			local p_tail = [[/l1l1')]]
 			if p_begin == p_end then

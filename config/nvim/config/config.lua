@@ -430,10 +430,10 @@ config.add_plugins = {
 						return string.format("%s·%s", opts.raise(opts.id), opts.lower(opts.ordinal))
 					end,
 					close_command = function(id)
-						require("cosmic.config.utils").buf_kill("bd", tonumber(id))
+						require("cosmic.config.utils").buf_kill("bd", tonumber(id), false)
 					end,
 					right_mouse_command = function(id)
-						require("cosmic.config.utils").buf_kill("bd", tonumber(id))
+						require("cosmic.config.utils").buf_kill("bd", tonumber(id), false)
 					end,
 					offsets = { { filetype = "NvimTree", text = "File Explorer" } },
 					separator_style = "slant",
@@ -522,6 +522,17 @@ local server_opts = {
 			}
 		end,
 	},
+    pyright = {
+        opts = {
+            settings = {
+                python = {
+                    analysis = {
+                        useLibraryCodeForTypes = true
+                    }
+                }
+            }
+        }
+    },
 	sumneko_lua = {
 		opts = {
 			settings = {

@@ -70,7 +70,7 @@ vim.cmd([[
     augroup personal_group
         au!
         au TextYankPost * lua vim.highlight.on_yank({higroup = "IncSearch", timeout = 150, on_visual = true})
-        au FileType c,cpp,h,hpp,java nnoremap <buffer> <Leader>ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
+        au FileType c,cpp,h,hpp,java nnoremap <buffer> ]] .. vim.g.mapleader .. [[ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
     augroup end
     augroup snippets_clear
         au!

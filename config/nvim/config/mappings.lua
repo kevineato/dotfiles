@@ -21,4 +21,4 @@ map(
 map("n", "<Leader>d", '"_d')
 map("x", "<Leader>d", '"_d')
 map("x", "<Leader>p", '"_dP')
-map("n", "<Leader>x", "<Cmd>lua require('cosmic.config.utils').buf_kill('bd', 0)<CR>")
+map("n", "<Leader>x", "<Cmd>lua require('cosmic.config.utils').buf_kill('bd', 0, true)<CR>")
