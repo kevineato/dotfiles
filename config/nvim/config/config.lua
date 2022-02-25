@@ -514,7 +514,7 @@ local server_opts = {
 					null_ls.builtins.formatting.cmake_format,
 					null_ls.builtins.formatting.black,
 					null_ls.builtins.diagnostics.flake8.with({
-						extra_args = { "--max-line-length=88", "--extend-ignore=E203,E302" },
+						extra_args = { "--max-line-length=88", "--extend-ignore=E201,E202,E203,E302" },
 					}),
 					null_ls.builtins.formatting.stylua,
 				},
@@ -522,17 +522,17 @@ local server_opts = {
 			}
 		end,
 	},
-    pyright = {
-        opts = {
-            settings = {
-                python = {
-                    analysis = {
-                        useLibraryCodeForTypes = true
-                    }
-                }
-            }
-        }
-    },
+	pyright = {
+		opts = {
+			settings = {
+				python = {
+					analysis = {
+						useLibraryCodeForTypes = true,
+					},
+				},
+			},
+		},
+	},
 	sumneko_lua = {
 		opts = {
 			settings = {
