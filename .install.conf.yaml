@@ -14,7 +14,7 @@
     stdout: true
     stderr: true
   -
-    command: git submodule update --init --recursive
+    command: git submodule update --init --recursive --depth 1 --jobs $(grep -c '^processor' /proc/cpuinfo)
     description: Updating submodules
     stdout: true
     stderr: true
