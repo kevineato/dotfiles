@@ -14,6 +14,8 @@ map("x", "L", "g_")
 map("o", "L", "g_")
 map("n", "j", "gj")
 map("n", "k", "gk")
+map("n", "]t", "<Cmd>tabnext<CR>")
+map("n", "[t", "<Cmd>tabprevious<CR>")
 map(
 	"n",
 	"<Leader><Tab>",

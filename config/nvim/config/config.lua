@@ -447,8 +447,8 @@ config.add_plugins = {
 			map("n", mapleader .. "bx", "<Cmd>BufferLinePickClose<CR>")
 			map("n", "]b", "<Cmd>BufferLineCycleNext<CR>")
 			map("n", "[b", "<Cmd>BufferLineCyclePrev<CR>")
-			map("n", "]t", "<Cmd>BufferLineMoveNext<CR>")
-			map("n", "[t", "<Cmd>BufferLineMovePrev<CR>")
+			map("n", "]B", "<Cmd>BufferLineMoveNext<CR>")
+			map("n", "[B", "<Cmd>BufferLineMovePrev<CR>")
 			map("n", mapleader .. "bd", "<Cmd>BufferLineSortByDirectory<CR>")
 			map(
 				"n",
@@ -493,6 +493,7 @@ local server_opts = {
 					"--completion-style=detailed",
 					"--header-insertion=never",
 					"--hidden-features",
+                    "--include-ineligible-results",
 					"--inlay-hints",
 					"-j=12",
 					"--ranking-model=decision_forest",
