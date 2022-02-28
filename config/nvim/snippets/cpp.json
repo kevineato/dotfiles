@@ -1,0 +1,17 @@
+{
+    "File header": {
+        "prefix": "fh",
+        "body": [
+            "/**",
+            " * @file $TM_FILENAME",
+            " * @brief ${1:description}",
+            " *",
+            " * \\$Revision: \\$",
+            " * \\$Date: \\$",
+            " * \\$LastEditedBy: \\$",
+            " *",
+            " * \\$Copyright: $CURRENT_YEAR\\$",
+            " **************************************************************************/"
+        ]
+    }
+}
