@@ -69,15 +69,12 @@ end, 0)
 vim.cmd([[
     augroup personal_group
         au!
+        au User PackerCompileDone highlight Comment cterm=NONE gui=NONE
+        au User PackerCompileDone highlight TSComment gui=NONE
+        au User PackerCompileDone highlight Todo gui=bold
         au TextYankPost * lua vim.highlight.on_yank({higroup = "IncSearch", timeout = 150, on_visual = true})
         au FileType c,cpp,h,hpp,java nnoremap <buffer> ]] .. vim.g.mapleader .. [[ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
     augroup end
-    augroup snippets_clear
-        au!
-        au BufWritePost ]] .. vim.fn.stdpath("config") .. [[/lua/snippets/*.lua lua require('cosmic.config.utils').snippets_clear()
-    augroup end
 ]])
-
-vim.api.nvim_add_user_command("LuaSnipEdit", require("cosmic.config.utils").edit_snippets_ft, {})
 
 require("cosmic.config.mappings")
