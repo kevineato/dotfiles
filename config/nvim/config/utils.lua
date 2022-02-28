@@ -54,34 +54,6 @@ utils.buf_kill = function(kill_command, bufnr, swap, force)
 	end
 end
 
-utils.snippets_clear = function()
-	local ls = require("luasnip")
-	for m, _ in pairs(ls.snippets) do
-		package.loaded["snippets." .. m] = nil
-	end
-	ls.snippets = setmetatable({}, {
-		__index = function(t, k)
-			local ok, m = pcall(require, "snippets." .. k)
-			if not ok and not string.match(m, "^module.*not found:") then
-				error(m)
-			end
-			t[k] = ok and m or {}
-			return t[k]
-		end,
-	})
-end
-
-utils.edit_snippets_ft = function()
-	local fts = require("luasnip.util.util").get_snippet_filetypes()
-	vim.ui.select(fts, {
-		prompt = "Select which snippet filetype to edit:",
-	}, function(item, idx)
-		if idx then
-			vim.cmd("edit " .. vim.fn.stdpath("config") .. "/lua/snippets/" .. item .. ".lua")
-		end
-	end)
-end
-
 utils.align_comment = function()
 	local api = vim.api
 	local save_pos = api.nvim_win_get_cursor(0)
