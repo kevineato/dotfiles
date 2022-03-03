@@ -3,6 +3,10 @@
         "snippets": [
             {
                 "language": "cpp",
+                "path": "local.json"
+            },
+            {
+                "language": "cpp",
                 "path": "cpp.json"
             }
         ]
