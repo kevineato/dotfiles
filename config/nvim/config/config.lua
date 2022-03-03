@@ -495,8 +495,7 @@ local server_opts = {
 					"--compile-commands-dir=build",
 					"--completion-style=detailed",
 					"--header-insertion=never",
-					"--hidden-features",
-                    "--include-ineligible-results",
+					"--include-ineligible-results",
 					"--inlay-hints",
 					"-j=12",
 					"--ranking-model=decision_forest",
@@ -513,7 +512,6 @@ local server_opts = {
 	null_ls = {
 		setup = function(null_ls)
 			return {
-				diagnostics_format = "#{m} [#{c}]",
 				sources = {
 					null_ls.builtins.formatting.cmake_format,
 					null_ls.builtins.formatting.black,
@@ -592,12 +590,6 @@ for _, server_name in ipairs(servers) do
 		end
 	end
 end
-
-config.diagnostic = {
-	virtual_text = {
-		spacing = 2,
-	},
-}
 
 config.todo_comments = {
 	highlight = {
