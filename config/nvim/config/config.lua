@@ -8,7 +8,10 @@ config.add_plugins = {
 		cmd = { "SymbolsOutline", "SymbolsOutlineOpen", "SymbolsOutlineClose" },
 		keys = { { "n", "<F4>" } },
 		config = function()
-			require("symbols-outline").setup({ width = 50 })
+			require("symbols-outline").setup({ width = 33, auto_preview = false })
+			vim.cmd(
+				"highlight FocusedSymbol term=bold ctermbg=yellow ctermfg=darkblue gui=bold guibg=yellow guifg=darkblue"
+			)
 			require("cosmic.utils").map("n", "<F4>", "<Cmd>SymbolsOutline<CR>")
 		end,
 	},
