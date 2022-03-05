@@ -56,6 +56,11 @@ end
 
 utils.align_comment = function()
 	local api = vim.api
+    local clients = vim.tbl_filter(function(client) return client.name == "clangd" end, vim.lsp.get_active_clients())
+    if #clients == 0 then
+        return
+    end
+    local client = clients[1]
 	local save_pos = api.nvim_win_get_cursor(0)
 	local tab_intro = [[call Tabularize('/.*\*/l1')]]
 	local tab_param = [[call Tabularize('/.*@t\?param\%(\[.*]\)\? \+\zs\w\+]]
@@ -128,7 +133,7 @@ utils.align_comment = function()
 			end
 		end
 		if edits then
-			vim.lsp.util.apply_text_edits(edits, 0)
+			vim.lsp.util.apply_text_edits(edits, 0, client.offset_encoding)
 		end
 
 		api.nvim_call_function("cursor", save_pos)
