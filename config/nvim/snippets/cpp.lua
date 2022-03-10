@@ -13,7 +13,17 @@ local ai = require("luasnip.nodes.absolute_indexer")
 
 local M = {}
 
-M.snippets = {}
+M.snippets = {
+	s({ trig = "print", name = "Print output" }, {
+		c(1, {
+			t("std::cout"),
+			t("std::cerr"),
+		}),
+		t(" << "),
+		i(0),
+		t(";"),
+	}),
+}
 
 M.map_snippets = function()
 	ls.snippets.c = ls.snippets.cpp

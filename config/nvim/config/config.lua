@@ -1,6 +1,6 @@
 local config = {}
 
-config.mapleader = " "
+config.mapleader = { as_string = " ", as_code = "<Space>" }
 
 config.add_plugins = {
 	{
@@ -53,13 +53,13 @@ config.add_plugins = {
 	{
 		"sbdchd/neoformat",
 		keys = {
-			{ "n", config.mapleader .. "nf" },
-			{ "x", config.mapleader .. "nf" },
+			{ "n", config.mapleader.as_code .. "nf" },
+			{ "x", config.mapleader.as_code .. "nf" },
 		},
 		cmd = "Neoformat",
 		config = function()
 			local map = require("cosmic.utils").map
-			local mapleader = require("cosmic.config.config").mapleader
+			local mapleader = require("cosmic.config.config").mapleader.as_string
 			map("n", mapleader .. "nf", "<Cmd>Neoformat<CR>")
 			map("x", mapleader .. "nf", "<Cmd>Neoformat<CR>")
 		end,
@@ -80,9 +80,9 @@ config.add_plugins = {
 		"danymat/neogen",
 		requires = "nvim-treesitter",
 		keys = {
-			{ "n", config.mapleader .. "af" },
-			{ "n", config.mapleader .. "ac" },
-			{ "n", config.mapleader .. "ai" },
+			{ "n", config.mapleader.as_code .. "af" },
+			{ "n", config.mapleader.as_code .. "ac" },
+			{ "n", config.mapleader.as_code .. "ai" },
 		},
 		config = function()
 			require("neogen").setup({
@@ -90,7 +90,7 @@ config.add_plugins = {
 			})
 
 			local map = require("cosmic.utils").map
-			local mapleader = require("cosmic.config.config").mapleader
+			local mapleader = require("cosmic.config.config").mapleader.as_string
 			map("n", mapleader .. "af", "<Cmd>lua require('neogen').generate({type = 'func'})<CR>")
 			map("n", mapleader .. "ac", "<Cmd>lua require('neogen').generate({type = 'class'})<CR>")
 			map("n", mapleader .. "ai", "<Cmd>lua require('neogen').generate({type = 'file'})<CR>")
@@ -132,7 +132,7 @@ config.add_plugins = {
 			}
 
 			local map = require("cosmic.utils").map
-			local mapleader = require("cosmic.config.config").mapleader
+			local mapleader = require("cosmic.config.config").mapleader.as_string
 			map("n", mapleader .. "hd", "<Cmd>SignifyHunkDiff<CR>")
 			map("n", mapleader .. "hu", "<Cmd>SignifyHunkUndo<CR>")
 		end,
@@ -441,11 +441,12 @@ config.add_plugins = {
 					offsets = { { filetype = "NvimTree", text = "File Explorer" } },
 					separator_style = "slant",
 					sort_by = "id",
+					-- diagnostics = "nvim_lsp",
 				},
 			})
 
 			local map = require("cosmic.utils").map
-			local mapleader = require("cosmic.config.config").mapleader
+			local mapleader = require("cosmic.config.config").mapleader.as_string
 			map("n", mapleader .. "bb", "<Cmd>BufferLinePick<CR>")
 			map("n", mapleader .. "bx", "<Cmd>BufferLinePickClose<CR>")
 			map("n", "]b", "<Cmd>BufferLineCycleNext<CR>")

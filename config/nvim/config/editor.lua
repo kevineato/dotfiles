@@ -1,7 +1,8 @@
 local opt = vim.opt
 local indent = 4
+local config = require("cosmic.config.config")
 
-vim.g.mapleader = require("cosmic.config.config").mapleader
+vim.g.mapleader = config.mapleader.as_string
 
 -- behavior
 opt.backup = false
@@ -9,6 +10,7 @@ opt.clipboard = "unnamedplus"
 opt.inccommand = "split"
 opt.lazyredraw = true
 -- opt.redrawtime = 2000
+opt.sessionoptions:remove("blank")
 opt.shortmess:append("c")
 opt.swapfile = true
 opt.timeoutlen = 300
@@ -19,7 +21,7 @@ opt.undofile = true
 opt.writebackup = true
 
 -- completion
-opt.completeopt = { "menuone", "preview", "noinsert", "noselect" }
+opt.completeopt = { "menu", "menuone", "preview", "noinsert", "noselect" }
 opt.wildignore = {}
 opt.wildmenu = true
 opt.wildmode = { "longest:full", "full" }
@@ -73,7 +75,7 @@ vim.cmd([[
         au User PackerCompileDone highlight TSComment gui=NONE
         au User PackerCompileDone highlight Todo gui=bold
         au TextYankPost * lua vim.highlight.on_yank({higroup = "IncSearch", timeout = 150, on_visual = true})
-        au FileType c,cpp,h,hpp,java nnoremap <buffer> ]] .. vim.g.mapleader .. [[ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
+        au FileType c,cpp,h,hpp,java nnoremap <buffer> ]] .. config.mapleader.as_code .. [[ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
     augroup end
 ]])
 
