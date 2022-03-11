@@ -19,8 +19,31 @@
     stdout: true
     stderr: true
   -
+    command: tools/install/install-fira.sh
+    description: Installing FiraCode nerd fonts
+    stdout: true
+    stderr: true
+  -
     command: |
-        if [[ ! -d "$HOME"/.fzf ]]; then
+        if [[ ! -x "$HOME/.local/bin/fasd" ]]; then
+            json_output=$(mktemp)
+            curl -L -o $json_output https://api.github.com/repos/clvv/fasd/tags
+            tarball_url=$(cat $json_output | egrep -m 1 tarball | sed -E -e 's/^.*":\s*//' -e 's/",?//g')
+            rm -f $json_output
+            tmpdir=$(mktemp -d)
+            tarball="$tmpdir/fasd.tar.gz"
+            curl -L -o $tarball $tarball_url
+            output_dir=$(tar -xzvf $tarball -C $tmpdir)
+            output_dir=$(echo $output_dir | head -n 1)
+            PREFIX="$HOME/.local" make -C "$tmpdir/$output_dir" install
+            rm -rf $tmpdir
+        fi
+    description: Installing fasd
+    stdout: true
+    stderr: true
+  -
+    command: |
+        if [[ ! -d "$HOME/.fzf" ]]; then
             git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
             "$HOME"/.fzf/install --bin
         fi
@@ -29,21 +52,10 @@
     stderr: true
   -
     command: |
-        if [[ ! -d "$HOME"/.config/nvim ]]; then
-            git clone https://github.com/kevineato/CosmicNvim.git "$HOME"/.config/nvim
-        fi
-    description: Installing neovim plugins
-    stdout: true
-    stderr: true
-  -
-    command: tools/install/install-fira.sh
-    description: Installing FiraCode nerd fonts
-    stdout: true
-    stderr: true
-  -
-    command: |
       if [[ -x "$(whence -p bat)" ]]; then
           bat cache --build
+      else
+          echo "bat was not found in path"
       fi
     description: Adding Gruvbox bat theme
     stdout: true
@@ -58,8 +70,23 @@
           if [[ ! $found ]]; then
               tools/bat-extras/build.sh --minify=none --no-verify --prefix="$HOME"/.local --install
           fi
+      else
+          echo "bat was not found in path"
       fi
     description: Installing bat-extras
+    stdout: true
+    stderr: true
+  -
+    command: hash -rf
+    description: Rebuilding command hash table
+    stdout: true
+    stderr: true
+  -
+    command: |
+        if [[ ! -d "$HOME/.config/nvim" ]]; then
+            git clone https://github.com/kevineato/CosmicNvim.git "$HOME"/.config/nvim
+        fi
+    description: Installing neovim config framework
     stdout: true
     stderr: true
 
