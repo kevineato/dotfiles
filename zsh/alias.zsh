@@ -21,6 +21,11 @@ if [[ -x "$(whence -p lazygit)" ]]; then alias lg='lazygit'; fi
 alias dl='dirs -lv'
 alias dv='dirs -v'
 
+# git
+if [[ -x "$(whence -p git)" ]]; then
+    alias gdf='git diff @ @{upstream}'
+fi
+
 # ls replacements
 if [[ -x "$(whence -p lsd)" ]] && lsd >/dev/null 2>&1; then
     alias l='lsd -AFl --group-dirs first --color always'
