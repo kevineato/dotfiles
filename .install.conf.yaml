@@ -25,7 +25,7 @@
     stderr: true
   -
     command: |
-        if [[ ! -x "$HOME/.local/bin/fasd" ]]; then
+        if [[ ! -x "$(whence -p fasd)" ]]; then
             json_output=$(mktemp)
             curl -L -o $json_output https://api.github.com/repos/clvv/fasd/tags
             tarball_url=$(cat $json_output | egrep -m 1 tarball | sed -E -e 's/^.*":\s*//' -e 's/",?//g')
