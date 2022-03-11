@@ -17,12 +17,16 @@ map("n", "k", "gk")
 map("n", "]t", "<Cmd>tabnext<CR>")
 map("n", "[t", "<Cmd>tabprevious<CR>")
 map(
-	"n",
-	"<Leader><Tab>",
-	[[bufloaded(bufnr('#')) ? '<Cmd>b #<CR>' : exists(':BufferLineCyclePrev') == 2 ? '<Cmd>BufferLineCyclePrev<CR>' : '<Cmd>bp<CR>']],
-	{ expr = true }
+    "n",
+    "<Leader><Tab>",
+    [[bufloaded(bufnr('#')) ? '<Cmd>b #<CR>' : exists(':BufferLineCyclePrev') == 2 ? '<Cmd>BufferLineCyclePrev<CR>' : '<Cmd>bp<CR>']],
+    { expr = true }
 )
 map("n", "<Leader>d", '"_d')
 map("x", "<Leader>d", '"_d')
 map("x", "<Leader>p", '"_dP')
-map("n", "<Leader>x", "<Cmd>lua require('cosmic.config.utils').buf_kill('bd', 0, true)<CR>")
+map(
+    "n",
+    "<Leader>x",
+    "<Cmd>lua require('cosmic.config.utils').buf_kill('bd', 0, true)<CR>"
+)

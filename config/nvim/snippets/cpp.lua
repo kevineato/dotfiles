@@ -14,22 +14,22 @@ local ai = require("luasnip.nodes.absolute_indexer")
 local M = {}
 
 M.snippets = {
-	s({ trig = "print", name = "Print output" }, {
-		c(1, {
-			t("std::cout"),
-			t("std::cerr"),
-		}),
-		t(" << "),
-		i(0),
-		t(";"),
-	}),
+    s({ trig = "print", name = "Print output" }, {
+        c(1, {
+            t("std::cout"),
+            t("std::cerr"),
+        }),
+        t(" << "),
+        i(0),
+        t(";"),
+    }),
 }
 
 M.map_snippets = function()
-	ls.snippets.c = ls.snippets.cpp
-	ls.snippets.h = ls.snippets.cpp
-	ls.snippets.hpp = ls.snippets.cpp
-	ls.snippets.tpp = ls.snippets.cpp
+    ls.snippets.c = ls.snippets.cpp
+    ls.snippets.h = ls.snippets.cpp
+    ls.snippets.hpp = ls.snippets.cpp
+    ls.snippets.tpp = ls.snippets.cpp
 end
 
 return M

@@ -61,7 +61,7 @@ opt.termguicolors = true
 opt.wrap = true
 
 vim.defer_fn(function()
-	vim.cmd([[
+    vim.cmd([[
         highlight Comment cterm=NONE gui=NONE
         highlight TSComment gui=NONE
         highlight Todo gui=bold
