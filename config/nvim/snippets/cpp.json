@@ -1,2 +1,13 @@
 {
+    "Header guard": {
+        "prefix": "hg",
+        "body": [
+            "#ifndef ${1:HEADER_GUARD}",
+            "#define $1",
+            "",
+            "$0$TM_SELECTED_TEXT",
+            "",
+            "#endif  // $1"
+        ]
+    }
 }
