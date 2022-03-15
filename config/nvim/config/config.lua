@@ -476,8 +476,8 @@ config.add_plugins = {
                 float = {
                     winblend = 0,
                     curdir_window = {
-                        enable = false,
-                        highlight_dirname = false,
+                        enable = true,
+                        highlight_dirname = true,
                     },
                     win_opts = function()
                         local width = math.floor(vim.o.columns * 0.8)
@@ -495,8 +495,6 @@ config.add_plugins = {
                             }, "Normal"),
                             width = width,
                             height = height,
-                            row = 1,
-                            col = math.floor((vim.o.columns - width) / 2),
                         }
                     end,
                 },
@@ -548,6 +546,7 @@ config.add_plugins = {
                     end,
                     offsets = {
                         { filetype = "NvimTree", text = "File Explorer" },
+                        { filetype = "Outline", text = "Symbols Outline" },
                     },
                     separator_style = "slant",
                     sort_by = "id",
