@@ -81,7 +81,7 @@ plugins=(
 autoload -Uz compinit && compinit
 
 if [[ -x "$(command -v fasd)" ]]; then plugins+=(fasd); fi
-if [[ -x "$HOME/.fzf/bin/fzf" ]]; then plugins+=(fzf); fi
+if [[ -x "$HOME/.fzf/bin/fzf" ]]; then plugins+=(fzf zsh-interactive-cd); fi
 if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
 if [[ -x "$(command -v rg)" ]]; then plugins+=(ripgrep); fi
 if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi

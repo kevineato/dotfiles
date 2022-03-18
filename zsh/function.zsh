@@ -2,21 +2,32 @@
 if [[ -x "$(whence -p fzf)" ]]; then
     function cdd() {
         local input_dir=${1:-.}
-        local directory="$(fd --type d --hidden --no-ignore '' $input_dir | awk -F / -v input_dir=$input_dir 'BEGIN{ $0=input_dir; print NF, input_dir } { print NF, $0 }' | sort -k 1n,1 -k 2d,2 -s | cut -d ' ' -f 2- | fzf --no-multi --exit-0)"
+        local directory="$(fd --type d --hidden --no-ignore '' $input_dir | \
+            awk -F / -v input_dir=$input_dir 'BEGIN{ $0=input_dir; print NF, input_dir } { print NF, $0 }' | \
+            sort -k 1n,1 -k 2d,2 -s | \
+            cut -d ' ' -f 2- | \
+            fzf --no-multi --exit-0 --height 40% --reverse --bind 'tab:down,shift-tab:up')"
         if [[ -n $directory ]]; then
             cd $directory
         fi
     }
 
     function cdl() {
-        local directory="$(dirs -lv | fzf --no-multi | cut -f 2)"
+        local directory="$(dirs -lv | \
+            sed -n -e '1 ! p' | \
+            fzf --no-multi --height 40% --reverse --bind 'tab:down,shift-tab:up' | \
+            cut -f 2)"
         if [[ -n $directory ]]; then
             cd $directory
         fi
     }
 
     function cdv() {
-        local directory="$(dirs -v | fzf --no-multi | cut -f 2 | sed -E "s@~@$HOME@")"
+        local directory="$(dirs -v | \
+            sed -n -e '1 ! p' | \
+            fzf --no-multi --height 40% --reverse --bind 'tab:down,shift-tab:up' | \
+            cut -f 2 | \
+            sed -E "s@~@$HOME@")"
         if [[ -n $directory ]]; then
             cd $directory
         fi
@@ -28,7 +39,10 @@ if [[ -x "$(whence -p fzf)" ]]; then
     }
 
     function fh() {
-        print -z "$( ([ -n $ZSH_NAME ] && fc -l 1 || history) | fzf --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')"
+        print -z "$( ([ -n $ZSH_NAME ] && fc -l 1 || history) | \
+            fzf --tac | \
+            sed -r 's/ *[0-9]*\*? *//' | \
+            sed -r 's/\\/\\\\/g')"
     }
 
     function fif() {
@@ -37,7 +51,9 @@ if [[ -x "$(whence -p fzf)" ]]; then
             return 1
         fi
 
-        rg --files-with-matches --no-messages "$1" $2 | fzf --multi --bind 'alt-enter:execute($EDITOR -p {})' --preview "bat --style=numbers --color=always {} 2> /dev/null | rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
+        rg --files-with-matches --no-messages "$1" $2 | \
+            fzf --multi --bind 'alt-enter:execute($EDITOR -p {})' --preview "bat --style=numbers --color=always {} 2> /dev/null | \
+            rg --colors 'match:bg:yellow' --ignore-case --pretty --context 10 '$1' || rg --ignore-case --pretty --context 10 '$1' {}"
     }
 
     function fkill() {
