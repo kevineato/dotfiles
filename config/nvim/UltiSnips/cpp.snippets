@@ -1,0 +1,40 @@
+extends c
+
+snippet cls "class" b
+/**
+ * @class $1
+ * @brief ${2:@todo description}
+ */
+class ${1:name}$0
+{
+};
+endsnippet
+
+# snippet memfun "member function" b
+# endsnippet
+
+snippet memvar "member variable" b
+/// ${3:@todo description}
+${1:type} ${2:name}$0;
+endsnippet
+
+snippet ns "namespace" b
+namespace ${1:name}
+{
+$0${VISUAL}
+}  // namespace $1
+endsnippet
+
+snippet print "print" b
+std::${1:cout} << $0;
+endsnippet
+
+snippet stru "struct" b
+/**
+ * @class $1
+ * @brief ${2:@todo description}
+ */
+struct ${1:name}$0
+{
+};
+endsnippet

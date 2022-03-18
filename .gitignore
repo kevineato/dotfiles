@@ -1,5 +1,6 @@
-config/nvim/snippets/local.lua
-config/nvim/snippets/local.json
+config/nvim/UltiSnips/*local.snippets
+config/nvim/snippets/*local.lua
+config/nvim/snippets/*local.json
 config/vifm/scripts/README
 config/vifm/vifm-help.txt
 config/vifm/vifminfo

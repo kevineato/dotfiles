@@ -97,8 +97,8 @@
     ~/.clang-tidy: clang/clang-tidy
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
+    ~/.config/nvim/UltiSnips: config/nvim/UltiSnips
     ~/.config/nvim/lua/cosmic/config: config/nvim/config
-    ~/.config/nvim/lua/snippets: config/nvim/snippets
     ~/.config/vifm: config/vifm
     ~/.config/watson/config: config/watson/config
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
