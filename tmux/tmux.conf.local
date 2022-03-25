@@ -279,8 +279,8 @@ tmux_conf_copy_to_os_clipboard=false
 set -g history-limit 10000
 
 # turn off auto window renaming
-setw -g allow-rename off
-setw -g automatic-rename off
+set -pg allow-rename off
+set -wg automatic-rename off
 
 # force Vi mode
 set -g status-keys vi
@@ -315,12 +315,6 @@ bind 7 select-window -t :=7
 bind 8 select-window -t :=8
 bind 9 select-window -t :=9
 
-# resize panes
-bind -r H resize-pane -L
-bind -r J resize-pane -D
-bind -r K resize-pane -U
-bind -r L resize-pane -R
-
 bind , command-prompt -I "#W" "rename-window -- '%%'"
 bind -r C-h swap-window -d -t ':-'
 bind -r C-l swap-window -d -t ':+'
@@ -351,4 +345,5 @@ bind P choose-buffer
 bind - split-window -v
 bind / split-window -h
 
+set-hook -g after-new-window "select-pane -T '#{window_name}'"
 set-hook -g window-renamed "select-pane -T '#{window_name}'"
