@@ -107,6 +107,7 @@
     ~/.local/share/lscolors.sh: tools/LS_COLORS/lscolors.sh
     ~/.p10k.zsh: zsh/p10k.zsh
     ~/.sage:
+    ~/.screenrc: screen/screenrc
     ~/.stylua.toml: lua/stylua.toml
     ~/.tmux.conf: tools/.tmux/.tmux.conf
     ~/.tmux.conf.local: tmux/tmux.conf.local
