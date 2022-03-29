@@ -58,7 +58,7 @@ opt.signcolumn = "yes"
 opt.splitbelow = true
 opt.splitright = true
 opt.termguicolors = true
-opt.wrap = true
+opt.wrap = false
 
 vim.defer_fn(function()
     vim.cmd([[
