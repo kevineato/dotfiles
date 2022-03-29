@@ -4,6 +4,13 @@ config.mapleader = { as_string = " ", as_code = "<Space>" }
 
 config.add_plugins = {
     {
+        "p00f/clangd_extensions.nvim",
+        after = { "nvim-lspconfig", "nvim-cmp" },
+        config = function()
+            require("clangd_extensions")
+        end,
+    },
+    {
         "simrat39/symbols-outline.nvim",
         cmd = {
             "SymbolsOutline",
@@ -598,37 +605,160 @@ local servers = {
 local server_opts = {
     clangd = {
         opts = function(lspconfig)
-            return {
-                cmd_args = {
-                    "--all-scopes-completion",
-                    "--background-index",
-                    "--clang-tidy",
-                    "--compile-commands-dir=build",
-                    "--completion-style=detailed",
-                    "--header-insertion=never",
-                    "--include-ineligible-results",
-                    "--inlay-hints",
-                    "-j=12",
-                    "--ranking-model=decision_forest",
+            local server_settings = vim.tbl_deep_extend(
+                "force",
+                require("cosmic.lsp.providers.defaults"),
+                {
+                    cmd_args = {
+                        "--all-scopes-completion",
+                        "--background-index",
+                        "--clang-tidy",
+                        "--compile-commands-dir=build",
+                        "--completion-style=detailed",
+                        "--header-insertion=never",
+                        "--include-ineligible-results",
+                        "--inlay-hints",
+                        "-j=12",
+                        "--ranking-model=decision_forest",
+                    },
+                    filetypes = {
+                        "c",
+                        "cpp",
+                        "h",
+                        "hpp",
+                        "tpp",
+                        "objc",
+                        "objcpp",
+                    },
+                    root_dir = lspconfig.util.root_pattern(
+                        "build/compile_commands.json",
+                        "compile_commands.json"
+                    ),
+                    single_file_support = true,
+                    capabilities = {
+                        offsetEncoding = { "utf-16" },
+                    },
+                }
+            )
+
+            local icons = require("cosmic.theme.icons")
+            local user_config = require("cosmic.core.user")
+            local initial_config = {
+                extensions = {
+                    inlay_hints = {
+                        parameter_hints_prefix = ": ",
+                        other_hints_prefix = "-> ",
+                    },
+                    ast = {
+                        role_icons = {
+                            type = "ﮂ",
+                            declaration = icons.kind_icons.Constructor,
+                            expression = "",
+                            specifier = "",
+                            statement = "",
+                            ["template argument"] = "",
+                        },
+
+                        kind_icons = {
+                            Compound = icons.kind_icons.Operator,
+                            Recovery = "ﯭ",
+                            TranslationUnit = icons.kind_icons.Module,
+                            PackExpansion = icons.dotdotdot,
+                            TemplateTypeParm = icons.kind_icons.TypeParameter,
+                            TemplateTemplateParm = "",
+                            TemplateParamObject = icons.kind_icons.Variable,
+                        },
+                    },
+                    memory_usage = {
+                        border = user_config.border,
+                    },
+                    symbol_info = {
+                        border = user_config.border,
+                    },
                 },
-                filetypes = {
-                    "c",
-                    "cpp",
-                    "h",
-                    "hpp",
-                    "tpp",
-                    "objc",
-                    "objcpp",
-                },
-                root_dir = lspconfig.util.root_pattern(
-                    "build/compile_commands.json",
-                    "compile_commands.json"
-                ),
-                single_file_support = true,
-                capabilities = {
-                    offsetEncoding = { "utf-16" },
-                },
+                server = server_settings,
             }
+
+            local commands = [[
+                if !exists(':ClangdAST')
+                    function s:memuse_compl(_a,_b,_c)
+                        return ['expand_preamble']
+                    endfunction
+                    command ClangdSetInlayHints lua require('clangd_extensions.inlay_hints').set_inlay_hints()
+                    command ClangdDisableInlayHints lua require('clangd_extensions.inlay_hints').disable_inlay_hints()
+                    command ClangdToggleInlayHints lua require('clangd_extensions.inlay_hints').toggle_inlay_hints()
+                    command -range ClangdAST lua require('clangd_extensions.ast').display_ast(<line1>, <line2>)
+                    command ClangdTypeHierarchy lua require('clangd_extensions.type_hierarchy').show_hierarchy()
+                    command ClangdSymbolInfo lua require('clangd_extensions.symbol_info').show_symbol_info()
+                    command -nargs=? -complete=customlist,s:memuse_compl ClangdMemoryUsage lua require('clangd_extensions.memory_usage').show_memory_usage('<args>' == 'expand_preamble')
+                endif
+            ]]
+
+            local clangd_ext_config = require("clangd_extensions.config")
+            clangd_ext_config.setup(initial_config)
+
+            local old_func = clangd_ext_config.options.server.on_attach
+            clangd_ext_config.options.server.on_attach = function(client, bufnr)
+                if old_func then
+                    old_func(client, bufnr)
+                end
+
+                local buf_map = require("cosmic.utils").buf_map
+                local leader = user_config.mapleader.as_string
+                buf_map(
+                    bufnr,
+                    "n",
+                    leader .. "sf",
+                    "<Cmd>ClangdSwitchSourceHeader<CR>"
+                )
+                buf_map(bufnr, "n", leader .. "gs", "<Cmd>ClangdSymbolInfo<CR>")
+                buf_map(bufnr, "n", leader .. "gA", "<Cmd>ClangdAST<CR>")
+                buf_map(
+                    bufnr,
+                    "n",
+                    leader .. "gt",
+                    "<Cmd>ClangdTypeHierarchy<CR>"
+                )
+                buf_map(
+                    bufnr,
+                    "n",
+                    leader .. "gh",
+                    "<Cmd>ClangdToggleInlayHints<CR>"
+                )
+                buf_map(
+                    bufnr,
+                    "n",
+                    leader .. "gm",
+                    "<Cmd>ClangdMemoryUsage<CR>"
+                )
+
+                if clangd_ext_config.options.extensions.autoSetHints then
+                    local inlay_hints = require("clangd_extensions.inlay_hints")
+                    inlay_hints.setup_autocmd()
+                    inlay_hints.set_inlay_hints()
+                end
+
+                vim.cmd(commands)
+            end
+
+            require("clangd_extensions.ast").init()
+
+            local cmp = require("cmp")
+            cmp.setup({
+                sorting = {
+                    comparators = {
+                        cmp.config.compare.offset,
+                        cmp.config.compare.exact,
+                        cmp.config.compare.recently_used,
+                        require("clangd_extensions.cmp_scores"),
+                        cmp.config.compare.kind,
+                        cmp.config.compare.sort_text,
+                        cmp.config.compare.length,
+                        cmp.config.compare.order,
+                    },
+                },
+            })
+            return clangd_ext_config.options.server
         end,
     },
     null_ls = {
