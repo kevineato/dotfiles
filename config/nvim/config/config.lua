@@ -846,6 +846,10 @@ for _, server_name in ipairs(servers) do
     end
 end
 
+config.diagnostic = {
+    virtual_text = false,
+}
+
 config.todo_comments = {
     highlight = {
         before = "",
