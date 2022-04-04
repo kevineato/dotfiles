@@ -600,6 +600,7 @@ local servers = {
     "pyright",
     "sumneko_lua",
     "vimls",
+    "yamlls",
 }
 
 local server_opts = {
@@ -822,6 +823,7 @@ local server_opts = {
 local server_formats = {
     clangd = true,
     null_ls = true,
+    yamlls = true,
 }
 
 config.lsp = {
