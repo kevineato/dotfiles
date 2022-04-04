@@ -2,6 +2,12 @@ local config = {}
 
 config.mapleader = { as_string = " ", as_code = "<Space>" }
 
+config.disable_builtin_plugins = {
+    -- "fugitive",
+    -- "gitsigns",
+    "todo-comments",
+}
+
 config.add_plugins = {
     {
         "p00f/clangd_extensions.nvim",
@@ -124,48 +130,48 @@ config.add_plugins = {
             )
         end,
     },
-    {
-        "mhinz/vim-signify",
-        config = function()
-            vim.g.signify_vcs_cmds = {
-                git = "git diff --no-color --no-ext-diff -U0 -- %f",
-                yadm = "yadm diff --no-color --no-ext-diff -U0 -- %f",
-                hg = "hg diff --color=never --config aliases.diff= --nodates -U0 -- %f",
-                svn = "svn diff --diff-cmd %d -x -U0 -- %f",
-                bzr = "bzr diff --using %d --diff-options=-U0 -- %f",
-                darcs = "darcs diff --no-pause-for-gui --no-unified --diff-opts=-U0 -- %f",
-                fossil = "fossil diff --unified -c 0 -- %f",
-                cvs = "cvs diff -U0 -- %f",
-                rcs = "rcsdiff -U0 %f 2>%n",
-                accurev = "accurev diff %f -- -U0",
-                perforce = "p4 info "
-                    .. vim.fn["sy#util#shell_redirect"]("%n")
-                    .. (vim.fn.has("win32") and " &&" or " && env P4DIFF= P4COLORS=")
-                    .. " p4 diff -du0 %f",
-                tfs = "tf diff -version:W -noprompt -format:Unified %f",
-            }
-            vim.g.signify_vcs_cmds_diffmode = {
-                git = "git show HEAD:./%f",
-                yadm = "yadm show HEAD:./%f",
-                hg = "hg cat %f",
-                svn = "svn cat %f",
-                bzr = "bzr cat %f",
-                darcs = "darcs show contents -- %f",
-                fossil = "fossil cat %f",
-                cvs = "cvs up -p -- %f 2>%n",
-                rcs = "co -q -p %f",
-                accurev = "accurev cat %f",
-                perforce = "p4 print %f",
-                tfs = "tf view -version:W -noprompt %f",
-            }
-
-            local map = require("cosmic.utils").map
-            local mapleader =
-                require("cosmic.config.config").mapleader.as_string
-            map("n", mapleader .. "hd", "<Cmd>SignifyHunkDiff<CR>")
-            map("n", mapleader .. "hu", "<Cmd>SignifyHunkUndo<CR>")
-        end,
-    },
+    -- {
+    --     "mhinz/vim-signify",
+    --     config = function()
+    --         vim.g.signify_vcs_cmds = {
+    --             git = "git diff --no-color --no-ext-diff -U0 -- %f",
+    --             yadm = "yadm diff --no-color --no-ext-diff -U0 -- %f",
+    --             hg = "hg diff --color=never --config aliases.diff= --nodates -U0 -- %f",
+    --             svn = "svn diff --diff-cmd %d -x -U0 -- %f",
+    --             bzr = "bzr diff --using %d --diff-options=-U0 -- %f",
+    --             darcs = "darcs diff --no-pause-for-gui --no-unified --diff-opts=-U0 -- %f",
+    --             fossil = "fossil diff --unified -c 0 -- %f",
+    --             cvs = "cvs diff -U0 -- %f",
+    --             rcs = "rcsdiff -U0 %f 2>%n",
+    --             accurev = "accurev diff %f -- -U0",
+    --             perforce = "p4 info "
+    --                 .. vim.fn["sy#util#shell_redirect"]("%n")
+    --                 .. (vim.fn.has("win32") and " &&" or " && env P4DIFF= P4COLORS=")
+    --                 .. " p4 diff -du0 %f",
+    --             tfs = "tf diff -version:W -noprompt -format:Unified %f",
+    --         }
+    --         vim.g.signify_vcs_cmds_diffmode = {
+    --             git = "git show HEAD:./%f",
+    --             yadm = "yadm show HEAD:./%f",
+    --             hg = "hg cat %f",
+    --             svn = "svn cat %f",
+    --             bzr = "bzr cat %f",
+    --             darcs = "darcs show contents -- %f",
+    --             fossil = "fossil cat %f",
+    --             cvs = "cvs up -p -- %f 2>%n",
+    --             rcs = "co -q -p %f",
+    --             accurev = "accurev cat %f",
+    --             perforce = "p4 print %f",
+    --             tfs = "tf view -version:W -noprompt %f",
+    --         }
+    --
+    --         local map = require("cosmic.utils").map
+    --         local mapleader =
+    --             require("cosmic.config.config").mapleader.as_string
+    --         map("n", mapleader .. "hd", "<Cmd>SignifyHunkDiff<CR>")
+    --         map("n", mapleader .. "hu", "<Cmd>SignifyHunkUndo<CR>")
+    --     end,
+    -- },
     "tpope/vim-repeat",
     {
         "machakann/vim-sandwich",
@@ -578,12 +584,6 @@ config.add_plugins = {
             )
         end,
     },
-}
-
-config.disable_builtin_plugins = {
-    "fugitive",
-    "gitsigns",
-    "todo-comments",
 }
 
 config.theme = "gruvbox"
