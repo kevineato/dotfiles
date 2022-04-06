@@ -1,33 +1,3 @@
-# LD_LIBRARY_PATH functions
-function lib_remove() {
-    LD_LIBRARY_PATH=$(echo -n "$LD_LIBRARY_PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
-}
-
-function lib_append() {
-    lib_remove "$1"
-    LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+"$LD_LIBRARY_PATH:"}$1"
-}
-
-function lib_prepend() {
-    lib_remove "$1"
-    LD_LIBRARY_PATH="$1${LD_LIBRARY_PATH:+":$LD_LIBRARY_PATH"}"
-}
-
-# PATH functions
-function path_remove() {
-    PATH=$(echo -n "$PATH" | awk -v RS=: -v ORS=: "\$0 != \"$1\"" | sed 's/:$//')
-}
-
-function path_append() {
-    path_remove "$1"
-    PATH="${PATH:+"$PATH:"}$1"
-}
-
-function path_prepend() {
-    path_remove "$1"
-    PATH="$1${PATH:+":$PATH"}"
-}
-
 # check for ruby
 if [[ -d "$HOME/.gem/ruby/2.5.0/bin" ]]; then
     path_append "$HOME/.gem/ruby/2.5.0/bin"
