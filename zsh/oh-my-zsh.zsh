@@ -73,18 +73,37 @@ plugins=(
     vi-mode
     zsh-autopair
     zsh-autosuggestions
-    zsh-completions
     zsh-syntax-highlighting
 )
-
-# Reload for zsh-completions
-autoload -Uz compinit && compinit
 
 if [[ -x "$(command -v fasd)" ]]; then plugins+=(fasd); fi
 if [[ -x "$HOME/.fzf/bin/fzf" ]]; then plugins+=(fzf zsh-interactive-cd); fi
 if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
-if [[ -d "$HOME/.nvm" ]]; then plugins+=(nvm); fi
 if [[ -x "$(command -v rg)" ]]; then plugins+=(ripgrep); fi
 if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
+
+# Load asdf
+if [[ -d "$HOME/.asdf" ]]; then
+    # Load asdf-direnv integration
+    if [[ -f "$HOME/.config/asdf-direnv/zshrc" ]]; then
+        source "$HOME/.config/asdf-direnv/zshrc"
+    fi
+
+    # Silence console output from direnv
+    export DIRENV_LOG_FORMAT=""
+
+    # Keep asdf shims
+    source "$HOME/.asdf/asdf.sh"
+    fpath=("$ASDF_DIR/completions" $fpath)
+
+    # Bypass asdf shims completely
+    # PATH="$PATH:$HOME/.asdf/bin"
+    # fpath=("$HOME/.asdf/completions" $fpath)
+fi
+
+# Load zsh-completions
+if [[ -d "$ZSH_CUSTOM/plugins/zsh-completions/src" ]]; then
+    fpath=("$ZSH_CUSTOM/plugins/zsh-completions/src" $fpath)
+fi
 
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
