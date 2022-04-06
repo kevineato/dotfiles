@@ -8,23 +8,19 @@
   - ~/.local/share
 
 - shell:
-  -
-    command: git submodule sync --recursive
+  - command: git submodule sync --recursive
     description: Syncing submodules
     stdout: true
     stderr: true
-  -
-    command: git submodule update --init --recursive --depth 1 --jobs $(grep -c '^processor' /proc/cpuinfo)
+  - command: git submodule update --init --recursive --depth 1 --jobs $(grep -c '^processor' /proc/cpuinfo)
     description: Updating submodules
     stdout: true
     stderr: true
-  -
-    command: tools/install/install-fira.sh
+  - command: tools/install/install-fira.sh
     description: Installing FiraCode nerd fonts
     stdout: true
     stderr: true
-  -
-    command: |
+  - command: |
         if [[ ! -x "$(whence -p fasd)" ]]; then
             json_output=$(mktemp)
             curl -L -o $json_output https://api.github.com/repos/clvv/fasd/tags
@@ -41,8 +37,21 @@
     description: Installing fasd
     stdout: true
     stderr: true
-  -
-    command: |
+  - command: |
+        if [[ ! -d "$HOME/.asdf" ]]; then
+            git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.9.0
+        fi
+    description: Installing asdf
+    stdout: true
+    stderr: true
+  # - command: |
+  #       if [[ ! -x "$(whence -p direnv)" ]]; then
+  #           curl -sL https://direnv.net/install.sh | bin_path="$HOME/.local/bin" bash
+  #       fi
+  #   description: Installing direnv
+  #   stdout: true
+  #   stderr: true
+  - command: |
         if [[ ! -d "$HOME/.fzf" ]]; then
             git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME"/.fzf
             "$HOME"/.fzf/install --bin
@@ -50,8 +59,7 @@
     description: Installing fzf
     stdout: true
     stderr: true
-  -
-    command: |
+  - command: |
       if [[ -x "$(whence -p bat)" ]]; then
           bat cache --build
       else
@@ -60,12 +68,11 @@
     description: Adding Gruvbox bat theme
     stdout: true
     stderr: true
-  -
-    command: |
+  - command: |
       if [[ -x "$(whence -p bat)" ]]; then
           found=true
           for file in tools/bat-extras/src/*.sh; do
-              found=$found && [[ -x "$HOME"/.local/bin/"$file" ]]
+              found=$found && [[ -x "$HOME/.local/bin/$file" ]]
           done
           if [[ ! $found ]]; then
               tools/bat-extras/build.sh --minify=none --no-verify --prefix="$HOME"/.local --install
@@ -76,15 +83,13 @@
     description: Installing bat-extras
     stdout: true
     stderr: true
-  -
-    command: hash -rf
+  - command: hash -rf
     description: Rebuilding command hash table
     stdout: true
     stderr: true
-  -
-    command: |
+  - command: |
         if [[ ! -d "$HOME/.config/nvim" ]]; then
-            git clone https://github.com/kevineato/CosmicNvim.git "$HOME"/.config/nvim
+            git clone https://github.com/kevineato/CosmicNvim.git "$HOME/.config/nvim"
         fi
     description: Installing neovim config framework
     stdout: true
