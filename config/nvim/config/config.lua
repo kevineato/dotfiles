@@ -611,16 +611,35 @@ local server_opts = {
                 require("cosmic.lsp.providers.defaults"),
                 {
                     cmd_args = {
-                        "--all-scopes-completion",
-                        "--background-index",
+                        -- "--all-scopes-completion",
+                        -- "--background-index",
                         "--clang-tidy",
                         "--compile-commands-dir=build",
                         "--completion-style=detailed",
+                        "--enable-config",
+                        "--folding-ranges",
                         "--header-insertion=never",
+                        "--hidden-features",
+                        "--include-cleaner-stdlib",
                         "--include-ineligible-results",
-                        "--inlay-hints",
-                        "-j=12",
+                        "--malloc-trim",
                         "--ranking-model=decision_forest",
+                        "--tweaks=AddUsing"
+                            .. ",DeclareCopyMove"
+                            .. ",DumpAST"
+                            .. ",DumpRecordLayout"
+                            .. ",DumpSymbol"
+                            .. ",ExpandAutoType"
+                            .. ",ExpandMacro"
+                            .. ",ExtractFunction"
+                            .. ",ExtractVariable"
+                            .. ",MemberwiseConstructor"
+                            .. ",PopulateSwitch"
+                            .. ",RawStringLiteral"
+                            .. ",RemoveUsingNamespace"
+                            .. ",ShowSelectionTree"
+                            .. ",SwapIfBranches",
+                        "--use-dirty-headers",
                     },
                     filetypes = {
                         "c",

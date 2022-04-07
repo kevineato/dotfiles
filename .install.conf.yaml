@@ -4,6 +4,7 @@
       relink: true
 
 - create:
+  - ~/.config/clangd
   - ~/.local/bin
   - ~/.local/share
 
@@ -102,6 +103,7 @@
     ~/.clang-tidy: clang/clang-tidy
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
+    ~/.config/clangd/config.yaml: clang/clangd/config.yaml
     ~/.config/nvim/UltiSnips: config/nvim/UltiSnips
     ~/.config/nvim/lua/cosmic/config: config/nvim/config
     ~/.config/vifm: config/vifm
