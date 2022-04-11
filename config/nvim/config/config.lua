@@ -11,7 +11,7 @@ config.disable_builtin_plugins = {
 config.add_plugins = {
     {
         "p00f/clangd_extensions.nvim",
-        after = { "nvim-lspconfig", "nvim-cmp" },
+        requires = { "nvim-lspconfig", "nvim-cmp" },
         config = function()
             require("clangd_extensions")
         end,
