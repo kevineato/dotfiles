@@ -558,6 +558,7 @@ config.add_plugins = {
                         )
                     end,
                     offsets = {
+                        { filetype = "neo-tree", text = "File Explorer" },
                         { filetype = "NvimTree", text = "File Explorer" },
                         { filetype = "Outline", text = "Symbols Outline" },
                     },
@@ -763,6 +764,7 @@ local server_opts = {
 
             require("clangd_extensions.ast").init()
 
+            -- TODO(kevineato): Fix cmp requirement here.
             local cmp = require("cmp")
             cmp.setup({
                 sorting = {
