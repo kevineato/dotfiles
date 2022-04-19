@@ -10,6 +10,22 @@ config.disable_builtin_plugins = {
 
 config.add_plugins = {
     {
+        "~/.fzf",
+        as = "fzf",
+        disable = not vim.fn.isdirectory(vim.fn.expand("~/.fzf")),
+        run = function()
+            vim.fn["fzf#install"]()
+        end,
+    },
+    { "kevinhwang91/nvim-bqf", ft = "qf" },
+    {
+        "chentau/marks.nvim",
+        event = "BufEnter",
+        config = function()
+            require("marks").setup({})
+        end,
+    },
+    {
         "p00f/clangd_extensions.nvim",
         requires = { "nvim-lspconfig", "nvim-cmp" },
         config = function()
@@ -562,6 +578,13 @@ config.add_plugins = {
                         { filetype = "NvimTree", text = "File Explorer" },
                         { filetype = "Outline", text = "Symbols Outline" },
                     },
+                    custom_filter = function(buf, buf_nums)
+                        if vim.bo[buf].filetype == "qf" then
+                            return false
+                        end
+
+                        return true
+                    end,
                     separator_style = "slant",
                     sort_by = "id",
                     -- diagnostics = "nvim_lsp",
