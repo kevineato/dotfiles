@@ -60,20 +60,9 @@ opt.splitright = true
 opt.termguicolors = true
 opt.wrap = false
 
-vim.defer_fn(function()
-    vim.cmd([[
-        highlight Comment cterm=NONE gui=NONE
-        highlight TSComment gui=NONE
-        highlight Todo gui=bold
-    ]])
-end, 0)
-
 vim.cmd([[
     augroup personal_group
         au!
-        au User PackerCompileDone highlight Comment cterm=NONE gui=NONE
-        au User PackerCompileDone highlight TSComment gui=NONE
-        au User PackerCompileDone highlight Todo gui=bold
         au TextYankPost * lua vim.highlight.on_yank({higroup = "IncSearch", timeout = 150, on_visual = true})
         au FileType c,cpp,h,hpp,java nnoremap <buffer> ]] .. config.mapleader.as_code .. [[ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
     augroup end
