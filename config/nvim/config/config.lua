@@ -3,8 +3,6 @@ local config = {}
 config.mapleader = { as_string = " ", as_code = "<Space>" }
 
 config.disable_builtin_plugins = {
-    -- "fugitive",
-    -- "gitsigns",
     "todo-comments",
 }
 
@@ -67,7 +65,7 @@ config.add_plugins = {
         cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
     },
     {
-        "romgrk/nvim-treesitter-context",
+        "lewis6991/nvim-treesitter-context",
         requires = "nvim-treesitter",
         config = function()
             require("treesitter-context").setup({
@@ -635,8 +633,6 @@ local server_opts = {
                 require("cosmic.lsp.providers.defaults"),
                 {
                     cmd_args = {
-                        -- "--all-scopes-completion",
-                        -- "--background-index",
                         "--clang-tidy",
                         "--compile-commands-dir=build",
                         "--completion-style=detailed",
