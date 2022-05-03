@@ -843,6 +843,9 @@ local server_opts = {
                     diagnostics = {
                         globals = { "vim" },
                     },
+                    format = {
+                        enable = false,
+                    },
                     workspace = {
                         library = {
                             vim.fn.expand("$VIMRUNTIME/lua"),
@@ -862,7 +865,10 @@ local server_opts = {
 
 local server_formats = {
     clangd = true,
+    cmake = false,
     null_ls = true,
+    pyright = false,
+    sumneko_lua = false,
     yamlls = true,
 }
 
