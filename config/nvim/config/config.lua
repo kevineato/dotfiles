@@ -20,7 +20,22 @@ config.add_plugins = {
         "chentau/marks.nvim",
         event = "BufEnter",
         config = function()
-            require("marks").setup({})
+            local marks_config = {
+                force_write_shada = false,
+                mappings = {
+                    next = "]m",
+                    prev = "[m",
+                    next_bookmark = "]k",
+                    prev_bookmark = "[k",
+                },
+            }
+
+            for i = 0, 9 do
+                marks_config.mappings["next_bookmark" .. i] = "]" .. i
+                marks_config.mappings["prev_bookmark" .. i] = "[" .. i
+            end
+
+            require("marks").setup(marks_config)
         end,
     },
     {
