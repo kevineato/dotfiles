@@ -45,6 +45,13 @@
     description: Installing asdf
     stdout: true
     stderr: true
+  - command: |
+        if [[ ! -d "$HOME/.nix-profile" ]]; then
+            sh <(curl -L https://nixos.org/nix/install) --no-daemon --no-modify-profile
+        fi
+    description: Installing single-user nix
+    stdout: true
+    stderr: true
   # - command: |
   #       if [[ ! -x "$(whence -p direnv)" ]]; then
   #           curl -sL https://direnv.net/install.sh | bin_path="$HOME/.local/bin" bash
