@@ -17,7 +17,7 @@ config.add_plugins = {
     },
     { "kevinhwang91/nvim-bqf", ft = "qf" },
     {
-        "chentau/marks.nvim",
+        "chentoast/marks.nvim",
         event = "BufEnter",
         config = function()
             local marks_config = {
