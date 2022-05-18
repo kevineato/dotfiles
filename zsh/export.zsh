@@ -1,24 +1,3 @@
-# check for ruby
-if [[ -d "$HOME/.gem/ruby/2.5.0/bin" ]]; then
-    path_append "$HOME/.gem/ruby/2.5.0/bin"
-fi
-
-# check for rust
-if [[ -d "$HOME/.cargo/bin" ]]; then
-    path_append "$HOME/.cargo/bin"
-fi
-
-# check for fzf
-if [[ -d "$HOME/.fzf/bin" ]]; then
-    path_append "$HOME/.fzf/bin"
-fi
-
-# prepend
-if [[ -d '/snap/bin' ]]; then
-    path_prepend '/snap/bin'
-fi
-path_prepend "$HOME/.local/bin"
-
 # bat
 export BAT_THEME='Gruvbox-N'
 

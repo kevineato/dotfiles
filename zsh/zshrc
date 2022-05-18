@@ -37,6 +37,53 @@ function path_prepend() {
 
 export ZSH_HOME="$HOME/.zsh"
 
+if [[ -z "$TMUX" ]]; then
+    # Check for ruby
+    if [[ -d "$HOME/.gem/ruby/2.5.0/bin" ]]; then
+        path_append "$HOME/.gem/ruby/2.5.0/bin"
+    fi
+
+    # Check for rust
+    if [[ -d "$HOME/.cargo/bin" ]]; then
+        path_append "$HOME/.cargo/bin"
+    fi
+
+    # Check for fzf
+    if [[ -d "$HOME/.fzf/bin" ]]; then
+        path_append "$HOME/.fzf/bin"
+    fi
+
+    # Prepend
+    if [[ -d '/snap/bin' ]]; then
+        path_prepend '/snap/bin'
+    fi
+    path_prepend "$HOME/.local/bin"
+
+    # Load nix
+    if [[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
+        source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+    fi
+
+    # Load asdf
+    if [[ -d "$HOME/.asdf" ]]; then
+        # Load asdf-direnv integration
+        if [[ -f "$HOME/.config/asdf-direnv/zshrc" ]]; then
+            source "$HOME/.config/asdf-direnv/zshrc"
+        fi
+
+        # Silence console output from direnv
+        export DIRENV_LOG_FORMAT=""
+
+        # Keep asdf shims
+        # source "$HOME/.asdf/asdf.sh"
+        # fpath=("$ASDF_DIR/completions" $fpath)
+
+        # Bypass asdf shims completely
+        path_append "$HOME/.asdf/bin"
+        fpath=("$HOME/.asdf/completions" $fpath)
+    fi
+fi
+
 [[ -f "$ZSH_HOME/export.zsh" ]] && source "$ZSH_HOME/export.zsh"
 
 [[ -f "$ZSH_HOME/oh-my-zsh.zsh" ]] && source "$ZSH_HOME/oh-my-zsh.zsh"
@@ -45,9 +92,6 @@ export ZSH_HOME="$HOME/.zsh"
 [[ -f "$ZSH_HOME/function.zsh" ]] && source "$ZSH_HOME/function.zsh"
 
 if [[ -f "$ZSH_HOME/local.zsh" ]]; then source "$ZSH_HOME/local.zsh"; fi
-
-# if [[ -f "$HOME/.skim/shell/completion.zsh" ]]; then source "$HOME/.skim/shell/completion.zsh"; fi
-# if [[ -f "$HOME/.skim/shell/key-bindings.zsh" ]]; then source "$HOME/.skim/shell/key-bindings.zsh"; fi
 
 if [[ -f "$HOME/.dircolors" ]]; then eval "$(dircolors $HOME/.dircolors)"; fi
 if [[ -r "$HOME/.local/share/lscolors.sh" ]]; then source "$HOME/.local/share/lscolors.sh"; fi
@@ -77,10 +121,6 @@ setopt histignorealldups
 setopt histignorespace
 setopt magicequalsubst
 # setopt rematchpcre
-
-if [[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
-    source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

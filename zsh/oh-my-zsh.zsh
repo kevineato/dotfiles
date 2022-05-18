@@ -82,25 +82,6 @@ if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
 if [[ -x "$(command -v rg)" ]]; then plugins+=(ripgrep); fi
 if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
 
-# Load asdf
-if [[ -d "$HOME/.asdf" ]]; then
-    # Load asdf-direnv integration
-    if [[ -f "$HOME/.config/asdf-direnv/zshrc" ]]; then
-        source "$HOME/.config/asdf-direnv/zshrc"
-    fi
-
-    # Silence console output from direnv
-    export DIRENV_LOG_FORMAT=""
-
-    # Keep asdf shims
-    source "$HOME/.asdf/asdf.sh"
-    fpath=("$ASDF_DIR/completions" $fpath)
-
-    # Bypass asdf shims completely
-    # PATH="$PATH:$HOME/.asdf/bin"
-    # fpath=("$HOME/.asdf/completions" $fpath)
-fi
-
 # Load zsh-completions
 if [[ -d "$ZSH_CUSTOM/plugins/zsh-completions/src" ]]; then
     fpath=("$ZSH_CUSTOM/plugins/zsh-completions/src" $fpath)
