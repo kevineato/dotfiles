@@ -504,11 +504,11 @@ config.add_plugins = {
                     ["d"] = actions.delete,
 
                     ["J"] = function()
-                        mark_actions.toggle_mark()
+                        mark_actions.toggle_mark("n")
                         vim.cmd("normal! j")
                     end,
                     ["K"] = function()
-                        mark_actions.toggle_mark()
+                        mark_actions.toggle_mark("n")
                         vim.cmd("normal! k")
                     end,
                     ["c"] = clipboard_actions.copy,
@@ -591,7 +591,7 @@ config.add_plugins = {
                         { filetype = "NvimTree", text = "File Explorer" },
                         { filetype = "Outline", text = "Symbols Outline" },
                     },
-                    custom_filter = function(buf, buf_nums)
+                    custom_filter = function(buf, _)
                         if vim.bo[buf].filetype == "qf" then
                             return false
                         end
