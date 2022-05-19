@@ -925,4 +925,10 @@ config.todo_comments = {
     },
 }
 
+config.treesitter = {
+    ensure_installed = {
+        "nix",
+    }
+}
+
 return config
