@@ -5,6 +5,7 @@
 
 - create:
   - ~/.config/clangd
+  - ~/.config/nix
   - ~/.local/bin
   - ~/.local/share
 
@@ -38,13 +39,13 @@
     description: Installing fasd
     stdout: true
     stderr: true
-  - command: |
-        if [[ ! -d "$HOME/.asdf" ]]; then
-            git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.9.0
-        fi
-    description: Installing asdf
-    stdout: true
-    stderr: true
+  # - command: |
+  #       if [[ ! -d "$HOME/.asdf" ]]; then
+  #           git clone https://github.com/asdf-vm/asdf.git "$HOME/.asdf" --branch v0.9.0
+  #       fi
+  #   description: Installing asdf
+  #   stdout: true
+  #   stderr: true
   - command: |
         if [[ ! -d "$HOME/.nix-profile" ]]; then
             sh <(curl -L https://nixos.org/nix/install) --no-daemon --no-modify-profile
@@ -111,10 +112,12 @@
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
     ~/.config/clangd/config.yaml: clang/clangd/config.yaml
+    ~/.config/nix/nix.conf: config/nix/nix.conf
     ~/.config/nvim/UltiSnips: config/nvim/UltiSnips
     ~/.config/nvim/lua/cosmic/config: config/nvim/config
     ~/.config/vifm: config/vifm
     ~/.config/watson/config: config/watson/config
+    ~/.direnvrc: direnv/direnvrc
     ~/.gdbinit: tools/gdb-dashboard/.gdbinit
     ~/.gdbinit.d:
     ~/.gitconfig: git/gitconfig

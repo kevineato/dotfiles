@@ -76,6 +76,7 @@ plugins=(
     zsh-syntax-highlighting
 )
 
+if [[ -x "$(command -v direnv)" ]]; then plugins+=(direnv); fi
 if [[ -x "$(command -v fasd)" ]]; then plugins+=(fasd); fi
 if [[ -x "$HOME/.fzf/bin/fzf" ]]; then plugins+=(fzf zsh-interactive-cd); fi
 if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
