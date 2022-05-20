@@ -927,7 +927,26 @@ config.todo_comments = {
 
 config.treesitter = {
     ensure_installed = {
+        "bash",
+        "c",
+        "cmake",
+        "comment",
+        "cpp",
+        "css",
+        "dockerfile",
+        "html",
+        "java",
+        "javascript",
+        "jsdoc",
+        "json",
+        "lua",
+        "markdown",
         "nix",
+        "python",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
     }
 }
 
