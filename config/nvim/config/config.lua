@@ -947,7 +947,7 @@ config.treesitter = {
         "typescript",
         "vim",
         "yaml",
-    }
+    },
 }
 
 return config
