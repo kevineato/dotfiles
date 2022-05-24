@@ -62,6 +62,7 @@ if [[ -z "$TMUX" ]]; then
     # Load nix
     if [[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
         source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+        fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
     fi
 
     # Load asdf
