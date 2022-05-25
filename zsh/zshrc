@@ -62,7 +62,6 @@ if [[ -z "$TMUX" ]]; then
     # Load nix
     if [[ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]]; then
         source "$HOME/.nix-profile/etc/profile.d/nix.sh"
-        fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
     fi
 
     # Load asdf
@@ -83,6 +82,10 @@ if [[ -z "$TMUX" ]]; then
     #     path_append "$HOME/.asdf/bin"
     #     fpath=("$HOME/.asdf/completions" $fpath)
     # fi
+fi
+
+if [[ -d "$HOME/.nix-profile/share/zsh/site-functions" ]]; then
+    fpath=("$HOME/.nix-profile/share/zsh/site-functions" $fpath)
 fi
 
 [[ -f "$ZSH_HOME/export.zsh" ]] && source "$ZSH_HOME/export.zsh"
