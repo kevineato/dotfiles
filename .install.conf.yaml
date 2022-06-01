@@ -113,6 +113,7 @@
     ~/.cmake-format.py: cmake/cmake-format.py
     ~/.config/bat: config/bat
     ~/.config/clangd/config.yaml: clang/clangd/config.yaml
+    ~/.config/lazygit/config.yml: config/lazygit/config.yml
     ~/.config/nix/nix.conf: config/nix/nix.conf
     ~/.config/nixpkgs/config.nix: config/nixpkgs/config.nix
     ~/.config/nvim/UltiSnips: config/nvim/UltiSnips
