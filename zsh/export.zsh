@@ -1,5 +1,5 @@
 # bat
-export BAT_THEME='Gruvbox-N'
+export BAT_THEME='gruvbox-dark'
 
 # direnv
 # export DIRENV_LOG_FORMAT=""
@@ -15,6 +15,8 @@ export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always {}' \
     --bind 'alt-a:toggle-all,alt-h:toggle-preview' --cycle"
 
 # general
+# TODO(kevineato): Detect truecolor.
+export COLORTERM='truecolor'
 export EDITOR='nvim'
 export KEYTIMEOUT=1
 export LESS='iR'

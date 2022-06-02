@@ -1,6 +1,18 @@
+[core]
+	pager = delta
 [credential]
 	helper = cache --timeout=3600
+[delta]
+	light = false
+	line-numbers = true
+	navigate = true
+	true-color = auto
+[diff]
+	colorMoved = default
+[interactive]
+	diffFilter = delta --color-only
 [merge]
+	conflictstyle = diff3
 	tool = nvim
 [mergetool]
 	prompt = false
