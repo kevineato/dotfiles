@@ -5,6 +5,7 @@
 
 - create:
   - ~/.config/clangd
+  - ~/.config/lazygit
   - ~/.config/nix
   - ~/.config/nixpkgs
   - ~/.local/bin
