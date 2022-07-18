@@ -224,9 +224,8 @@ config.add_plugins = {
         end,
         config = function()
             vim.cmd("runtime autoload/sandwich.vim")
-            local sandwich_recipes = vim.deepcopy(
-                vim.g["sandwich#default_recipes"]
-            )
+            local sandwich_recipes =
+                vim.deepcopy(vim.g["sandwich#default_recipes"])
             vim.list_extend(sandwich_recipes, {
                 {
                     buns = { "{ ", " }" },
@@ -489,9 +488,7 @@ config.add_plugins = {
 
                         vim.schedule(function()
                             local lnum =
-                                require("lir.vim").get_context():indexof(
-                                    name
-                                )
+                                require("lir.vim").get_context():indexof(name)
                             if lnum then
                                 vim.cmd(tostring(lnum))
                             end
@@ -911,6 +908,10 @@ end
 
 config.diagnostic = {
     virtual_text = false,
+}
+
+config.gruvbox = {
+    italic = false,
 }
 
 config.todo_comments = {
