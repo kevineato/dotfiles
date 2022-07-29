@@ -30,6 +30,9 @@ export TZ='America/Chicago'
 # GNU global
 export GTAGSLABEL=pygments
 
+# nnn
+export NNN_PLUG='g:!lazygit*'
+
 # ripgrep
 export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
