@@ -48,6 +48,8 @@ CheckOptions:
     value: 'true'
   - key: performance-inefficient-string-concatenation.StrictMode
     value: 'true'
+  - key: performance-unnecessary-value-param.AllowedTypes
+    value: std::stop_token
   - key: readability-identifier-length.MinimumVariableNameLength
     value: 2
   - key: readability-identifier-length.MinimumParameterNameLength
