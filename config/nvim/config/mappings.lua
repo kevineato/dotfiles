@@ -1,9 +1,7 @@
 local map = require("cosmic.utils").map
 
-map("n", "<C-h>", "<C-w>h")
-map("n", "<C-l>", "<C-w>l")
-map("n", "<C-j>", "<C-w>j")
-map("n", "<C-k>", "<C-w>k")
+map("n", "<Leader>w", "<C-w>")
+map("x", "<Leader>w", "<C-w>")
 map("n", "<M-h>", "zh")
 map("n", "<M-S-h>", "zH")
 map("n", "<M-j>", "<C-e>")
