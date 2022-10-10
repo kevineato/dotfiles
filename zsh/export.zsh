@@ -34,7 +34,7 @@ export GTAGSLABEL=pygments
 export NNN_PLUG='g:!lazygit*'
 
 # ripgrep
-export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
+# export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
 
 # skim
 # export SKIM_DEFAULT_COMMAND='fd --type f --hidden --follow'
