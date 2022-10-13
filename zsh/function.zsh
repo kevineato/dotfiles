@@ -122,7 +122,7 @@ if [[ -x "$(whence -p nnn)" ]]; then
         fi
     }
 
-    alias -g n='nnn_cd -deHAJ'
+    alias -g n='nnn_cd -deHAJiU'
 fi
 
 # _complete_plus_hist_args() {
