@@ -3,9 +3,10 @@ if [[ -x "$(whence -p fzf)" ]]; then
     function cdd() {
         local input_dir=${1:-.}
         local directory="$(fd --type d --hidden --no-ignore '' $input_dir | \
-            awk -F / -v input_dir=$input_dir 'BEGIN{ $0=input_dir; print NF, input_dir } { print NF, $0 }' | \
+            awk -F / -v input_dir=$input_dir '{ print NF, $0 }' | \
             sort -k 1n,1 -k 2d,2 -s | \
             cut -d ' ' -f 2- | \
+            sed -n -e '/^\.$/ d' -e '{s/^\.\///; p;}' | \
             fzf --no-multi --exit-0 --height 40% --reverse --bind 'tab:down,shift-tab:up')"
         if [[ -n $directory ]]; then
             cd $directory
