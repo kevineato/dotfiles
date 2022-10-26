@@ -24,7 +24,7 @@ map(
     "n",
     "<Leader><Tab>",
     [[bufloaded(bufnr('#')) ? '<Cmd>b #<CR>' : exists(':BufferLineCyclePrev') == 2 ? '<Cmd>BufferLineCyclePrev<CR>' : '<Cmd>bp<CR>']],
-    { expr = true }
+    { expr = true, replace_keycodes = false }
 )
 map("n", "<Leader>d", '"_d')
 map("x", "<Leader>d", '"_d')
