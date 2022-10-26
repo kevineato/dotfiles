@@ -619,14 +619,20 @@ table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
 local clients = {
+    "beautysh",
+    "black",
+    "cmakelang",
+    "flake8",
+    "gersemi",
     "null_ls",
-    "stylua"
+    "shellcheck",
+    "stylua",
 }
 
 local servers = {
     "bashls",
     "clangd",
-    "cmake",
+    "neocmake",
     "pyright",
     "sumneko_lua",
     "vimls",
@@ -638,14 +644,18 @@ local client_opts = {
         setup = function(null_ls)
             return {
                 sources = {
-                    null_ls.builtins.formatting.cmake_format,
-                    null_ls.builtins.formatting.black,
+                    null_ls.builtins.code_actions.shellcheck,
+                    null_ls.builtins.diagnostics.cmake_lint,
                     null_ls.builtins.diagnostics.flake8.with({
                         extra_args = {
                             "--max-line-length=88",
                             "--extend-ignore=E201,E202,E203,E302",
                         },
                     }),
+                    null_ls.builtins.diagnostics.shellcheck,
+                    null_ls.builtins.formatting.beautysh,
+                    null_ls.builtins.formatting.black,
+                    null_ls.builtins.formatting.gersemi,
                     null_ls.builtins.formatting.stylua,
                 },
                 default_cosmic_sources = false,
@@ -875,13 +885,20 @@ local server_opts = {
 }
 
 local client_formats = {
+    beautysh = true,
+    black = true,
+    cmakelang = false,
+    flake8 = false,
+    gersemi = true,
     null_ls = true,
-    stylua = true
+    shellcheck = false,
+    stylua = true,
 }
 
 local server_formats = {
+    bashls = false,
     clangd = true,
-    cmake = false,
+    neocmake = false,
     pyright = false,
     sumneko_lua = false,
     yamlls = true,
