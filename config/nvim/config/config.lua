@@ -626,15 +626,40 @@ local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
 table.insert(runtime_path, "lua/?/init.lua")
 
+local clients = {
+    "null_ls",
+    "stylua"
+}
+
 local servers = {
     "bashls",
     "clangd",
     "cmake",
-    "null_ls",
     "pyright",
     "sumneko_lua",
     "vimls",
     "yamlls",
+}
+
+local client_opts = {
+    null_ls = {
+        setup = function(null_ls)
+            return {
+                sources = {
+                    null_ls.builtins.formatting.cmake_format,
+                    null_ls.builtins.formatting.black,
+                    null_ls.builtins.diagnostics.flake8.with({
+                        extra_args = {
+                            "--max-line-length=88",
+                            "--extend-ignore=E201,E202,E203,E302",
+                        },
+                    }),
+                    null_ls.builtins.formatting.stylua,
+                },
+                default_cosmic_sources = false,
+            }
+        end,
+    },
 }
 
 local server_opts = {
@@ -814,24 +839,6 @@ local server_opts = {
             return clangd_ext_config.options.server
         end,
     },
-    null_ls = {
-        setup = function(null_ls)
-            return {
-                sources = {
-                    null_ls.builtins.formatting.cmake_format,
-                    null_ls.builtins.formatting.black,
-                    null_ls.builtins.diagnostics.flake8.with({
-                        extra_args = {
-                            "--max-line-length=88",
-                            "--extend-ignore=E201,E202,E203,E302",
-                        },
-                    }),
-                    null_ls.builtins.formatting.stylua,
-                },
-                default_cosmic_sources = false,
-            }
-        end,
-    },
     pyright = {
         opts = {
             settings = {
@@ -875,10 +882,14 @@ local server_opts = {
     },
 }
 
+local client_formats = {
+    null_ls = true,
+    stylua = true
+}
+
 local server_formats = {
     clangd = true,
     cmake = false,
-    null_ls = true,
     pyright = false,
     sumneko_lua = false,
     yamlls = true,
@@ -887,8 +898,25 @@ local server_formats = {
 config.lsp = {
     format_on_save = false,
     rename_notification = true,
+    clients = {},
     servers = {},
 }
+
+for _, client_name in ipairs(clients) do
+    if client_opts[client_name] then
+        config.lsp.clients[client_name] = client_opts[client_name]
+        if client_formats[client_name] ~= nil then
+            config.lsp.clients[client_name].format = client_formats[client_name]
+        end
+    else
+        config.lsp.clients[client_name] = {
+            format = false,
+        }
+        if client_formats[client_name] ~= nil then
+            config.lsp.clients[client_name].format = client_formats[client_name]
+        end
+    end
+end
 
 for _, server_name in ipairs(servers) do
     if server_opts[server_name] then
