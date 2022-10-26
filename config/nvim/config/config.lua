@@ -142,21 +142,15 @@ config.add_plugins = {
             local map = require("cosmic.utils").map
             local mapleader =
                 require("cosmic.config.config").mapleader.as_string
-            map(
-                "n",
-                mapleader .. "af",
-                "<Cmd>lua require('neogen').generate({type = 'func'})<CR>"
-            )
-            map(
-                "n",
-                mapleader .. "ac",
-                "<Cmd>lua require('neogen').generate({type = 'class'})<CR>"
-            )
-            map(
-                "n",
-                mapleader .. "ai",
-                "<Cmd>lua require('neogen').generate({type = 'file'})<CR>"
-            )
+            map("n", mapleader .. "af", function()
+                require("neogen").generate({ type = "func" })
+            end)
+            map("n", mapleader .. "ac", function()
+                require("neogen").generate({ type = "class" })
+            end)
+            map("n", mapleader .. "ai", function()
+                require("neogen").generate({ type = "file" })
+            end)
         end,
     },
     -- {
@@ -339,79 +333,79 @@ config.add_plugins = {
                 "n",
                 ".",
                 "<Plug>(operator-sandwich-predot)<Plug>(RepeatDot)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "n",
                 "ys",
                 "<Plug>(sandwich-add)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "n",
                 "ds",
                 "<Plug>(sandwich-delete)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "n",
                 "cs",
                 "<Plug>(sandwich-replace)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "x",
                 "gs",
                 "<Plug>(sandwich-add)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "x",
                 "is",
                 "<Plug>(textobj-sandwich-query-i)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "x",
                 "as",
                 "<Plug>(textobj-sandwich-query-a)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "o",
                 "is",
                 "<Plug>(textobj-sandwich-query-i)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "o",
                 "as",
                 "<Plug>(textobj-sandwich-query-a)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "x",
                 "im",
                 "<Plug>(textobj-sandwich-literal-query-i)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "x",
                 "am",
                 "<Plug>(textobj-sandwich-literal-query-a)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "o",
                 "im",
                 "<Plug>(textobj-sandwich-literal-query-i)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
             map(
                 "o",
                 "am",
                 "<Plug>(textobj-sandwich-literal-query-a)",
-                { noremap = false, silent = false }
+                { remap = true, silent = false }
             )
         end,
     },
@@ -548,11 +542,9 @@ config.add_plugins = {
                 },
             })
 
-            require("cosmic.utils").map(
-                "n",
-                "-",
-                "<Cmd>lua require('lir.float').toggle()<CR>"
-            )
+            require("cosmic.utils").map("n", "-", function()
+                require("lir.float").toggle()
+            end)
         end,
     },
     {
@@ -611,11 +603,11 @@ config.add_plugins = {
             map("n", "]B", "<Cmd>BufferLineMoveNext<CR>")
             map("n", "[B", "<Cmd>BufferLineMovePrev<CR>")
             map("n", mapleader .. "bd", "<Cmd>BufferLineSortByDirectory<CR>")
-            map(
-                "n",
-                mapleader .. "bi",
-                "<Cmd>lua require('bufferline').sort_buffers_by(function(buf_a, buf_b) return buf_a.id < buf_b.id end)<CR>"
-            )
+            map("n", mapleader .. "bi", function()
+                require("bufferline").sort_buffers_by(function(buf_a, buf_b)
+                    return buf_a.id < buf_b.id
+                end)
+            end)
         end,
     },
 }

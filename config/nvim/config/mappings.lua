@@ -29,11 +29,9 @@ map(
 map("n", "<Leader>d", '"_d')
 map("x", "<Leader>d", '"_d')
 map("x", "<Leader>p", '"_dP')
-map(
-    "n",
-    "<Leader>x",
-    "<Cmd>lua require('cosmic.config.utils').buf_kill('bd', 0, true)<CR>"
-)
+map("n", "<Leader>x", function()
+    require("cosmic.config.utils").buf_kill("bd", 0, true)
+end)
 
 local replace = function()
     local Input = require("nui.input")
