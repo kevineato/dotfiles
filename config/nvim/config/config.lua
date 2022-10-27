@@ -980,6 +980,7 @@ config.treesitter = {
         "lua",
         "markdown",
         "nix",
+        "proto",
         "python",
         "tsx",
         "typescript",
