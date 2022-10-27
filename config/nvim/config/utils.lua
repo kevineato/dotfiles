@@ -181,4 +181,188 @@ utils.packer_lazy_load = function(plugin, timer)
     end
 end
 
+local fix_normal_hl_links = function()
+    local tokens = function(s, token_patt)
+        local token_list = {}
+        for token in s:gmatch(token_patt) do
+            table.insert(token_list, token)
+        end
+        return token_list
+    end
+
+    local find_key = function(tbl, value)
+        for k, v in pairs(tbl) do
+            if v == value then
+                return k
+            end
+        end
+        return nil
+    end
+
+    local get_link_name = function(gp_tokens)
+        local links_token = find_key(gp_tokens, "links")
+        if links_token ~= nil then
+            local to_token = links_token + 1
+            if gp_tokens[to_token] ~= "to" then
+                error(
+                    "Expected token 'to' after 'links' in highlight command output"
+                )
+            end
+            local link_dest = to_token + 1
+            return gp_tokens[link_dest]
+        else
+            return nil
+        end
+    end
+
+    local append_table = function(dst, src)
+        for _, v in ipairs(src) do
+            table.insert(dst, v)
+        end
+    end
+
+    local starts_with = function(str, start)
+        return str:sub(1, #start) == start
+    end
+
+    local normal_tokens =
+        tokens(vim.api.nvim_exec("highlight Normal", true), "%S+")
+    if get_link_name(normal_tokens) ~= nil then
+        error("Link inside 'Normal' group not supported")
+    end
+
+    if find_key(normal_tokens, "cleared") ~= nil then
+        return
+    end
+
+    -- link inside highlight group overrides any other settings?
+
+    local hi_lines = tokens(vim.api.nvim_exec("highlight", true), "[^\r\n]+")
+
+    for k, v in ipairs(hi_lines) do
+        hi_lines[k] = tokens(v, "%S+")
+    end
+
+    local i = 1
+    while hi_lines[i] ~= nil do
+        local token_list = hi_lines[i]
+        if
+            #token_list > 2
+            and token_list[1] == "links"
+            and token_list[2] == "to"
+        then
+            append_table(hi_lines[i - 1], token_list)
+            table.remove(hi_lines, i)
+        else
+            i = i + 1
+        end
+    end
+
+    local normal_line = ""
+    -- skip "Normal xxx"
+    for j = 3, #normal_tokens do
+        local token = normal_tokens[j]
+        if
+            not starts_with(token, "ctermbg=")
+            and not starts_with(token, "guibg=")
+        then
+            normal_line = normal_line .. " " .. token
+        end
+    end
+
+    local normal_copy = "NormalWithoutBg"
+    vim.api.nvim_exec("highlight clear " .. normal_copy, true)
+    vim.api.nvim_exec("highlight " .. normal_copy .. normal_line, true)
+
+    for _, line in ipairs(hi_lines) do
+        if get_link_name(line) == "Normal" then
+            local group_name = line[1]
+            vim.api.nvim_exec(
+                "highlight! link " .. group_name .. " " .. normal_copy,
+                true
+            )
+        end
+    end
+end
+
+utils.fix_ts_highlights = function()
+    local hl = function(group, opts)
+        opts.default = true
+        vim.api.nvim_set_hl(0, group, opts)
+    end
+
+    hl("@comment", { link = "Comment" })
+    -- hl('@error', { link = 'Error' })
+    hl("@none", { bg = "NONE", fg = "NONE" })
+    hl("@preproc", { link = "PreProc" })
+    hl("@define", { link = "Define" })
+    hl("@operator", { link = "Operator" })
+    hl("@punctuation.delimiter", { link = "Delimiter" })
+    hl("@punctuation.bracket", { link = "Delimiter" })
+    hl("@punctuation.special", { link = "Delimiter" })
+    hl("@string", { link = "String" })
+    hl("@string.regex", { link = "String" })
+    hl("@string.escape", { link = "SpecialChar" })
+    hl("@string.special", { link = "SpecialChar" })
+    hl("@character", { link = "Character" })
+    hl("@character.special", { link = "SpecialChar" })
+    hl("@boolean", { link = "Boolean" })
+    hl("@number", { link = "Number" })
+    hl("@float", { link = "Float" })
+    hl("@function", { link = "Function" })
+    hl("@function.call", { link = "Function" })
+    hl("@function.builtin", { link = "Special" })
+    hl("@function.macro", { link = "Macro" })
+    hl("@method", { link = "Function" })
+    hl("@method.call", { link = "Function" })
+    hl("@constructor", { link = "Special" })
+    hl("@parameter", { link = "Identifier" })
+    hl("@keyword", { link = "Keyword" })
+    hl("@keyword.function", { link = "Keyword" })
+    hl("@keyword.operator", { link = "Keyword" })
+    hl("@keyword.return", { link = "Keyword" })
+    hl("@conditional", { link = "Conditional" })
+    hl("@repeat", { link = "Repeat" })
+    hl("@debug", { link = "Debug" })
+    hl("@label", { link = "Label" })
+    hl("@include", { link = "Include" })
+    hl("@exception", { link = "Exception" })
+    hl("@type", { link = "Type" })
+    hl("@type.builtin", { link = "Type" })
+    hl("@type.qualifier", { link = "Type" })
+    hl("@type.definition", { link = "Typedef" })
+    hl("@storageclass", { link = "StorageClass" })
+    hl("@attribute", { link = "PreProc" })
+    hl("@field", { link = "Identifier" })
+    hl("@property", { link = "Identifier" })
+    hl("@variable", { link = "Normal" })
+    hl("@variable.builtin", { link = "Special" })
+    hl("@constant", { link = "Constant" })
+    hl("@constant.builtin", { link = "Special" })
+    hl("@constant.macro", { link = "Define" })
+    hl("@namespace", { link = "Include" })
+    hl("@symbol", { link = "Identifier" })
+    hl("@text", { link = "Normal" })
+    hl("@text.strong", { bold = true })
+    hl("@text.emphasis", { italic = true })
+    hl("@text.underline", { underline = true })
+    hl("@text.strike", { strikethrough = true })
+    hl("@text.title", { link = "Title" })
+    hl("@text.literal", { link = "String" })
+    hl("@text.uri", { link = "Underlined" })
+    hl("@text.math", { link = "Special" })
+    hl("@text.environment", { link = "Macro" })
+    hl("@text.environment.name", { link = "Type" })
+    hl("@text.reference", { link = "Constant" })
+    hl("@text.todo", { link = "Todo" })
+    hl("@text.note", { link = "SpecialComment" })
+    hl("@text.warning", { link = "WarningMsg" })
+    hl("@text.danger", { link = "ErrorMsg" })
+    hl("@tag", { link = "Tag" })
+    hl("@tag.attribute", { link = "Identifier" })
+    hl("@tag.delimiter", { link = "Delimiter" })
+
+    fix_normal_hl_links()
+end
+
 return utils
