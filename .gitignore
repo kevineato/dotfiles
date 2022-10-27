@@ -1,3 +1,5 @@
+config/nvim/config/*local.lua
+config/nvim/config/*local.vim
 config/nvim/UltiSnips/*local.snippets
 config/nvim/snippets/*local.lua
 config/nvim/snippets/*local.json
