@@ -365,4 +365,190 @@ utils.fix_ts_highlights = function()
     fix_normal_hl_links()
 end
 
+-- source: https://github.com/kikito/middleclass
+
+local idx = {
+    subclasses = { "<config.utils.class:subclasses>" },
+}
+
+local function __tostring(self)
+    return "class " .. self.name
+end
+
+local function __call(self, ...)
+    return self:new(...)
+end
+
+local function create_index_wrapper(class, index)
+    if type(index) == "table" then
+        return function(self, key)
+            local value = self.class.__meta[key]
+            if value == nil then
+                return index[key]
+            end
+            return value
+        end
+    elseif type(index) == "function" then
+        return function(self, key)
+            local value = self.class.__meta[key]
+            if value == nil then
+                return index(self, key)
+            end
+            return value
+        end
+    else
+        return class.__meta
+    end
+end
+
+local function propagate_instance_property(class, key, value)
+    value = key == "__index" and create_index_wrapper(class, value) or value
+
+    class.__meta[key] = value
+
+    for subclass in pairs(class[idx.subclasses]) do
+        if subclass.__properties[key] == nil then
+            propagate_instance_property(subclass, key, value)
+        end
+    end
+end
+
+local function declare_instance_property(class, key, value)
+    class.__properties[key] = value
+
+    if value == nil and class.super then
+        value = class.super.__meta[key]
+    end
+
+    propagate_instance_property(class, key, value)
+end
+
+local function is_subclass(subclass, class)
+    if not subclass.super then
+        return false
+    end
+    if subclass.super == class then
+        return true
+    end
+    return is_subclass(subclass.super, class)
+end
+
+local function is_instance(instance, class)
+    if instance.class == class then
+        return true
+    end
+    return is_subclass(instance.class, class)
+end
+
+local function create_class(name, super)
+    assert(name, "missing name")
+
+    local meta = {}
+    meta.__index = meta
+
+    local class = {
+        name = name,
+        super = super,
+        static = {},
+        __meta = meta,
+        __properties = {},
+        [idx.subclasses] = setmetatable({}, { __mode = "k" }),
+    }
+
+    setmetatable(class.static, {
+        __index = function(_, key)
+            local value = rawget(class.__meta, key)
+            if value == nil and super then
+                return super.static[key]
+            end
+            return value
+        end,
+    })
+
+    setmetatable(class, {
+        __index = class.static,
+        __call = __call,
+        __tostring = __tostring,
+        __name = class.name,
+        __newindex = declare_instance_property,
+    })
+
+    return class
+end
+
+local function include_mixin(class, mixin)
+    for key, value in pairs(mixin) do
+        if key ~= "included" and key ~= "static" then
+            class[key] = value
+        end
+    end
+
+    for key, value in pairs(mixin.static or {}) do
+        class.static[key] = value
+    end
+
+    if type(mixin.included) == "function" then
+        mixin:included(class)
+    end
+
+    return class
+end
+
+local DefaultMixin = {
+    is_instance_of = is_instance,
+    static = {
+        is_subclass_of = is_subclass,
+    },
+}
+
+function DefaultMixin:__tostring()
+    return "instance of " .. tostring(self.class)
+end
+
+function DefaultMixin:init(...) end
+
+function DefaultMixin.static:allocate()
+    return setmetatable({ class = self }, self.__meta)
+end
+
+function DefaultMixin.static:new(...)
+    local instance = self:allocate()
+    instance:init(...)
+    return instance
+end
+
+function DefaultMixin.static:derived(subclass) end
+
+function DefaultMixin.static:derive(subclass_name)
+    local subclass = create_class(subclass_name, self)
+
+    for key, value in pairs(self.__meta) do
+        if not (key == "__index" and type(value) == "table") then
+            propagate_instance_property(subclass, key, value)
+        end
+    end
+
+    function subclass.init(instance, ...)
+        self.init(instance, ...)
+    end
+
+    self[idx.subclasses][subclass] = true
+    self:derived(subclass)
+
+    return subclass
+end
+
+function DefaultMixin.static:include(...)
+    for _, mixin in ipairs({ ... }) do
+        include_mixin(self, mixin)
+    end
+
+    return self
+end
+
+utils.class = function(name, super)
+    return super and super:subclass(name)
+        or include_mixin(create_class(name), DefaultMixin)
+end
+
 return utils
