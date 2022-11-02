@@ -868,12 +868,7 @@ local server_opts = {
                         enable = false,
                     },
                     workspace = {
-                        library = {
-                            vim.fn.expand("$VIMRUNTIME/lua"),
-                            vim.fn.expand("$VIMRUNTIME/lua/vim/lsp"),
-                            vim.fn.stdpath("config") .. "/lua",
-                            vim.fn.stdpath("data") .. "/site/pack/packer",
-                        },
+                        library = vim.api.nvim_get_runtime_file("", true),
                     },
                     telemetry = {
                         enable = false,
