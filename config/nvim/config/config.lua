@@ -8,6 +8,76 @@ config.disable_builtin_plugins = {
 
 config.add_plugins = {
     {
+        "Iron-E/nvim-libmodal",
+        keys = { { "n", config.mapleader.as_code .. "nn" } },
+        setup = function()
+            require("libmodal/src/utils/api")
+            package.loaded["libmodal/src/utils/api"].redraw = function()
+                vim.api.nvim_command("redraw!")
+            end
+        end,
+        config = function()
+            local libmodal = require("libmodal")
+
+            local ModeClass = require("cosmic.config.utils").class("Mode")
+            function ModeClass.static:get_exit_function(name)
+                return function()
+                    vim.g[string.lower(name) .. "ModeExit"] = true
+                end
+            end
+            function ModeClass:init(name, keymaps, exit_keys)
+                self.name = name
+                self.keymaps = keymaps
+
+                local exit_function =
+                    ModeClass.static:get_exit_function(self.name)
+                for _, key in ipairs(exit_keys or { "q" }) do
+                    self.keymaps = vim.tbl_deep_extend(
+                        "force",
+                        self.keymaps,
+                        { [key] = exit_function }
+                    )
+                end
+            end
+            function ModeClass:enter_function(before_enter)
+                return function()
+                    vim.g[string.lower(self.name) .. "ModeExit"] = false
+                    if before_enter then
+                        before_enter()
+                    end
+                    libmodal.mode.enter(self.name, self.keymaps, true)
+                end
+            end
+
+            local nav_mode = ModeClass:new("NAVIGATION", {
+                ["["] = [[exe "BufferLineCyclePrev" | normal! zz]],
+                ["]"] = [[exe "BufferLineCycleNext" | normal! zz]],
+                ["j"] = "normal! gjzz",
+                ["k"] = "normal! gkzz",
+                ["d"] = [[exe "normal! \<C-d>zz"]],
+                ["u"] = [[exe "normal! \<C-u>zz"]],
+                ["g"] = "normal! gg",
+                ["G"] = "normal! G",
+                ["z"] = "normal! zz",
+                ["x"] = function()
+                    require("cosmic.config.utils").buf_kill("bd", 0, true)
+                end,
+            })
+
+            local mapleader =
+                require("cosmic.config.config").mapleader.as_string
+            local map = require("cosmic.utils").map
+
+            map(
+                "n",
+                mapleader .. "nn",
+                nav_mode:enter_function(function()
+                    vim.cmd("normal! zz")
+                end)
+            )
+        end,
+    },
+    {
         "~/.fzf",
         as = "fzf",
         disable = not vim.fn.isdirectory(vim.fn.expand("~/.fzf")),
