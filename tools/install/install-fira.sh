@@ -22,7 +22,7 @@ for type in Bold Light Medium Regular Retina; do
 done
 
 if [ "$has_new_font" = true ]; then
-    if [ ! command -v fc-cache &> /dev/null ]; then
+    if ! command -v fc-cache &> /dev/null; then
         echo 'Install "fontconfig" and run "fc-cache -f" to load new fonts'
     else
         echo "fc-cache -f"
