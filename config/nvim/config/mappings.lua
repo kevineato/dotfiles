@@ -66,6 +66,7 @@ local replace = function()
             if input then
                 vim.cmd([[
                     function! Substitute()
+                        let l:cur_pos = getcurpos()
                         if getregtype("s") != ""
                             let l:register = getreg("s")
                         endif
@@ -87,9 +88,13 @@ local replace = function()
                         if len(l:replacements) > 0
                             let l:last = strpart(l:transcript, len(l:transcript) - 1)
                             if l:last ==# "l" || l:last ==# "q" || l:last ==# "\<Esc>"
+                                call setpos(".", l:cur_pos)
+                                normal! zz
                                 return
                             elseif l:last ==# "a"
                                 1,''-&ge
+                                call setpos(".", l:cur_pos)
+                                normal! zz
                                 return
                             endif
                         endif
