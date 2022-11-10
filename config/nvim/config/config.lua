@@ -726,7 +726,7 @@ local client_opts = {
                     null_ls.builtins.diagnostics.flake8.with({
                         extra_args = {
                             "--max-line-length=88",
-                            "--extend-ignore=E201,E202,E203,E302",
+                            "--extend-ignore=E201,E202,E203,E302,W292",
                         },
                     }),
                     null_ls.builtins.diagnostics.shellcheck,
