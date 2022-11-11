@@ -4,6 +4,9 @@ export BAT_THEME='gruvbox-dark'
 # direnv
 # export DIRENV_LOG_FORMAT=""
 
+# docker
+export DOCKER_BUILDKIT=1
+
 # fzf
 export DISABLE_FZF_AUTO_COMPLETION='false'
 export DISABLE_FZF_KEY_BINDINGS='false'
