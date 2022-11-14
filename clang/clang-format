@@ -42,9 +42,9 @@ BraceWrapping:
   BeforeLambdaBody: true
   BeforeWhile: false
   IndentBraces: false
-  SplitEmptyFunction: true
-  SplitEmptyRecord: true
-  SplitEmptyNamespace: true
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
 BreakAfterJavaFieldAnnotations: true
 BreakBeforeBinaryOperators: None
 BreakBeforeBraces: Custom
