@@ -835,26 +835,11 @@ local server_opts = {
                 server = server_settings,
             }
 
-            local commands = [[
-                if !exists(':ClangdAST')
-                    function s:memuse_compl(_a,_b,_c)
-                        return ['expand_preamble']
-                    endfunction
-                    command ClangdSetInlayHints lua require('clangd_extensions.inlay_hints').set_inlay_hints()
-                    command ClangdDisableInlayHints lua require('clangd_extensions.inlay_hints').disable_inlay_hints()
-                    command ClangdToggleInlayHints lua require('clangd_extensions.inlay_hints').toggle_inlay_hints()
-                    command -range ClangdAST lua require('clangd_extensions.ast').display_ast(<line1>, <line2>)
-                    command ClangdTypeHierarchy lua require('clangd_extensions.type_hierarchy').show_hierarchy()
-                    command ClangdSymbolInfo lua require('clangd_extensions.symbol_info').show_symbol_info()
-                    command -nargs=? -complete=customlist,s:memuse_compl ClangdMemoryUsage lua require('clangd_extensions.memory_usage').show_memory_usage('<args>' == 'expand_preamble')
-                endif
-            ]]
+            local clangd_server_config =
+                require("clangd_extensions").prepare(initial_config)
 
-            local clangd_ext_config = require("clangd_extensions.config")
-            clangd_ext_config.setup(initial_config)
-
-            local old_func = clangd_ext_config.options.server.on_attach
-            clangd_ext_config.options.server.on_attach = function(client, bufnr)
+            local old_func = clangd_server_config.on_attach
+            clangd_server_config.on_attach = function(client, bufnr)
                 if old_func then
                     old_func(client, bufnr)
                 end
@@ -868,7 +853,7 @@ local server_opts = {
                     "<Cmd>ClangdSwitchSourceHeader<CR>"
                 )
                 buf_map(bufnr, "n", leader .. "gs", "<Cmd>ClangdSymbolInfo<CR>")
-                buf_map(bufnr, "n", leader .. "gA", "<Cmd>ClangdAST<CR>")
+                buf_map(bufnr, "n", leader .. "gA", "<Cmd>ClangAST<CR>")
                 buf_map(
                     bufnr,
                     "n",
@@ -887,17 +872,7 @@ local server_opts = {
                     leader .. "gm",
                     "<Cmd>ClangdMemoryUsage<CR>"
                 )
-
-                if clangd_ext_config.options.extensions.autoSetHints then
-                    local inlay_hints = require("clangd_extensions.inlay_hints")
-                    inlay_hints.setup_autocmd()
-                    inlay_hints.set_inlay_hints()
-                end
-
-                vim.cmd(commands)
             end
-
-            require("clangd_extensions.ast").init()
 
             -- TODO(kevineato): Fix cmp requirement here.
             local cmp = require("cmp")
@@ -915,7 +890,8 @@ local server_opts = {
                     },
                 },
             })
-            return clangd_ext_config.options.server
+
+            return clangd_server_config
         end,
     },
     pyright = {
