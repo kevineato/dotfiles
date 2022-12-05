@@ -34,7 +34,7 @@ export TZ='America/Chicago'
 export GTAGSLABEL=pygments
 
 # nnn
-export NNN_PLUG='g:!lazygit*'
+export NNN_PLUG='g:!lazygit*;f:fzcd;p:preview-tui'
 
 # ripgrep
 # export RIPGREP_CONFIG_PATH="$HOME/.ripgreprc"
