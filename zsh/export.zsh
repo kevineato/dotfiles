@@ -14,7 +14,7 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -200'"
 export FZF_DEFAULT_COMMAND="fd --type f --hidden --follow"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always {}' \
-    --history=$HOME/.fzf_history --preview-window hidden \
+    --history=$HOME/.fzf_history --preview-window hidden --reverse \
     --bind 'alt-a:toggle-all,alt-h:toggle-preview' --cycle"
 
 # general
