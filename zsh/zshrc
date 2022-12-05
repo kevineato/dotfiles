@@ -100,6 +100,9 @@ if [[ -f "$ZSH_HOME/local.zsh" ]]; then source "$ZSH_HOME/local.zsh"; fi
 if [[ -f "$HOME/.dircolors" ]]; then eval "$(dircolors $HOME/.dircolors)"; fi
 if [[ -r "$HOME/.local/share/lscolors.sh" ]]; then source "$HOME/.local/share/lscolors.sh"; fi
 if [[ -x "$(whence -p fasd)" ]]; then eval "$(fasd --init auto)"; fi
+if [[ -x "$(whence -p tea)" ]]; then
+    add-zsh-hook -Uz chpwd(){ source <(tea -Eds) }
+fi
 
 # Widgets
 autoload -Uz copy-earlier-word
