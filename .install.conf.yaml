@@ -94,6 +94,13 @@
     description: Installing bat-extras
     stdout: true
     stderr: true
+  - command: |
+      if [[ ! -d "$HOME/.config/nnn/plugins" ]]; then
+          sh -c "$(curl -Ls https://raw.githubusercontent.com/jarun/nnn/master/plugins/getplugs)"
+      fi
+    description: Installing nnn plugins
+    stdout: true
+    stderr: true
   - command: hash -rf
     description: Rebuilding command hash table
     stdout: true
