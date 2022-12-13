@@ -5,6 +5,7 @@ bind x remove
 bind ^x remove
 
 startup_message off
+ignorecase on
 defscrollback 5000
 
 layout autosave on
