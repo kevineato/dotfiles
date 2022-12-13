@@ -6,6 +6,7 @@ export BAT_THEME='gruvbox-dark'
 
 # docker
 export DOCKER_BUILDKIT=1
+export BUILDKIT_PROGRESS='plain'
 
 # fzf
 export DISABLE_FZF_AUTO_COMPLETION='false'
