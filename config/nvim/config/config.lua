@@ -507,6 +507,43 @@ config.add_plugins = {
             { "", ";" },
             { "", "," },
         },
+        setup = function()
+            local api = vim.api
+
+            vim.g.lightspeed_last_motion = ""
+
+            local id = api.nvim_create_augroup(
+                "lightspeed_last_motion",
+                { clear = true }
+            )
+            api.nvim_create_autocmd("User", {
+                group = id,
+                pattern = "LightspeedSxEnter",
+                callback = function()
+                    vim.g.lightspeed_last_motion = "sx"
+                end,
+            })
+            api.nvim_create_autocmd("User", {
+                group = id,
+                pattern = "LightspeedFtEnter",
+                callback = function()
+                    vim.g.lightspeed_last_motion = "ft"
+                end,
+            })
+        end,
+        config = function()
+            local map = require("cosmic.utils").map
+            map("", ";", function()
+                return vim.g.lightspeed_last_motion == "sx"
+                        and "<Plug>Lightspeed_;_sx"
+                    or "<Plug>Lightspeed_;_ft"
+            end, { expr = true, remap = true })
+            map("", ",", function()
+                return vim.g.lightspeed_last_motion == "sx"
+                        and "<Plug>Lightspeed_,_sx"
+                    or "<Plug>Lightspeed_,_ft"
+            end, { expr = true, remap = true })
+        end,
     },
     {
         "tamago324/lir.nvim",
