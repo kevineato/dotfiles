@@ -28,25 +28,25 @@ fi
 
 # ls replacements
 if [[ -x "$(whence -p lsd)" ]] && lsd >/dev/null 2>&1; then
-    alias l='lsd -AFl --group-dirs first --color always'
-    alias la='lsd -AF --group-dirs first --color always'
-    alias ll='lsd -Fl --group-dirs first --color always'
-    alias ls='lsd -F --group-dirs first --color always'
-    alias lt='lsd -AF --tree --group-dirs first --color always'
+    alias l='lsd -AFl --group-dirs first'
+    alias la='lsd -AF --group-dirs first'
+    alias ll='lsd -Fl --group-dirs first'
+    alias ls='lsd -F --group-dirs first'
+    alias lt='lsd -AF --tree --group-dirs first'
 elif [[ -x "$(whence -p colorls)" ]] && colorls >/dev/null 2>&1; then
-    alias l='colorls -Al --sd --gs --dark'
-    alias la='colorls -A --sd --gs --dark'
-    alias ld='colorls -Ald --sd --gs --dark'
-    alias lf='colorls -Alf --sd --gs --dark'
-    alias ll='colorls -l --sd --gs --dark'
-    alias ls='colorls --sd --gs --dark'
-    alias lt='colorls -A --tree --sd --gs --dark'
+    alias l='colorls -Al --sd --gs --dark --color=auto'
+    alias la='colorls -A --sd --gs --dark --color=auto'
+    alias ld='colorls -Ald --sd --gs --dark --color=auto'
+    alias lf='colorls -Alf --sd --gs --dark --color=auto'
+    alias ll='colorls -l --sd --gs --dark --color=auto'
+    alias ls='colorls --sd --gs --dark --color=auto'
+    alias lt='colorls -A --tree --sd --gs --dark --color=auto'
 elif [[ -x "$(whence -p exa)" ]] && exa >/dev/null 2>&1; then
-    alias l='exa -al --color=always --group-directories-first'
-    alias la='exa -a --color=always --group-directories-first'
-    alias ll='exa -l --color=always --group-directories-first'
-    alias ls='exa --color=always --group-directories-first'
-    alias lt='exa -aT --color=always --group-directories-first'
+    alias l='exa -al --group-directories-first'
+    alias la='exa -a --group-directories-first'
+    alias ll='exa -l --group-directories-first'
+    alias ls='exa --group-directories-first'
+    alias lt='exa -aT --group-directories-first'
 fi
 
 # ranger
