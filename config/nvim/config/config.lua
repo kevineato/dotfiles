@@ -746,9 +746,9 @@ local clients = {
 local servers = {
     "bashls",
     "clangd",
+    "lua_ls",
     "neocmake",
     "pyright",
-    "sumneko_lua",
     "vimls",
     "yamlls",
 }
@@ -931,18 +931,7 @@ local server_opts = {
             return clangd_server_config
         end,
     },
-    pyright = {
-        opts = {
-            settings = {
-                python = {
-                    analysis = {
-                        useLibraryCodeForTypes = true,
-                    },
-                },
-            },
-        },
-    },
-    sumneko_lua = {
+    lua_ls = {
         opts = {
             settings = {
                 Lua = {
@@ -967,6 +956,17 @@ local server_opts = {
             },
         },
     },
+    pyright = {
+        opts = {
+            settings = {
+                python = {
+                    analysis = {
+                        useLibraryCodeForTypes = true,
+                    },
+                },
+            },
+        },
+    },
 }
 
 local client_formats = {
@@ -983,9 +983,9 @@ local client_formats = {
 local server_formats = {
     bashls = false,
     clangd = true,
+    lua_ls = false,
     neocmake = false,
     pyright = false,
-    sumneko_lua = false,
     yamlls = true,
 }
 
