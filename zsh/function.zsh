@@ -10,6 +10,8 @@ if [[ -x "$(whence -p fzf)" ]]; then
             fzf --no-multi --exit-0 --height 40% --reverse --bind 'tab:down,shift-tab:up')"
         if [[ -n $directory ]]; then
             cd $directory
+        elif [[ -d $input_dir ]]; then
+            cd $input_dir
         fi
     }
 
