@@ -100,7 +100,9 @@ local replace = function()
                         endif
 
                         if line("''") > 1
-                            1,''-&&"
+                            1,''-&gce
+                            call setpos(".", l:cur_pos)
+                            normal! zz
                         endif
                     endfunction
                     call Substitute()
