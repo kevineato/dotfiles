@@ -1033,7 +1033,19 @@ config.diagnostic = {
 }
 
 config.gruvbox = {
-    italic = false,
+    italic = {
+        strings = false,
+        comments = false,
+        operators = false,
+        folds = false,
+    },
+    overrides = {
+        ["@lsp.type.comment"] = { link = "Comment" },
+        ["@lsp.type.namespace"] = { link = "@namespace" },
+        ["@lsp.type.variable"] = { link = "@variable" },
+        ["@lsp.typemod.parameter.readonly"] = { link = "Constant" },
+        ["@lsp.typemod.variable.readonly"] = { link = "Constant" },
+    },
 }
 
 config.todo_comments = {
