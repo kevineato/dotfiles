@@ -11,8 +11,8 @@ config.add_plugins = {
         "Iron-E/nvim-libmodal",
         keys = { { "n", config.mapleader.as_code .. "nn" } },
         setup = function()
-            require("libmodal/src/utils/api")
-            package.loaded["libmodal/src/utils/api"].redraw = function()
+            require("libmodal/utils/api")
+            package.loaded["libmodal/utils/api"].redraw = function()
                 vim.api.nvim_command("redraw!")
             end
         end,
