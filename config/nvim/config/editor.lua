@@ -69,6 +69,3 @@ vim.cmd([[
 ]])
 
 require("cosmic.config.mappings")
-
--- NOTE(kevineato): Fixes loss of TS* highlight groups.
-require("cosmic.config.utils").fix_ts_highlights()
