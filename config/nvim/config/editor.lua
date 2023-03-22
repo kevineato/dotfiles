@@ -60,12 +60,43 @@ opt.splitright = true
 opt.termguicolors = true
 opt.wrap = false
 
-vim.cmd([[
-    augroup personal_group
-        au!
-        au TextYankPost * lua vim.highlight.on_yank({higroup = "IncSearch", timeout = 150, on_visual = true})
-        au FileType c,cpp,h,hpp,java nnoremap <buffer> ]] .. config.mapleader.as_code .. [[ca <Cmd>lua require("cosmic.config.utils").align_comment()<CR>
-    augroup end
-]])
+local api = vim.api
+local buf_map = require("cosmic.utils").buf_map
+local personal_group =
+    api.nvim_create_augroup("personal_group", { clear = true })
+api.nvim_create_autocmd("FileType", {
+    group = personal_group,
+    pattern = "c,cpp,h,hpp,java",
+    callback = function()
+        buf_map(0, "n", config.mapleader.as_code .. "ca", function()
+            require("cosmic.config.utils").align_comment()
+        end)
+    end,
+})
+api.nvim_create_autocmd("FileType", {
+    group = personal_group,
+    pattern = "help,man",
+    callback = function()
+        buf_map(0, "n", "q", function()
+            require("cosmic.config.utils").buf_kill("bd", 0, true)
+            vim.schedule(function()
+                api.nvim_win_close(0, true)
+            end)
+        end)
+        buf_map(0, "n", "d", "<C-d>")
+        buf_map(0, "n", "u", "<C-u>")
+    end,
+})
+api.nvim_create_autocmd("TextYankPost", {
+    group = personal_group,
+    pattern = "*",
+    callback = function()
+        vim.highlight.on_yank({
+            higroup = "IncSearch",
+            timeout = 150,
+            on_visual = true,
+        })
+    end,
+})
 
 require("cosmic.config.mappings")
