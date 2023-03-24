@@ -967,6 +967,21 @@ local server_opts = {
             },
         },
     },
+    yamlls = {
+        opts = {
+            settings = {
+                yaml = {
+                    completion = true,
+                    format = { enable = true },
+                    hover = true,
+                    keyOrdering = false,
+                    schemaStore = {
+                        enable = true,
+                    },
+                },
+            },
+        },
+    },
 }
 
 local client_formats = {
