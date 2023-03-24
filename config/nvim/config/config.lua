@@ -1048,6 +1048,10 @@ config.gruvbox = {
     },
 }
 
+config.mason = {
+    log_level = vim.log.levels.OFF,
+}
+
 config.todo_comments = {
     highlight = {
         before = "",

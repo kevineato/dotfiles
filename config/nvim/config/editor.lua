@@ -100,3 +100,5 @@ api.nvim_create_autocmd("TextYankPost", {
 })
 
 require("cosmic.config.mappings")
+
+vim.lsp.set_log_level(vim.log.levels.OFF)
