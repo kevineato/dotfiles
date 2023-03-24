@@ -92,7 +92,7 @@ local replace = function()
                                 normal! zz
                                 return
                             elseif l:last ==# "a"
-                                1,''-&ge
+                                silent! 1,''-&ge
                                 call setpos(".", l:cur_pos)
                                 normal! zz
                                 return
