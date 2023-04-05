@@ -10,10 +10,10 @@ fi
 
 for type in Bold Light Medium Regular Retina; do
     file_path="${HOME}/.local/share/fonts/FiraCode-Nerd-Font-${type}.ttf"
-    file_url="https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FiraCode/${type}/complete/Fira%20Code%20${type}%20Nerd%20Font%20Complete.ttf?raw=true"
+    file_url="https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/${type}/complete/Fira%20Code%20${type}%20Nerd%20Font%20Complete.ttf"
     has_new_font=false
-    if [ ! -e "${file_path}" ]; then
-        echo "wget -O $file_path $file_url"
+    if [ ! -e "${file_path}" ] || [ "${1-}" = "-f" ]; then
+        echo "curl -fLo $file_path $file_url"
         curl -fLo "${file_path}" "${file_url}"
         has_new_font=true
     else
