@@ -82,9 +82,9 @@ api.nvim_create_autocmd("FileType", {
             vim.schedule(function()
                 api.nvim_win_close(0, true)
             end)
-        end)
-        buf_map(0, "n", "d", "<C-d>")
-        buf_map(0, "n", "u", "<C-u>")
+        end, { nowait = true })
+        buf_map(0, "n", "d", "<C-d>", { nowait = true })
+        buf_map(0, "n", "u", "<C-u>", { nowait = true })
     end,
 })
 api.nvim_create_autocmd("TextYankPost", {
