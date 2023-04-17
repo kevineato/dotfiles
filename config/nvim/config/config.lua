@@ -1123,7 +1123,6 @@ config.treesitter = {
         "tsx",
         "typescript",
         "verilog",
-        "vhdl",
         "vim",
         "yaml",
     },
