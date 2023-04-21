@@ -1055,8 +1055,11 @@ config.gruvbox = {
         folds = false,
     },
     overrides = {
+        ["@lsp.type.class"] = { link = "Structure" },
         ["@lsp.type.comment"] = { link = "Comment" },
-        ["@lsp.type.namespace"] = { link = "@namespace" },
+        ["@lsp.type.enum"] = { link = "Structure" },
+        ["@lsp.type.interface"] = { link = "Structure" },
+        ["@lsp.type.struct"] = { link = "Structure" },
         ["@lsp.type.variable"] = { link = "@variable" },
         ["@lsp.typemod.parameter.readonly"] = { link = "Constant" },
         ["@lsp.typemod.variable.readonly"] = { link = "Constant" },
