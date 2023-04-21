@@ -1097,6 +1097,7 @@ config.treesitter = {
         "gitcommit",
         "gitignore",
         "go",
+        "hcl",
         "html",
         "java",
         "javascript",
