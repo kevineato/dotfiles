@@ -737,7 +737,6 @@ local clients = {
     "black",
     "cmakelang",
     "flake8",
-    "gersemi",
     "null_ls",
     "shellcheck",
     "stylua",
@@ -749,8 +748,10 @@ local servers = {
     "lua_ls",
     "neocmake",
     "pyright",
+    "rust_analyzer",
     "vimls",
     "yamlls",
+    "zls",
 }
 
 local client_opts = {
@@ -769,7 +770,7 @@ local client_opts = {
                     null_ls.builtins.diagnostics.shellcheck,
                     null_ls.builtins.formatting.beautysh,
                     null_ls.builtins.formatting.black,
-                    null_ls.builtins.formatting.gersemi,
+                    null_ls.builtins.formatting.cmake_format,
                     null_ls.builtins.formatting.stylua,
                 },
                 default_cosmic_sources = false,
@@ -913,17 +914,21 @@ local server_opts = {
 
             -- TODO(kevineato): Fix cmp requirement here.
             local cmp = require("cmp")
+            local compare = require("cmp.config.compare")
             cmp.setup({
                 sorting = {
                     comparators = {
-                        cmp.config.compare.offset,
-                        cmp.config.compare.exact,
-                        cmp.config.compare.recently_used,
+                        compare.offset,
+                        compare.exact,
+                        -- compare.scopes,
                         require("clangd_extensions.cmp_scores"),
-                        cmp.config.compare.kind,
-                        cmp.config.compare.sort_text,
-                        cmp.config.compare.length,
-                        cmp.config.compare.order,
+                        -- compare.score,
+                        compare.recently_used,
+                        compare.locality,
+                        compare.kind,
+                        -- compare.sort_text,
+                        compare.length,
+                        compare.order,
                     },
                 },
             })
@@ -987,9 +992,7 @@ local server_opts = {
 local client_formats = {
     beautysh = true,
     black = true,
-    cmakelang = false,
     flake8 = false,
-    gersemi = true,
     null_ls = true,
     shellcheck = false,
     stylua = true,
@@ -1001,7 +1004,9 @@ local server_formats = {
     lua_ls = false,
     neocmake = false,
     pyright = false,
+    rust_analyzer = true,
     yamlls = true,
+    zls = true,
 }
 
 config.lsp = {
@@ -1061,6 +1066,7 @@ config.gruvbox = {
         ["@lsp.type.interface"] = { link = "Structure" },
         ["@lsp.type.struct"] = { link = "Structure" },
         ["@lsp.type.variable"] = { link = "@variable" },
+        ["@lsp.typemod.variable.constant"] = { link = "Constant" },
         ["@lsp.typemod.parameter.readonly"] = { link = "Constant" },
         ["@lsp.typemod.variable.readonly"] = { link = "Constant" },
     },
