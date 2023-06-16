@@ -13,7 +13,7 @@ bind | eval 'split -v' 'focus right' screen
 
 startup_message off
 ignorecase on
-defscrollback 5000
+defscrollback 10000
 
 layout autosave on
 source .screen_layout
