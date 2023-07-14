@@ -99,6 +99,21 @@ api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+if string.find(vim.uv.os_uname().release, "WSL") ~= nil then
+    vim.g.clipboard = {
+        name = "WslClipboard",
+        copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+        },
+        paste = {
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+        },
+        cache_enabled = 0,
+    }
+end
+
 require("cosmic.config.mappings")
 
 vim.lsp.set_log_level(vim.log.levels.OFF)
