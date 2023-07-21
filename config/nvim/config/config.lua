@@ -788,10 +788,8 @@ local server_opts = {
                 {
                     cmd_args = {
                         "--clang-tidy",
-                        "--compile-commands-dir=build",
                         "--completion-style=detailed",
                         "--enable-config",
-                        "--folding-ranges",
                         "--header-insertion=never",
                         "--hidden-features",
                         "--include-cleaner-stdlib",
