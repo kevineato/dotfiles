@@ -54,13 +54,6 @@ with section("parse"):
                 "CUSTOM_CONTENT_FROM_VARIABLE": 1,
             },
         },
-        "set": {
-            "pargs": [
-                "2+",
-                ("?", {"flags": ["FORCE", "PARENT_SCOPE"]}),
-            ],
-            "kwargs": {"CACHE": 2},
-        },
         "target_link_options": {
             "pargs": [
                 1,
