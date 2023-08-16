@@ -787,6 +787,7 @@ local server_opts = {
                 require("cosmic.lsp.providers.defaults"),
                 {
                     cmd_args = {
+                        "--all-scopes-completion",
                         "--clang-tidy",
                         "--completion-style=detailed",
                         "--enable-config",
@@ -835,8 +836,13 @@ local server_opts = {
 
             local icons = require("cosmic.theme.icons")
             local user_config = require("cosmic.core.user")
-            local initial_config = {
-                extensions = {
+
+            local old_func = server_settings.on_attach
+            server_settings.on_attach = function(client, bufnr)
+                if old_func then
+                    old_func(client, bufnr)
+                end
+                require("clangd_extensions").setup({
                     inlay_hints = {
                         parameter_hints_prefix = ": ",
                         other_hints_prefix = "-> ",
@@ -867,18 +873,9 @@ local server_opts = {
                     symbol_info = {
                         border = user_config.border,
                     },
-                },
-                server = server_settings,
-            }
-
-            local clangd_server_config =
-                require("clangd_extensions").prepare(initial_config)
-
-            local old_func = clangd_server_config.on_attach
-            clangd_server_config.on_attach = function(client, bufnr)
-                if old_func then
-                    old_func(client, bufnr)
-                end
+                })
+                require("clangd_extensions.inlay_hints").setup_autocmd()
+                require("clangd_extensions.inlay_hints").set_inlay_hints()
 
                 local buf_map = require("cosmic.utils").buf_map
                 local leader = user_config.mapleader.as_string
@@ -931,7 +928,7 @@ local server_opts = {
                 },
             })
 
-            return clangd_server_config
+            return server_settings
         end,
     },
     lua_ls = {
