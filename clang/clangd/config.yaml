@@ -1,12 +1,14 @@
-Index:
-  Background: Build
-Diagnostics:
-  UnusedIncludes: Strict
 Completion:
   AllScopes: true
-InlayHints:
-  Enabled: true
-  ParameterNames: true
-  DeducedTypes: true
+Diagnostics:
+  MissingIncludes: Strict
+  UnusedIncludes: Strict
 Hover:
   ShowAKA: true
+InlayHints:
+  BlockEnd: true
+  DeducedTypes: true
+  Designators: true
+  Enabled: true
+  ParameterNames: true
+  TypeNameLimit: 0
