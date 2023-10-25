@@ -70,6 +70,7 @@ plugins=(
     common-aliases
     extract
     history-substring-search
+    ssh-agent
     vi-mode
     zsh-autopair
     zsh-autosuggestions
@@ -88,5 +89,9 @@ if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
 if [[ -d "$ZSH_CUSTOM/plugins/zsh-completions/src" ]]; then
     fpath=("$ZSH_CUSTOM/plugins/zsh-completions/src" $fpath)
 fi
+
+zstyle :omz:plugins:ssh-agent agent-forwarding yes
+zstyle :omz:plugins:ssh-agent lazy yes
+zstyle :omz:plugins:ssh-agent quiet yes
 
 [[ -f "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
