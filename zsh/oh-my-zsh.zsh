@@ -68,6 +68,7 @@ plugins=(
     alias-tips
     colored-man-pages
     common-aliases
+    docker
     extract
     history-substring-search
     ssh-agent
