@@ -23,10 +23,10 @@ export FZF_DEFAULT_OPTS="--preview 'bat --style=numbers --color=always {}' \
 export COLORTERM='truecolor'
 export EDITOR='nvim'
 export KEYTIMEOUT=1
-export LESS='-iFRX'
+export LESS='-iFR'
 export PAGER='less'
 if [[ -x "$(whence -p bat)" ]]; then
-    export BAT_PAGER='less -iFRX'
+    export BAT_PAGER='less -iFR'
 fi
 export TIME='real %e user %U sys %S CPU %P\n'
 export TZ='America/Chicago'

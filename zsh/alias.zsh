@@ -5,8 +5,8 @@ if [[ -x "$(whence -p bat)" ]]; then
 fi
 alias -g BG='&> /dev/null &|'
 if [[ -x "$(whence -p fzf)" ]]; then alias -g F='| fzf'; fi
-alias -g L='| less -iR'
-alias -g LL='|& less -iR'
+alias -g L='| less -iFR'
+alias -g LL='|& less -iFR'
 # if [[ -x "$(whence -p sk)" ]]; then alias -g S='| sk'; fi
 
 # general
