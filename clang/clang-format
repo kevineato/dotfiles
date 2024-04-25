@@ -140,11 +140,14 @@ InsertBraces: false
 InsertNewlineAtEOF: true
 InsertTrailingCommas: None
 IntegerLiteralSeparator:
-  Binary: 4
+  Binary: 0
+  # Binary: 4
   BinaryMinDigits: 0
-  Decimal: 3
+  Decimal: 0
+  # Decimal: 3
   DecimalMinDigits: 0
-  Hex: 2
+  Hex: 0
+  # Hex: 2
   HexMinDigits: 0
 # JavaImportGroups: ['']
 JavaScriptQuotes: Double
