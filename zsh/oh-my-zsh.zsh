@@ -83,7 +83,6 @@ if [[ -x "$(command -v fasd)" ]]; then plugins+=(fasd); fi
 if [[ -x "$HOME/.fzf/bin/fzf" ]]; then plugins+=(fzf zsh-interactive-cd); fi
 if [[ -x "$(command -v git)" ]]; then plugins+=(git); fi
 if [[ -x "$(command -v poetry)" ]]; then plugins+=(poetry); fi
-if [[ -x "$(command -v rg)" ]]; then plugins+=(ripgrep); fi
 if [[ -x "$(command -v tmux)" ]]; then plugins+=(tmux); fi
 
 # Load zsh-completions
